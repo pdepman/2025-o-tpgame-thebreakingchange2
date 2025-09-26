@@ -1,18 +1,20 @@
 import wollok.game.*
 
-import example.pepita
+import objects.*
+import classes.*
 
 program PepitaGame {
-	game.title("Pepita")
-	game.height(10)
-	game.width(10)
+	game.title("Tower Defense")
+	game.height(14)
+	game.width(22)
+	game.cellSize(60)
 
-	// add assets in asset folder, for example, for the background
-  // game.boardGround("fondo2.jpg")
-
-	//
-
-	game.showAttributes(pepita) //Debug
+	game.ground("tile_default.png")
 
 	game.start()
+
+	const menuList = []
+	[0,1,2,3,4,5,6,7,8,9,10,11,12,13].forEach({y => [18,19,20,21].forEach({x => menuList.add(new MenuTile(position = game.at(x,y)))})})
+	menuList.forEach({tile => game.addVisual(tile)})
 }
+
