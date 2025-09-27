@@ -1,0 +1,80 @@
+import wollok.game.*
+import objects.*
+import classes.*
+
+program TowerDefenseGame {
+	game.title("Tower Defense")
+	game.height(14)
+	game.width(22)
+	game.cellSize(60)
+	
+	game.ground("tile_default.png")
+	
+	game.start()
+	
+	// Side Menu
+	const menuList = []
+	[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].forEach(
+		{ y => [18, 19, 20, 21].forEach(
+				{ x => menuList.add(new MenuTile(position = game.at(x, y))) }
+			) }
+	)
+	menuList.forEach({ tile => game.addVisual(tile) })
+	
+	// Path Configuration
+	const road1 = new Road(position = game.at(2, 2))
+	const road2 = new Road(position = game.at(2, 3))
+	const road3 = new Road(position = game.at(2, 4))
+	const road4 = new Road(position = game.at(2, 5))
+	const road5 = new Road(position = game.at(2, 6))
+	const road6 = new Road(position = game.at(3, 6))
+	const road7 = new Road(position = game.at(4, 6))
+	const road8 = new Road(position = game.at(5, 6))
+	const road9 = new Road(position = game.at(6, 6))
+	const road10 = new Road(position = game.at(6, 5))
+	const road11 = new Road(position = game.at(6, 4))
+	const road12 = new Road(position = game.at(5, 4))
+	const road13 = new Road(position = game.at(4, 4))
+	const road14 = new Road(position = game.at(4, 5))
+	const road15 = new Road(position = game.at(4, 6))
+	const road16 = new Road(position = game.at(4, 7))
+	const road17 = new Road(position = game.at(4, 8))
+	const core = new Core(position = game.at(4,9), hp = 100)
+	
+	const lvlpath = [
+		road1,
+		road2,
+		road3,
+		road4,
+		road5,
+		road6,
+		road7,
+		road8,
+		road9,
+		road10,
+		road11,
+		road12,
+		road13,
+		road14,
+		road15,
+		road16,
+		road17,
+		core
+	]
+	
+	lvlpath.forEach({ road => game.addVisual(road) })
+	
+	// Enemy Configuration
+	const enemy = new BasicEnemy(
+		position = game.at(2, 2),
+		path = lvlpath,
+		hp = 1,
+		power = 10,
+		speed = 1
+	)
+	game.addVisual(enemy)
+
+	game.onTick(500, "moveEnemy", {enemy.goForward()})
+	game.onCollideDo(core, {x => x.damage(core)})
+	
+}
