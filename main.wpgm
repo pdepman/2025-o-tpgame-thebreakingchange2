@@ -72,9 +72,10 @@ program TowerDefenseGame {
 		power = 10,
 		speed = 1
 	)
+	const player = new BasicPlayer(position = game.at(2,2))
 	game.addVisual(enemy)
-
+	game.addVisualCharacter(player)
 	game.onTick(500, "moveEnemy", {enemy.goForward()})
-	game.onCollideDo(core, {x => x.damage(core)})
-	
-}
+	keyboard.t().onPressDo({player.addBasicTower()})
+	game.onCollideDo(core, {x => x.damage(core)})		
+}	
