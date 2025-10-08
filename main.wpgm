@@ -1,7 +1,7 @@
 import wollok.game.*
 import objects.*
 import classes.*
-
+import stage_0.*
 program TowerDefenseGame {
 	game.title("Tower Defense")
 	game.height(14)
@@ -21,61 +21,20 @@ program TowerDefenseGame {
 	)
 	menuList.forEach({ tile => game.addVisual(tile) })
 	
-	// Path Configuration
-	const road1 = new Road(position = game.at(2, 2))
-	const road2 = new Road(position = game.at(2, 3))
-	const road3 = new Road(position = game.at(2, 4))
-	const road4 = new Road(position = game.at(2, 5))
-	const road5 = new Road(position = game.at(2, 6))
-	const road6 = new Road(position = game.at(3, 6))
-	const road7 = new Road(position = game.at(4, 6))
-	const road8 = new Road(position = game.at(5, 6))
-	const road9 = new Road(position = game.at(6, 6))
-	const road10 = new Road(position = game.at(6, 5))
-	const road11 = new Road(position = game.at(6, 4))
-	const road12 = new Road(position = game.at(5, 4))
-	const road13 = new Road(position = game.at(4, 4))
-	const road14 = new Road(position = game.at(4, 5))
-	const road15 = new Road(position = game.at(4, 6))
-	const road16 = new Road(position = game.at(4, 7))
-	const road17 = new Road(position = game.at(4, 8))
-	const core = new Core(position = game.at(4,9), hp = 100)
-	
-	const lvlpath = [
-		road1,
-		road2,
-		road3,
-		road4,
-		road5,
-		road6,
-		road7,
-		road8,
-		road9,
-		road10,
-		road11,
-		road12,
-		road13,
-		road14,
-		road15,
-		road16,
-		road17,
-		core
-	]
-	
-	lvlpath.forEach({ road => game.addVisual(road) })
-	
+
+	stage_0.load()
+
 	// Enemy Configuration
 	const enemy = new BasicEnemy(
 		position = game.at(2, 2),
-		path = lvlpath,
+		path = stage_0_path,
 		hp = 1,
 		power = 10,
 		speed = 1
 	)
 	const player = new BasicPlayer(position = game.at(2,2))
-	game.addVisual(enemy)
 	game.addVisualCharacter(player)
-	game.onTick(500, "moveEnemy", {enemy.goForward()})
+	game.addVisual(enemy)
+	keyboard.p().onPressDo({game.onTick(500, "moveEnemy", {enemy.goForward()})})
 	keyboard.t().onPressDo({player.addBasicTower()})
-	game.onCollideDo(core, {x => x.damage(core)})		
 }	
