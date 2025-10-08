@@ -73,12 +73,10 @@ class BasicPlayer {
 class Stage {
 	const path
 	const core
-	const character
 
 	method load() {
 		path.beDisplayed()
 		core.beDisplayed()
-		character.beDisplayed()
 	}
 	method clear() {
 		// Limpio el path de la pantalla
