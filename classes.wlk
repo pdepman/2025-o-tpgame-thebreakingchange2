@@ -73,6 +73,7 @@ class BasicPlayer {
 class Stage {
 	const path
 	const core
+	var resources
 
 	method load() {
 		path.beDisplayed()
@@ -88,6 +89,14 @@ class Stage {
 	method reset() {
 		self.clear()
 		self.load()
+	}
+
+	method addResources(amount){
+		resources += amount
+	}
+
+	method substractResources(amount){
+		resources -= amount
 	}
 
 	// method startNextRound() {
