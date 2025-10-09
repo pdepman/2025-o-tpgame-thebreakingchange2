@@ -1,4 +1,4 @@
-class MenuTile {
+class HudTile {
 	var property position
 	
 	method image() = "bg_menu.png"
@@ -15,8 +15,8 @@ class BasicEnemy {
 	method image() = "enemy.png"
 	
 	method goForward() {
-		pathPosition = path.size().min(pathPosition + speed)
-		position = path.get(pathPosition).position()
+		pathPosition = path.length().min(pathPosition + speed)
+		position = path.roadAt(pathPosition).position()
 	}
 	
 	method damage(structure) {
@@ -35,23 +35,6 @@ class BasicEnemy {
 	
 	method attack() {
 		
-	}
-}
-
-class Road {
-	var property position
-	
-	method image() = "road.png"
-}
-
-class Core {
-	var property position
-	var hp
-	
-	method image() = "core.png"
-	
-	method receiveDamage(damage) {
-		hp -= damage
 	}
 }
 
@@ -86,3 +69,70 @@ class BasicPlayer {
 		towers.last().show()
 	}
 }
+
+class Stage {
+	const path
+	const core
+
+	method load() {
+		path.beDisplayed()
+		core.beDisplayed()
+	}
+	method clear() {
+		// Limpio el path de la pantalla
+		// Limpio coro de la pantalla
+		// Limpio el personaje de la pantalla UFF PODRIA USAR EL PERSONAJE PARA SELECCIONAR EL NIVEL
+		// Vuelvo todas las variables a su estado inicial
+	}
+	
+	method reset() {
+		self.clear()
+		self.load()
+	}
+
+	// method startNextRound() {
+	// 	currentRoundIndex += 1
+	// 	rounds.get(currentRoundIndex).start()
+	// }	
+
+	// method addTower(tower) {
+	// 	towers.add(tower)
+	// }
+
+}
+
+class Path {
+	const roads
+	method length() = roads.size()
+	method roadAt(indexNumber) = roads.get(indexNumber)
+	method beDisplayed() {
+	  roads.forEach({road => road.beDisplayed()})
+	}
+}
+
+
+class Road {
+	const property position
+	
+	method image() = "road.png"
+	
+	method beDisplayed() {
+		game.addVisual(self)
+	}
+}
+
+class Core {
+	var property position
+	var hp
+	
+	method image() = "core.png"
+	
+	method receiveDamage(damage) {
+		hp -= damage
+	}
+
+	method beDisplayed() {
+		game.addVisual(self)
+	}
+}
+
