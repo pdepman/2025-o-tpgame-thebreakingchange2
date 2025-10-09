@@ -1,4 +1,4 @@
-class MenuTile {
+class HudTile {
 	var property position
 	
 	method image() = "bg_menu.png"
@@ -135,3 +135,4 @@ class Core {
 		game.addVisual(self)
 	}
 }
+
