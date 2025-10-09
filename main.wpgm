@@ -3,24 +3,11 @@ import objects.*
 import classes.*
 import stage_0.*
 program TowerDefenseGame {
-	game.title("Tower Defense")
-	game.height(14)
-	game.width(22)
-	game.cellSize(60)
+
+	tdGame.start()
 	
-	game.ground("tile_default.png")
-	
-	game.start()
-	
-	// Side Menu
-	const menuList = []
-	[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].forEach(
-		{ y => [18, 19, 20, 21].forEach(
-				{ x => menuList.add(new MenuTile(position = game.at(x, y))) }
-			) }
-	)
-	menuList.forEach({ tile => game.addVisual(tile) })
-	
+	hud.setupHudTiles()
+	hud.beDisplayed()
 
 	stage_0.load()
 
