@@ -11,6 +11,7 @@ program TowerDefenseGame {
 
 	stage_0.load()
 
+	
 	// Enemy Configuration
 	const enemy = new BasicEnemy(
 		position = game.at(2, 2),
@@ -24,4 +25,6 @@ program TowerDefenseGame {
 	game.addVisual(enemy)
 	keyboard.p().onPressDo({game.onTick(500, "moveEnemy", {enemy.goForward()})})
 	keyboard.t().onPressDo({player.addBasicTower()})
+	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
+	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
 }	
