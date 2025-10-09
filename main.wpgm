@@ -6,11 +6,12 @@ program TowerDefenseGame {
 
 	tdGame.start()
 	
+
+	tdGame.selectStage(0)
+	tdGame.loadStage()
+	
 	hud.setupHudTiles()
 	hud.beDisplayed()
-
-	stage_0.load()
-
 	
 	// Enemy Configuration
 	const enemy = new BasicEnemy(

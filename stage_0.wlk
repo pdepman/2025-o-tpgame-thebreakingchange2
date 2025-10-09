@@ -1,6 +1,6 @@
 import classes.*
 
-const stage_0 = new Stage(path = stage_0_path, core = stage_0_core)
+const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100)
 
 // Path Configuration
 const stage_0_path = new Path(roads = [

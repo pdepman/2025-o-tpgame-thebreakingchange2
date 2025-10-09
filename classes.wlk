@@ -1,7 +1,8 @@
 class HudTile {
 	var property position
+	const hudPosition
 	
-	method image() = "bg_menu.png"
+	method image() = "hud_bg_"+ hudPosition +".png"
 }
 
 class BasicEnemy {
