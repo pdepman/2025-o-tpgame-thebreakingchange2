@@ -21,10 +21,30 @@ program TowerDefenseGame {
 		power = 10,
 		speed = 1
 	)
+
+	const enemy2 = new ExplosiveEnemy(
+		position = game.at(1, 1),
+		path = stage_0_path,
+		hp = 1,
+		power = 10,
+		speed = 1
+	)
+
+	const enemy3 = new ArmoredEnemy(
+		position = game.at(2, 2),
+		path = stage_0_path,
+		hp = 1,
+		power = 10,
+		speed = 1
+	)
 	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
 	game.addVisual(enemy)
+	game.addVisual(enemy2)
+	game.addVisual(enemy3)
 	keyboard.p().onPressDo({game.onTick(500, "moveEnemy", {enemy.goForward()})})
+	keyboard.p().onPressDo({game.onTick(600, "moveEnemy", {enemy2.goForward()})})
+	keyboard.p().onPressDo({game.onTick(700, "moveEnemy", {enemy3.goForward()})})
 	keyboard.t().onPressDo({player.addBasicTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
