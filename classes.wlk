@@ -39,12 +39,6 @@ class BasicEnemy {
 	}
 }
 
-//replicar la torre que ya está, pero con una nueva estructura(nueva clase con imagen !=)
-//aplicar lo último visto
-//super clase torre
-//clases basicas y las otras
-//un boton para cada tipo de torre 1-2-3
-
 //atacar a punto fijo
 /*atacar a bichos (primero escanea, ve enemigos en su rango, de todos los que está en su rango ataca
 al que más avanzado está en el PATH)
@@ -60,6 +54,7 @@ class Tower {
 	
 	method show() {
 		game.addVisual(self)
+		game.sound("sfx_tower_spawn.mp3").play()
 	}
 }
 class BasicTower inherits Tower{
