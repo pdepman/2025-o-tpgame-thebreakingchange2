@@ -5,15 +5,13 @@ class HudTile {
 	method image() = "hud_bg_"+ hudPosition +".png"
 }
 
-class BasicEnemy {
+class Enemy {
 	var pathPosition = 0
 	var property position
 	const path
 	var hp
 	var power
 	var speed
-	
-	method image() = "enemy_basic.png"
 	
 	method goForward() {
 		pathPosition = path.length().min(pathPosition + speed)
@@ -37,6 +35,26 @@ class BasicEnemy {
 	method attack() {
 		
 	}
+}
+
+class BasicEnemy inherits Enemy{
+
+	method image() = "enemy_basic.png"
+
+}
+
+class ExplosiveEnemy inherits Enemy{
+	var radius = 2
+
+	method image() = "enemy_explosive.png"
+
+	/*method blowUP*/
+}
+
+class ArmoredEnemy inherits Enemy{
+
+	method image() = "enemy_armored.png"
+
 }
 
 //atacar a punto fijo
