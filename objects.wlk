@@ -107,7 +107,7 @@ object gameOverScreen {
   const property position = game.origin()
   var beingDisplayed = false
   
-  method image() = "gameover.png"
+  method image() = "screen_gameover.png"
   
   method beDisplayed() {
     game.onTick(500, "gameOverDisplayControl", { self.toggleVisual() })

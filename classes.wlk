@@ -13,7 +13,7 @@ class BasicEnemy {
 	var power
 	var speed
 	
-	method image() = "enemy.png"
+	method image() = "enemy_basic.png"
 	
 	method goForward() {
 		pathPosition = path.length().min(pathPosition + speed)
@@ -45,7 +45,7 @@ class BasicTower {
 	var attackSpeed
 	var range
 	
-	method image() = "tower.png"
+	method image() = "tower_basic.png"
 	
 	method show() {
 		game.addVisual(self)
@@ -124,7 +124,7 @@ class Path {
 class Road {
 	const property position
 	
-	method image() = "road.png"
+	method image() = "tile_road.png"
 	
 	method beDisplayed() {
 		game.addVisual(self)
