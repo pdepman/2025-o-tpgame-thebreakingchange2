@@ -39,17 +39,39 @@ class BasicEnemy {
 	}
 }
 
-class BasicTower {
+//replicar la torre que ya está, pero con una nueva estructura(nueva clase con imagen !=)
+//aplicar lo último visto
+//super clase torre
+//clases basicas y las otras
+//un boton para cada tipo de torre 1-2-3
+
+//atacar a punto fijo
+/*atacar a bichos (primero escanea, ve enemigos en su rango, de todos los que está en su rango ataca
+al que más avanzado está en el PATH)
+FUNCIÓN PARA VER LA DISTANCIA ENTRE COSAS, CHECK WOLLOK GAME*/
+
+class Tower {
 	var property position
 	var power
 	var attackSpeed
 	var range
 	
-	method image() = "tower_basic.png"
+	method image()
 	
 	method show() {
 		game.addVisual(self)
 	}
+}
+class BasicTower inherits Tower{
+	override method image() = "tower_basic.png"
+}
+
+class PiercingTower inherits Tower{
+	override method image() = "tower_piercing.png"
+}
+
+class SlowingTower inherits Tower{
+	override method image() = "tower_slowing.png"
 }
 
 class BasicPlayer {
@@ -61,6 +83,30 @@ class BasicPlayer {
 	method addBasicTower() {
 		towers.add(
 			new BasicTower(
+				position = position,
+				power = 10,
+				attackSpeed = 1000,
+				range = 2
+			)
+		)
+		towers.last().show()
+	}
+
+	method addPiercingTower() {
+		towers.add(
+			new PiercingTower(
+				position = position,
+				power = 10,
+				attackSpeed = 1000,
+				range = 2
+			)
+		)
+		towers.last().show()
+	}
+
+	method addSlowingTower() {
+		towers.add(
+			new SlowingTower(
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
