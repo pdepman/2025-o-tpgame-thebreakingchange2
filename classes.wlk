@@ -1,7 +1,8 @@
 class HudTile {
 	var property position
+	const hudPosition
 	
-	method image() = "bg_menu.png"
+	method image() = "hud_bg_"+ hudPosition +".png"
 }
 
 class BasicEnemy {
@@ -12,7 +13,7 @@ class BasicEnemy {
 	var power
 	var speed
 	
-	method image() = "enemy.png"
+	method image() = "enemy_basic.png"
 	
 	method goForward() {
 		pathPosition = path.length().min(pathPosition + speed)
@@ -44,7 +45,7 @@ class BasicTower {
 	var attackSpeed
 	var range
 	
-	method image() = "tower.png"
+	method image() = "tower_basic.png"
 	
 	method show() {
 		game.addVisual(self)
@@ -73,6 +74,7 @@ class BasicPlayer {
 class Stage {
 	const path
 	const core
+	var resources
 
 	method load() {
 		path.beDisplayed()
@@ -89,6 +91,16 @@ class Stage {
 		self.clear()
 		self.load()
 	}
+
+	method addResources(amount){
+		resources += amount
+	}
+
+	method substractResources(amount){
+		resources -= amount
+	}
+
+	method resources() = resources
 
 	// method startNextRound() {
 	// 	currentRoundIndex += 1
@@ -114,7 +126,7 @@ class Path {
 class Road {
 	const property position
 	
-	method image() = "road.png"
+	method image() = "tile_road.png"
 	
 	method beDisplayed() {
 		game.addVisual(self)

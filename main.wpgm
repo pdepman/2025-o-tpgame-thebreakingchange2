@@ -6,25 +6,29 @@ program TowerDefenseGame {
 
 	tdGame.start()
 	
+
+	tdGame.selectStage(0)
+	tdGame.loadStage()
+	
 	hud.setupHudTiles()
 	hud.beDisplayed()
 
-	stage_0.load()
-
-	
 	// Enemy Configuration
 	const enemy = new BasicEnemy(
-		position = game.at(2, 2),
+		position = game.at(0, 0),
 		path = stage_0_path,
 		hp = 1,
 		power = 10,
 		speed = 1
 	)
-	const player = new BasicPlayer(position = game.at(2,2))
+	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
 	game.addVisual(enemy)
 	keyboard.p().onPressDo({game.onTick(500, "moveEnemy", {enemy.goForward()})})
 	keyboard.t().onPressDo({player.addBasicTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
+
+	keyboard.a().onPressDo({stage_0.addResources(10)})
+	keyboard.s().onPressDo({stage_0.substractResources(10)})
 }	
