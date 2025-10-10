@@ -87,6 +87,8 @@ class Stage {
 		// Vuelvo todas las variables a su estado inicial
 	}
 	
+	method core() = core
+
 	method reset() {
 		self.clear()
 		self.load()
@@ -139,6 +141,8 @@ class Core {
 	
 	method image() = "core.png"
 	
+	method hp() = hp
+
 	method receiveDamage(damage) {
 		hp -= damage
 	}

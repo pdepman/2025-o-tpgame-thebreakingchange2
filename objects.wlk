@@ -83,11 +83,12 @@ object hud {
   method beDisplayed() {
     hudTiles.forEach({ tile => game.addVisual(tile) })
     resourcesVisualizer.beDisplayed()
+    hpVisualizer.beDisplayed()
   }
 }
 
 object resourcesVisualizer {
-  var property position = game.at(20, 10)
+  const property position = game.at(21, 11)
   
   method text() = tdGame.currentStage().resources().toString()
   
@@ -99,8 +100,22 @@ object resourcesVisualizer {
   }
 }
 
+object hpVisualizer {
+  const property position = game.at(20, 8)
+
+  method image() = "core.png" 
+
+  method text() = tdGame.currentStage().core().hp().toString()
+
+  method textColor() = "00FF00"
+
+  method beDisplayed(){
+    game.addVisual(self)
+  }
+}
+
 object hudCoinSymbol {
-  var property position = game.at(19, 10)
+  var property position = game.at(19, 11)
   
   method image() = "resource_coin.png"
 }
