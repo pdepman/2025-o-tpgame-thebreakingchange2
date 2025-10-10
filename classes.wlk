@@ -96,6 +96,7 @@ class Stage {
 
 	method addResources(amount){
 		resources += amount
+		game.sound("sfx_resources_added.wav").play()
 	}
 
 	method substractResources(amount){
