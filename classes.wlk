@@ -12,8 +12,10 @@ class BasicEnemy {
 	var hp
 	var power
 	var speed
+	var image = "enemy_basic.png"
+	method image() = image
 	
-	method image() = "enemy_basic.png"
+	method position() = position
 	
 	method goForward() {
 		pathPosition = path.length().min(pathPosition + speed)
@@ -32,6 +34,7 @@ class BasicEnemy {
 	
 	method receiveDamage(damage) {
 		hp -= damage
+		image = "enemy_armored.png"
 	}
 	
 	method attack() {
@@ -49,12 +52,30 @@ class Tower {
 	var power
 	var attackSpeed
 	var range
-	
+	const enemiesInRange = []
+
 	method image()
 	
 	method show() {
 		game.addVisual(self)
 		game.sound("sfx_tower_spawn.mp3").play()
+		//status = "idle"
+	}
+
+	method detectEnemies(enemy) {
+		console.println(enemy.position())
+		if (position.distance(enemy.position()) <= range) {
+			enemiesInRange.add(enemy)
+			self.doAttack(enemy)
+		}
+	}
+
+	method doAttack(enemy) {
+		if(enemiesInRange.size() != null){
+			enemiesInRange.pathPosition().max().receiveDamage(power)
+		}
+		
+		//status= "attacking"
 	}
 }
 class BasicTower inherits Tower{
