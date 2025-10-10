@@ -28,4 +28,7 @@ program TowerDefenseGame {
 	keyboard.t().onPressDo({player.addBasicTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
+
+	keyboard.a().onPressDo({stage_0.addResources(10)})
+	keyboard.s().onPressDo({stage_0.substractResources(10)})
 }	

@@ -5,6 +5,8 @@ object tdGame {
   const stages = [stage_0]
   var currentStage = placeHolderStage
   
+  method currentStage() = currentStage
+
   method setupConfig() {
     game.title("Tower Defense")
     game.height(14)
@@ -87,7 +89,7 @@ object hud {
 object resourcesVisualizer {
   var property position = game.at(20, 10)
   
-  method text() = "1000"
+  method text() = tdGame.currentStage().resources().toString()
   
   method textColor() = "FFFFFFFF"
   

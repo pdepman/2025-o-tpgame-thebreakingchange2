@@ -100,6 +100,8 @@ class Stage {
 		resources -= amount
 	}
 
+	method resources() = resources
+
 	// method startNextRound() {
 	// 	currentRoundIndex += 1
 	// 	rounds.get(currentRoundIndex).start()
