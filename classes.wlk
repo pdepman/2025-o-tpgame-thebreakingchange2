@@ -53,7 +53,7 @@ class Tower {
 	var power
 	var attackSpeed
 	var range
-	const enemiesInRange = []
+	var enemiesInRange = []
 
 	method image()
 	
@@ -68,13 +68,20 @@ class Tower {
 		if (position.distance(enemy.position()) <= range) {
 			enemiesInRange.add(enemy)
 			console.println(enemiesInRange.size())
-			self.doAttack(enemiesInRange.get(0))
+			self.doAttack()
 		}
 	}
 
-	method doAttack(enemy) {
+	method getMaxBy() {
+		var maxPath = enemiesInRange.map({e => e.pathPosition()}).max()
+		return enemiesInRange.find({e => e.pathPosition() == maxPath})
+	} 
+
+	method doAttack() {
 		game.sound("sfx_hit_basic.mp3").play()
-		enemy.receiveDamage(power)
+		//enemiesInRange.({ e => e.pathPosition() }).max().receiveDamage(power)
+		self.getMaxBy().receiveDamage(power)
+		//enemy.receiveDamage(power)
 
 		// if(enemiesInRange.size() != null){
 		// 	enemiesInRange.pathPosition().max().receiveDamage(power)
