@@ -63,32 +63,29 @@ class Tower {
 		//status = "idle"
 	}
 
-	method detectEnemies(enemy) {
-		//console.println(position.distance(enemy.position()).truncate(0))
-		if (position.distance(enemy.position()) <= range) {
-			enemiesInRange.add(enemy)
-			console.println(enemiesInRange.size())
-			self.doAttack()
-		}
+	method detectEnemies(enemies) {
+		enemies.forEach({enemy =>
+			if (position.distance(enemy.position()) <= range) {
+					enemiesInRange.add(enemy)
+					console.println(enemiesInRange.size())
+				}
+		})	
+		//Diría que con un map o filter tmb saldría
+		self.doAttack()
 	}
 
-	method getMaxBy() {
+	method getEnemyWithMaxPath() {
 		var maxPath = enemiesInRange.map({e => e.pathPosition()}).max()
 		return enemiesInRange.find({e => e.pathPosition() == maxPath})
-	} 
+	}
 
 	method doAttack() {
-		game.sound("sfx_hit_basic.mp3").play()
-		//enemiesInRange.({ e => e.pathPosition() }).max().receiveDamage(power)
-		self.getMaxBy().receiveDamage(power)
-		//enemy.receiveDamage(power)
+		if(!enemiesInRange.isEmpty()){
+			game.sound("sfx_hit_basic.mp3").play()
+			self.getEnemyWithMaxPath().receiveDamage(power)
+			enemiesInRange.clear()
+		}
 
-		// if(enemiesInRange.size() != null){
-		// 	enemiesInRange.pathPosition().max().receiveDamage(power)
-		// acá debería borrar a todos los enemigos de la cola
-		// enemiesInRange.clear()
-		// }
-		
 		//status= "attacking"
 	}
 }
