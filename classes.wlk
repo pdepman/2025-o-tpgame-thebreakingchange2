@@ -16,6 +16,7 @@ class BasicEnemy {
 	method image() = image
 	
 	method position() = position
+	method pathPosition() = pathPosition 
 	
 	method goForward() {
 		pathPosition = path.length().min(pathPosition + speed)
@@ -73,10 +74,12 @@ class Tower {
 
 	method doAttack(enemy) {
 		game.sound("sfx_hit_basic.mp3").play()
-		enemy.receiveDamage(100)
+		enemy.receiveDamage(power)
 
 		// if(enemiesInRange.size() != null){
 		// 	enemiesInRange.pathPosition().max().receiveDamage(power)
+		// acá debería borrar a todos los enemigos de la cola
+		// enemiesInRange.clear()
 		// }
 		
 		//status= "attacking"
