@@ -71,9 +71,15 @@ class Tower {
 	}
 
 	method doAttack(enemy) {
-		if(enemiesInRange.size() != null){
-			enemiesInRange.pathPosition().max().receiveDamage(power)
+		console.println(position.distance(enemy.position()).truncate(0))
+		if (position.distance(enemy.position()) <= range) {
+			game.sound("sfx_hit_basic.mp3").play()
+			enemy.receiveDamage(100)
 		}
+		
+		// if(enemiesInRange.size() != null){
+		// 	enemiesInRange.pathPosition().max().receiveDamage(power)
+		// }
 		
 		//status= "attacking"
 	}
