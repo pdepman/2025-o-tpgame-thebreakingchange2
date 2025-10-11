@@ -115,7 +115,10 @@ class BasicPlayer {
 class Stage {
 	const path
 	const core
+	const rounds
 	var resources
+	var roundIndex = 0
+
 
 	method load() {
 		path.beDisplayed()
@@ -146,10 +149,15 @@ class Stage {
 
 	method resources() = resources
 
-	// method startNextRound() {
-	// 	currentRoundIndex += 1
-	// 	rounds.get(currentRoundIndex).start()
-	// }	
+	method currentRound() = rounds.get(roundIndex)
+
+	method startCurrentRound() {
+		self.currentRound().start()
+	}
+
+	method advanceRoundIndex() {
+		roundIndex += 1
+	}
 
 	// method addTower(tower) {
 	// 	towers.add(tower)
@@ -194,3 +202,24 @@ class Core {
 	}
 }
 
+class Round {
+	const enemies
+	const resourcesReward
+	var enemiesIndex = 0
+	const tickId = "round-" + self.identity() + "control"
+
+	method resourcesReward() = resourcesReward
+
+	method start() {
+		game.onTick(1000, tickId, { self.spawnNextEnemy() })
+	}
+	method spawnNextEnemy() {
+		self.nextEnemy().spawn()
+		self.advanceEnemiesIndex()
+	}
+	method nextEnemy() = enemies.get(enemiesIndex)
+	method advanceEnemiesIndex() { enemiesIndex += 1 }
+	method end() {
+		game.removeTickEvent(tickId)
+	}
+}
