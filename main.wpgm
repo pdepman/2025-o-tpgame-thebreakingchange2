@@ -28,7 +28,8 @@ program TowerDefenseGame {
 	keyboard.num1().onPressDo({player.addBasicTower()})
 	keyboard.num2().onPressDo({player.addPiercingTower()})
 	keyboard.num3().onPressDo({player.addSlowingTower()})
-	keyboard.k().onPressDo({player.towers().get(0).doAttack(enemy)})
+	keyboard.k().onPressDo({player.towers().get(0).detectEnemies(enemy)})
+	//keyboard.k().onPressDo({player.towers().get(0).doAttack(enemy)})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
 

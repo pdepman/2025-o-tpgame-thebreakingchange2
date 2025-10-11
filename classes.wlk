@@ -42,10 +42,10 @@ class BasicEnemy {
 	}
 }
 
-//atacar a punto fijo
-/*atacar a bichos (primero escanea, ve enemigos en su rango, de todos los que está en su rango ataca
-al que más avanzado está en el PATH)
-FUNCIÓN PARA VER LA DISTANCIA ENTRE COSAS, CHECK WOLLOK GAME*/
+
+//Detecta a un enemigo en el rango y lo encola (hay que ver que detecte a más de uno)
+//Dispara al enemigo en el rango (hay que sacarlo de la cola y se vuelva a encolar en la prox detección)
+//Finalmente el objetivo es cumplir con que ataque al enemigo que esté más avanzado en el PATH
 
 class Tower {
 	var property position
@@ -63,20 +63,18 @@ class Tower {
 	}
 
 	method detectEnemies(enemy) {
-		console.println(enemy.position())
+		//console.println(position.distance(enemy.position()).truncate(0))
 		if (position.distance(enemy.position()) <= range) {
 			enemiesInRange.add(enemy)
-			self.doAttack(enemy)
+			console.println(enemiesInRange.size())
+			self.doAttack(enemiesInRange.get(0))
 		}
 	}
 
 	method doAttack(enemy) {
-		console.println(position.distance(enemy.position()).truncate(0))
-		if (position.distance(enemy.position()) <= range) {
-			game.sound("sfx_hit_basic.mp3").play()
-			enemy.receiveDamage(100)
-		}
-		
+		game.sound("sfx_hit_basic.mp3").play()
+		enemy.receiveDamage(100)
+
 		// if(enemiesInRange.size() != null){
 		// 	enemiesInRange.pathPosition().max().receiveDamage(power)
 		// }
