@@ -35,18 +35,13 @@ class BasicEnemy {
 	
 	method receiveDamage(damage) {
 		hp -= damage
-		image = "enemy_armored.png"
+		image = "enemy_basic_attacked.png"
 	}
 	
 	method attack() {
 		
 	}
 }
-
-
-//Detecta a un enemigo en el rango y lo encola (hay que ver que detecte a más de uno)
-//Dispara al enemigo en el rango (hay que sacarlo de la cola y se vuelva a encolar en la prox detección)
-//Finalmente el objetivo es cumplir con que ataque al enemigo que esté más avanzado en el PATH
 
 class Tower {
 	var property position
@@ -60,33 +55,24 @@ class Tower {
 	method show() {
 		game.addVisual(self)
 		game.sound("sfx_tower_spawn.mp3").play()
-		//status = "idle"
+	}
+	method attackEnemy(enemies) {
+		var target = self.detectEnemyToAttack(enemies)
+		self.doAttack(target)
+		//self.doAttack(self.detectEnemyToAttack(enemies))
 	}
 
-	method detectEnemies(enemies) {
-		enemies.forEach({enemy =>
-			if (position.distance(enemy.position()) <= range) {
-					enemiesInRange.add(enemy)
-					console.println(enemiesInRange.size())
-				}
-		})	
-		//Diría que con un map o filter tmb saldría
-		self.doAttack()
+	method detectEnemyToAttack(enemies) {
+		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range }) 
+		return enemiesFiltered
+			.fold(enemiesFiltered.get(0), { enemyWithMaxPath, otherEenemy =>
+				if (otherEenemy.pathPosition() > enemyWithMaxPath.pathPosition()) otherEenemy else enemyWithMaxPath
+			})
 	}
 
-	method getEnemyWithMaxPath() {
-		var maxPath = enemiesInRange.map({e => e.pathPosition()}).max()
-		return enemiesInRange.find({e => e.pathPosition() == maxPath})
-	}
-
-	method doAttack() {
-		if(!enemiesInRange.isEmpty()){
+	method doAttack(enemy) {
 			game.sound("sfx_hit_basic.mp3").play()
-			self.getEnemyWithMaxPath().receiveDamage(power)
-			enemiesInRange.clear()
-		}
-
-		//status= "attacking"
+			enemy.receiveDamage(power)
 	}
 }
 class BasicTower inherits Tower{
@@ -142,6 +128,8 @@ class BasicPlayer {
 		)
 		towers.last().show()
 	}
+
+	method towersIsEmpty() = towers.isEmpty()
 }
 
 class Stage {

@@ -39,10 +39,14 @@ program TowerDefenseGame {
 	keyboard.num1().onPressDo({player.addBasicTower()})
 	keyboard.num2().onPressDo({player.addPiercingTower()})
 	keyboard.num3().onPressDo({player.addSlowingTower()})
-	keyboard.k().onPressDo({player.towers().get(0).detectEnemies(enemies)})
-	//keyboard.k().onPressDo({player.towers().get(0).doAttack(enemy)})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
+
+	//OnTick de la torre
+	game.onTick(900, "attackEnemy", {
+		if(!player.towersIsEmpty()){
+			player.towers().get(0).attackEnemy(enemies)
+		}})
 
 	keyboard.a().onPressDo({stage_0.addResources(10)})
 	keyboard.s().onPressDo({stage_0.substractResources(10)})
