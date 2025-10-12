@@ -5,7 +5,6 @@ import stage_0.*
 program TowerDefenseGame {
 
 	tdGame.start()
-	
 
 	tdGame.selectStage(0)
 	tdGame.loadStage()
@@ -45,7 +44,7 @@ program TowerDefenseGame {
 	//OnTick de la torre
 	game.onTick(900, "attackEnemy", {
 		if(!player.towersIsEmpty()){
-			player.towers().get(0).attackEnemy(enemies)
+			player.towers().forEach({ tower => tower.attackEnemy(enemies)})
 		}})
 
 	keyboard.a().onPressDo({stage_0.addResources(10)})

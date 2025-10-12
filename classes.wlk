@@ -35,6 +35,7 @@ class BasicEnemy {
 	
 	method receiveDamage(damage) {
 		hp -= damage
+		game.sound("sfx_hit_basic.mp3").play()
 		image = "enemy_basic_attacked.png"
 	}
 	
@@ -77,7 +78,6 @@ class Tower {
 	}
 
 	method doAttack(enemy) {
-			game.sound("sfx_hit_basic.mp3").play()
 			enemy.receiveDamage(power)
 	}
 }
