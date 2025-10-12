@@ -57,13 +57,19 @@ class Tower {
 		game.sound("sfx_tower_spawn.mp3").play()
 	}
 	method attackEnemy(enemies) {
-		var target = self.detectEnemyToAttack(enemies)
-		self.doAttack(target)
-		//self.doAttack(self.detectEnemyToAttack(enemies))
+			var target = self.detectEnemyToAttack(enemies)
+			if(target!=null){
+				self.doAttack(target)
+			}
+			
+		
 	}
 
 	method detectEnemyToAttack(enemies) {
 		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range }) 
+		if(enemiesFiltered.isEmpty()){
+			return null
+		}
 		return enemiesFiltered
 			.fold(enemiesFiltered.get(0), { enemyWithMaxPath, otherEenemy =>
 				if (otherEenemy.pathPosition() > enemyWithMaxPath.pathPosition()) otherEenemy else enemyWithMaxPath
