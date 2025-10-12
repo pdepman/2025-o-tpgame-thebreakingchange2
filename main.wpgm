@@ -43,6 +43,8 @@ program TowerDefenseGame {
 	game.addVisual(enemy2)
 	game.addVisual(enemy3)
 	keyboard.p().onPressDo({game.onTick(500, "moveEnemy", {enemy.goForward()})})
+	keyboard.p().onPressDo({game.onTick(600, "moveEnemy", {enemy2.goForward()})})
+	keyboard.p().onPressDo({game.onTick(700, "moveEnemy", {enemy3.goForward()})})
 	keyboard.t().onPressDo({player.addBasicTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
