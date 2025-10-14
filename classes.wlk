@@ -175,6 +175,50 @@ class SlowingAtacck {
 	method damage(tower) = tower.power() * 0.5
 }
 
+/*
+Se revisará cuando el branch de enemy 
+ class ArmoredEnemy inherits Enemy {
+	const tick_id = "enemy_movement" + self.identity()
+	method spawn(){
+		addvisual(self)
+		game.tick(1000, "enemy_movement" + self.identity() , self.goForward())
+	}
+
+
+	method receiveAttack(attack) {
+		if (attack.isPiercing()) {
+			self.receiveDamage(attack.damage())
+		}
+	}
+
+	method receiveDamage(amount)
+} */
+
+
+
+class BasicTower inherits Tower{
+	override method image() = "tower_basic.png"
+
+	method doAttack(enemy) {
+		enemy.receiveAttack(self)	
+	}
+}
+
+
+class PiercingTower inherits Tower{
+	method doAttack(enemy) {
+	enemy.receiveDamage(power)
+	}
+	override method image() = "tower_piercing.png"
+}
+
+class SlowingTower inherits Tower{
+	method doAttack(enemy) {
+	enemy.receiveDamage(power)
+	}
+	override method image() = "tower_slowing.png"
+}
+
 class BasicPlayer {
 	var property towers = []
 	var property position
@@ -184,6 +228,7 @@ class BasicPlayer {
 	method addBasicTower() {
 		towers.add(
 			new BasicTower(
+				attack = 10,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
@@ -196,6 +241,7 @@ class BasicPlayer {
 	method addPiercingTower() {
 		towers.add(
 			new PiercingTower(
+				attack = 10,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
@@ -208,6 +254,7 @@ class BasicPlayer {
 	method addSlowingTower() {
 		towers.add(
 			new SlowingTower(
+				attack = 10,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
@@ -216,6 +263,8 @@ class BasicPlayer {
 		)
 		towers.last().show()
 	}
+
+	method towersIsEmpty() = towers.isEmpty()
 }
 
 class Stage {
