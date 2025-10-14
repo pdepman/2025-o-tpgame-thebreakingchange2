@@ -151,3 +151,17 @@ const placeHolderStage = new Stage(
   core = new Core(position = game.start(), hp = 100),
   resources = 100
 )
+
+object enemiesRegistry {
+    var enemies = []
+
+    method add(e) {
+        enemies.add(e)
+    }
+
+    method remove(e) {
+        enemies.remove(e)
+    }
+
+    method all() = enemies
+}

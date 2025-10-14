@@ -1,3 +1,4 @@
+import objects.*
 class HudTile {
 	var property position
 	const hudPosition
@@ -5,39 +6,109 @@ class HudTile {
 	method image() = "hud_bg_"+ hudPosition +".png"
 }
 
-class BasicEnemy {
-	var pathPosition = 0
-	var property position
-	const path
-	var hp
-	var power
-	var speed
-	
-	method image() = "enemy_basic.png"
-	
-	method goForward() {
-		pathPosition = path.length().min(pathPosition + speed)
-		position = path.roadAt(pathPosition).position()
-	}
-	
-	method damage(structure) {
-		structure.receiveDamage(power)
-		self.disappear()
-	}
-	
-	method disappear() {
-		game.removeVisual(self)
-		game.removeTickEvent("moveEnemy")
-	}
-	
-	method receiveDamage(damage) {
-		hp -= damage
-	}
-	
-	method attack() {
-		
-	}
+class Enemy {
+    var pathPosition = 0
+    var property position
+    const path
+    var hp
+    var power
+    var speed
+	const tickName = "moveEnemy_" + self.identity()
+
+    method spawn() {
+		enemiesRegistry.add(self)
+        game.addVisual(self)
+        game.onTick(speed * 1000, tickName, { self.goForward() })
+    }
+
+    method despawn() {
+		enemiesRegistry.remove(self)
+    	game.removeVisual(self)
+    	game.removeTickEvent(tickName)   // <--- uso la variable que ya definimos en spawn()
 }
+
+    method goForward() {
+        pathPosition = path.length().min(pathPosition + 1)
+        position = path.roadAt(pathPosition).position()
+
+        // Si llegó al final, hace daño al core
+        if (pathPosition == path.length() - 1) {
+            self.doDamage(path.core())
+        }
+    }
+
+    method doDamage(core) {
+        core.receiveDamage(power)
+        self.despawn()
+    }
+
+	method receiveDamage(amount) {
+		hp -= amount
+	}
+
+    method receiveAttack(attack)
+
+	method beSlowed(){
+		speed = (speed / 2).max(0)
+	}
+
+    method image()
+}
+
+class BasicEnemy inherits Enemy {
+    override method image() = "enemy_basic.png"
+    
+    override method receiveDamage(attack)  {
+        self.receiveDamage(attack.damage())
+        if (attack.isSlowing()) {
+            self.beSlowed()
+        }
+        if (hp <= 0) self.despawn()
+    }
+}
+
+class ArmoredEnemy inherits Enemy {
+    override method image() = "enemy_armored.png"
+
+    override method receiveDamage(attack) {
+        if (attack.isPiercing()){
+			self.receiveDamage(attack.damage())
+		}
+        if (attack.isSlowing()) {
+            self.beSlowed()
+        }
+        if (hp <= 0) self.despawn()
+    }
+}
+
+class ExplosiveEnemy inherits Enemy {
+    
+	var radius = 2
+	
+    override method receiveDamage(attack)  {
+        self.receiveDamage(attack.damage())
+        if (attack.isSlowing()) {
+            self.beSlowed()
+        }
+        if (hp <= 0){
+			if (attack.isPiercing()){
+				self.blowUp()
+			} else {
+				self.despawn()		
+			}
+		} 
+    }
+
+    method blowUp() {
+        enemiesRegistry.all()
+            .filter({ e => e != self && position.distance(e.position()) <= radius })
+            .forEach({ e => e.receiveDamage(power) })
+
+        self.despawn()
+    }
+
+}
+
 
 //atacar a punto fijo
 /*atacar a bichos (primero escanea, ve enemigos en su rango, de todos los que está en su rango ataca
@@ -49,24 +120,59 @@ class Tower {
 	var power
 	var attackSpeed
 	var range
-	
+	var enemiesInRange = []
+	var attack
+
 	method image()
 	
 	method show() {
 		game.addVisual(self)
 		game.sound("sfx_tower_spawn.mp3").play()
 	}
-}
-class BasicTower inherits Tower{
-	override method image() = "tower_basic.png"
+	method attackEnemy(enemies) {
+			var target = self.detectEnemyToAttack(enemies)
+			if(target!=null){
+				self.doAttack(target)
+			}
+	}
+
+	method detectEnemyToAttack(enemies) {
+		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range }) 
+		if(enemiesFiltered.isEmpty()){
+			return null
+		}
+		return enemiesFiltered
+			.fold(enemiesFiltered.get(0), { enemyWithMaxPath, otherEenemy =>
+				if (otherEenemy.pathPosition() > enemyWithMaxPath.pathPosition()) otherEenemy else enemyWithMaxPath
+			})
+	}
+
+	method doAttack(enemy) {
+	enemy.receiveAttack(attack)
+	}
+
 }
 
-class PiercingTower inherits Tower{
-	override method image() = "tower_piercing.png"
+
+class BasicAttack {
+	const tower
+
+	method isPiercing() = false
+	method isSlowing() = false
+
+	method damage() = tower.power()
 }
 
-class SlowingTower inherits Tower{
-	override method image() = "tower_slowing.png"
+class PiercingAttack {
+	method isPiercing() = true
+	method isSlowing() = false
+}
+
+class SlowingAtacck {
+	method isPiercing() = false
+	method isSlowing() = true
+
+	method damage(tower) = tower.power() * 0.5
 }
 
 class BasicPlayer {
