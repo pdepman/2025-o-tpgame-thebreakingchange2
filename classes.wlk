@@ -13,18 +13,12 @@ class Enemy {
     var hp
     var power
     var speed
-	var tickName
+	const tickName = "moveEnemy_" + self.identity()
 
     method spawn() {
 		enemiesRegistry.add(self)
-        tickName = "moveEnemy_" + self.identity()
         game.addVisual(self)
-        // El bloque llama al método forwardTick
-        game.onTick(speed, tickName, { self.forwardTick() })
-    }
-
-	 method forwardTick() {
-        self.goForward()
+        game.onTick(speed * 1000, tickName, { self.goForward() })
     }
 
     method despawn() {
@@ -48,15 +42,15 @@ class Enemy {
         self.despawn()
     }
 
-    method receiveDamage(attack) {
-        // Por defecto todos los ataques hacen daño
-        hp -= attack.damage()
-        if (attack.isSlowing()) {
-            speed = (speed / 2).max(0)
-            if (speed <= 0) self.despawn()
-        }
-        if (hp <= 0) self.despawn()
-    }
+	method receiveDamage(amount) {
+		hp -= amount
+	}
+
+    method receiveAttack(attack)
+
+	method beSlowed(){
+		speed = (speed / 2).max(0)
+	}
 
     method image()
 }
@@ -64,12 +58,10 @@ class Enemy {
 class BasicEnemy inherits Enemy {
     override method image() = "enemy_basic.png"
     
-    override method receiveDamage(attack) {
-        // Todos los ataques hacen daño normal
-        hp -= attack.damage()
+    override method receiveDamage(attack)  {
+        self.receiveDamage(attack.damage())
         if (attack.isSlowing()) {
-            speed = (speed / 2).max(0)
-            if (speed <= 0) self.despawn()
+            self.beSlowed()
         }
         if (hp <= 0) self.despawn()
     }
@@ -79,16 +71,13 @@ class ArmoredEnemy inherits Enemy {
     override method image() = "enemy_armored.png"
 
     override method receiveDamage(attack) {
-        // Solo recibe daño si el ataque es piercing
-        if (attack.isPiercing()) {
-            hp -= attack.damage()
-            if (hp <= 0) self.despawn()
-        }
-        // Slowing aplica igual
+        if (attack.isPiercing()){
+			self.receiveDamage(attack.damage())
+		}
         if (attack.isSlowing()) {
-            speed = (speed / 2).max(0)
-            if (speed <= 0) self.despawn()
+            self.beSlowed()
         }
+        if (hp <= 0) self.despawn()
     }
 }
 
@@ -96,11 +85,18 @@ class ExplosiveEnemy inherits Enemy {
     
 	var radius = 2
 	
-    override method receiveDamage(attack) {
-        hp -= attack.damage()
-        if (hp <= 0) {
-            self.blowUp()
+    override method receiveDamage(attack)  {
+        self.receiveDamage(attack.damage())
+        if (attack.isSlowing()) {
+            self.beSlowed()
         }
+        if (hp <= 0){
+			if (attack.isPiercing()){
+				self.blowUp()
+			} else {
+				self.despawn()		
+			}
+		} 
     }
 
     method blowUp() {
