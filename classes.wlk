@@ -44,13 +44,22 @@ class Enemy {
 
 	method receiveDamage(amount) {
 		hp -= amount
+		if (self.isDead()){
+			self.despawn()
+		} 
 	}
 
-    method receiveAttack(attack)
+    method receiveBasicAttack(damage)
+
+	method receivePiercingAttack(damage)
+
+	method receiveSlowingAttack(damage)
 
 	method beSlowed(){
 		speed = (speed / 2).max(0)
 	}
+
+	method isDead() = hp <= 0
 
     method image()
 }
@@ -58,52 +67,60 @@ class Enemy {
 class BasicEnemy inherits Enemy {
     override method image() = "enemy_basic.png"
     
-    override method receiveDamage(attack)  {
-        self.receiveDamage(attack.damage())
-        if (attack.isSlowing()) {
-            self.beSlowed()
-        }
-        if (hp <= 0) self.despawn()
-    }
+    override method receiveBasicAttack(damage){
+		self.receiveDamage(damage)
+	}
+
+	override method receivePiercingAttack(damage){
+		self.receiveDamage(damage)
+	}
+
+	override method receiveSlowingAttack(damage){
+		self.receiveDamage(damage)
+		self.beSlowed()
+	}
 }
 
 class ArmoredEnemy inherits Enemy {
     override method image() = "enemy_armored.png"
 
-    override method receiveDamage(attack) {
-        if (attack.isPiercing()){
-			self.receiveDamage(attack.damage())
-		}
-        if (attack.isSlowing()) {
-            self.beSlowed()
-        }
-        if (hp <= 0) self.despawn()
-    }
+	    override method receiveBasicAttack(damage){
+		self.receiveDamage(0)
+	}
+
+	override method receivePiercingAttack(damage){
+		self.receiveDamage(damage)
+	}
+
+	override method receiveSlowingAttack(damage){
+		self.receiveDamage(0)
+		self.beSlowed()
+	}
 }
 
 class ExplosiveEnemy inherits Enemy {
-    
-	var radius = 2
+	const radius = 2
 	
-    override method receiveDamage(attack)  {
-        self.receiveDamage(attack.damage())
-        if (attack.isSlowing()) {
-            self.beSlowed()
-        }
-        if (hp <= 0){
-			if (attack.isPiercing()){
-				self.blowUp()
-			} else {
-				self.despawn()		
-			}
-		} 
-    }
+    override method receiveBasicAttack(damage){
+		self.receiveDamage(damage)
+	}
+
+	override method receivePiercingAttack(damage){
+		self.receiveDamage(damage)
+		if (self.isDead()){
+			self.blowUp()
+		}
+	}
+
+	override method receiveSlowingAttack(damage){
+		self.receiveDamage(damage)
+		self.beSlowed()
+	}
 
     method blowUp() {
         enemiesRegistry.all()
             .filter({ e => e != self && position.distance(e.position()) <= radius })
             .forEach({ e => e.receiveDamage(power) })
-
         self.despawn()
     }
 
@@ -132,7 +149,7 @@ class Tower {
 	method attackEnemy(enemies) {
 			var target = self.detectEnemyToAttack(enemies)
 			if(target!=null){
-				self.doAttack(target)
+				attack.doAttack(self, target)
 			}
 	}
 
@@ -147,75 +164,36 @@ class Tower {
 			})
 	}
 
-	method doAttack(enemy) {
-	enemy.receiveAttack(attack)
-	}
-
 }
 
-
 class BasicAttack {
-	const tower
-
-	method isPiercing() = false
-	method isSlowing() = false
-
-	method damage() = tower.power()
+	method doAttack(damage, enemy){
+		enemy.receiveBasicAttack(damage)
+	}
 }
 
 class PiercingAttack {
-	method isPiercing() = true
-	method isSlowing() = false
+	method doAttack(damage, enemy){
+		enemy.receivePiercingAttack(damage)
+	}
 }
 
-class SlowingAtacck {
-	method isPiercing() = false
-	method isSlowing() = true
-
-	method damage(tower) = tower.power() * 0.5
+class SlowingAttack {
+	method doAttack(damage, enemy) {
+		enemy.receiveSlowingAttack(damage)
+	} 
 }
 
-/*
-Se revisará cuando el branch de enemy 
- class ArmoredEnemy inherits Enemy {
-	const tick_id = "enemy_movement" + self.identity()
-	method spawn(){
-		addvisual(self)
-		game.tick(1000, "enemy_movement" + self.identity() , self.goForward())
-	}
 
-
-	method receiveAttack(attack) {
-		if (attack.isPiercing()) {
-			self.receiveDamage(attack.damage())
-		}
-	}
-
-	method receiveDamage(amount)
-} */
-
-
-
-class BasicTower inherits Tower{
+class BasicTower inherits Tower {
 	override method image() = "tower_basic.png"
-
-	method doAttack(enemy) {
-		enemy.receiveAttack(self)	
-	}
 }
 
-
-class PiercingTower inherits Tower{
-	method doAttack(enemy) {
-	enemy.receiveDamage(power)
-	}
+class PiercingTower inherits Tower {
 	override method image() = "tower_piercing.png"
 }
 
-class SlowingTower inherits Tower{
-	method doAttack(enemy) {
-	enemy.receiveDamage(power)
-	}
+class SlowingTower inherits Tower {
 	override method image() = "tower_slowing.png"
 }
 
