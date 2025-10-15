@@ -31,9 +31,7 @@ object tdGame {
 
 object hud {
   const hudTiles = []
-  
-  //const roundVisualizer
-  //const hpVisualizer
+
   method setupHudTiles() {
     hudTiles.add(
       new HudTile(position = game.at(18, 0), hudPosition = "bottom_left")
@@ -90,6 +88,7 @@ object hud {
 object resourcesVisualizer {
   const property position = game.at(21, 11)
   
+  // Descoplar de tdGame con un atributo currentStage en el objeto hud? 
   method text() = tdGame.currentStage().resources().toString()
   
   method textColor() = "FFFFFFFF"
