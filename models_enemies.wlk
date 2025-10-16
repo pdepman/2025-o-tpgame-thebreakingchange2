@@ -62,9 +62,9 @@ class Enemy {
 	}
 
     method die() {
+        hp = 0
         tdGame.currentStage().currentRound().discountEnemy()
         self.despawn()
-
     }
 
 	method isDead() = hp <= 0
@@ -125,11 +125,11 @@ class ExplosiveEnemy inherits Enemy {
 	}
 
     method blowUp() {
-        hp = 0
         enemiesRegistry.all()
             .filter({ e => e != self && position.distance(e.position()) <= radius })
             .forEach({ e => e.receiveDamage(power) })
-        self.despawn()
+        
+        self.die()
     }
 
 }

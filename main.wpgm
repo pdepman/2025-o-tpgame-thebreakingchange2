@@ -28,4 +28,4 @@ program TowerDefenseGame {
 	keyboard.a().onPressDo({stage_0.addResources(10)})
 	keyboard.s().onPressDo({stage_0.substractResources(10)})
 	keyboard.d().onPressDo({stage_0.core().receiveDamage(10)})
-}	
+}

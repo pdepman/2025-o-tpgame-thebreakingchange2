@@ -162,6 +162,10 @@ const enemyInRangeFirst = new BasicEnemy(
     assert.equals([enemyInRange], basicTower.enemiesInRange([enemyInRange, enemyOutsideRange]))
   }
 
+  test "Si no hay enemigos en rango el enemigo a atacar es null" {
+    assert.equals(null, basicTower.enemyToAttack([]))
+  }
+
   test "El enemigo a ser atacado por una torre es el enemigo en rango mas avanzado en el path" {
     assert.equals(enemyInRangeFirst, basicTower.enemyToAttack([enemyInRange, enemyOutsideRange, enemyInRangeFirst]))
   }
