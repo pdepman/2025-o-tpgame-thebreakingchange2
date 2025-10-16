@@ -13,32 +13,32 @@ class Tower {
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
-    game.onTick(500, tickId, { self.attackEnemy(self.enemyToAttack()) })
+    game.onTick(
+      500,
+      tickId,
+      { self.attackEnemy(
+          self.enemyToAttack(tdGame.currentStage().currentRound().enemies())
+        ) }
+    )
   }
   
   method attackEnemy(enemy) {
     if (enemy != null) attack.doAttack(power, enemy)
   }
   
-  method enemyToAttack() {
-    const enemiesFiltered = self.enemiesInRange()
-    return enemiesFiltered.fold(
-      enemiesFiltered.get(0),
-      { enemyWithMaxPath, otherEenemy =>
-        if (otherEenemy.pathPosition() > enemyWithMaxPath.pathPosition())
-          otherEenemy
-        else enemyWithMaxPath }
-    )
-  }
+  method enemyToAttack(enemies) = enemies.fold(
+    enemies.get(0),
+    { enemyWithMaxPath, otherEnemy =>
+      if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition())
+        otherEnemy
+      else enemyWithMaxPath }
+  )
   
-  method enemiesInRange() {
-    const enemies = tdGame.currentStage().currentRound().enemies()
-    return enemies.filter(
-      { enemy => (position.distance(
-          enemy.position()
-        ) <= range) && enemy.isDead().negate() }
-    )
-  }
+  method enemiesInRange(enemies) = enemies.filter(
+    { enemy => self.isInRange(enemy) }
+  )
+  
+  method isInRange(enemy) = position.distance(enemy.position()) <= range && enemy.isDead().negate()
 }
 
 object basicAttack {

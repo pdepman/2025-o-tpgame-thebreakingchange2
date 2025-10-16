@@ -64,7 +64,7 @@ describe "Tests de interaccion entre torres y enemigos" {
     slowingTower.attackEnemy(basicEnemy)
     assert.equals(0.5, basicEnemy.speed())
   }
-
+  
   test "Cuando una torre basica ataca a un enemigo blindado este no pierde vida" {
     basicTower.attackEnemy(armoredEnemy)
     assert.equals(100, armoredEnemy.hp())
@@ -80,12 +80,12 @@ describe "Tests de interaccion entre torres y enemigos" {
     assert.equals(100, armoredEnemy.hp())
   }
   
-    test "Cuando una torre ralentizante ataca a un enemigo blindado este reduce su velocidad a la mitad" {
+  test "Cuando una torre ralentizante ataca a un enemigo blindado este reduce su velocidad a la mitad" {
     slowingTower.attackEnemy(armoredEnemy)
     assert.equals(0.5, armoredEnemy.speed())
   }
-
-    test "Cuando una torre basica ataca a un enemigo explosivo este pierde vida igual al poder de la torre" {
+  
+  test "Cuando una torre basica ataca a un enemigo explosivo este pierde vida igual al poder de la torre" {
     basicTower.attackEnemy(explosiveEnemy)
     assert.equals(90, explosiveEnemy.hp())
   }
@@ -100,10 +100,69 @@ describe "Tests de interaccion entre torres y enemigos" {
     assert.equals(90, explosiveEnemy.hp())
   }
   
-    test "Cuando una torre ralentizante ataca a un enemigo explosivo este reduce su velocidad a la mitad" {
+  test "Cuando una torre ralentizante ataca a un enemigo explosivo este reduce su velocidad a la mitad" {
     slowingTower.attackEnemy(explosiveEnemy)
     assert.equals(0.5, explosiveEnemy.speed())
   }
-
 }
 
+describe "Tests de deteccion de las torres" {
+  const basicTower = new BasicTower(
+    attack = slowingAttack,
+    position = game.at(0, 0),
+    power = 10,
+    attackSpeed = 1000,
+    range = 2
+  )
+  const enemyInRange = new BasicEnemy(
+    position = game.at(0, 1),
+    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+const enemyInRangeFirst = new BasicEnemy(
+    position = game.at(0, 1),
+    pathPosition = 100,
+    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+  const enemyOutsideRange = new BasicEnemy(
+    position = game.at(3, 3),
+    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+
+  const enemyInRangeDead = new BasicEnemy(
+    position = game.at(0, 1),
+    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    hp = 0,
+    power = 10,
+    speed = 1
+  )
+  
+  test "Un enemigo ubicado a menos o igual cantidad casilleros del rango de la torre forma parte de sus enemigos en rango" {
+    assert.that(basicTower.isInRange(enemyInRange))
+  }
+
+    test "Un enemigo ubicado a menos o igual cantidad casilleros del rango de la torre pero que esta muerto no forma parte de sus enemigos en rango" {
+    assert.notThat(basicTower.isInRange(enemyInRangeDead))
+  }
+  
+  test "Un enemigo ubicado a mas casilleros del rango de la torre no forma parte de sus enemigos en rango" {
+    assert.notThat(basicTower.isInRange(enemyOutsideRange))
+  }
+  
+
+  test "Solo los enemigos en rango forman parte de los enemigos en rango de una torre" {
+    assert.equals([enemyInRange], basicTower.enemiesInRange([enemyInRange, enemyOutsideRange]))
+  }
+
+  test "El enemigo a ser atacado por una torre es el enemigo en rango mas avanzado en el path" {
+    assert.equals(enemyInRangeFirst, basicTower.enemyToAttack([enemyInRange, enemyOutsideRange, enemyInRangeFirst]))
+  }
+}
