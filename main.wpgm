@@ -16,7 +16,7 @@ program TowerDefenseGame {
 	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
 	keyboard.num1().onPressDo({player.addBasicTower()})
-	keyboard.num2().onPressDo({player.addPiercingTower()})1
+	keyboard.num2().onPressDo({player.addPiercingTower()})
 	keyboard.num3().onPressDo({player.addSlowingTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})

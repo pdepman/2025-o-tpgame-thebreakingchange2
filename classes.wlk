@@ -46,7 +46,7 @@ class Enemy {
 
 	method receiveDamage(amount) {
 		hp -= amount
-		game.sound("sfx_hit_basic.mp3")
+		game.sound("sfx_hit_basic.mp3").play()
 		if (self.isDead()){
 			self.despawn()
 		} 
@@ -59,7 +59,7 @@ class Enemy {
 	method receiveSlowingAttack(damage)
 
 	method beSlowed(){
-		game.sound("sfx_hit_slowing.wav")
+		game.sound("sfx_hit_slowing.wav").play()
 		speed = (speed / 2).max(0)
 	}
 
@@ -89,7 +89,7 @@ class ArmoredEnemy inherits Enemy {
     override method image() = "enemy_armored.png"
 
 	    override method receiveBasicAttack(damage){
-		game.sound("sfx_hit_resisted.wav")
+		game.sound("sfx_hit_resisted.wav").play()
 	}
 
 	override method receivePiercingAttack(damage){
@@ -165,7 +165,7 @@ class Tower {
 
 	method detectEnemyToAttack() {
 		var enemies = tdGame.currentStage().currentRound().enemies()
-		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range }) 
+		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range && enemy.isDead().negate() }) 
 		if(enemiesFiltered.isEmpty()){
 			return null
 		}
