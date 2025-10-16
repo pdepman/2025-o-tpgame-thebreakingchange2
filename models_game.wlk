@@ -1,3 +1,4 @@
+import models_hud.gameOverScreen
 import stage_0.*
 import models_towers.*
 
@@ -123,9 +124,17 @@ class Stage {
 		roundIndex += 1
 	}
 
-	// method addTower(tower) {
-	// 	towers.add(tower)
-	// }
+    method win(){
+        gameOverScreen.beDisplayed()
+    }
+
+    method completeRound() {
+      if (self.isComplete()){
+        self.win()
+      } else {
+        self.advanceRoundIndex()
+      }
+    }
 
     method isComplete() = rounds.all({round => round.isComplete()})
     
@@ -180,7 +189,7 @@ class Round {
 	method resourcesReward() = resourcesReward
 
     method enemiesRemaining() = enemiesRemaining
-    
+
 	method start() {
 		game.onTick(2000, tickId, { self.spawnNextEnemy() })
 	}
@@ -194,10 +203,14 @@ class Round {
 	method advanceEnemiesIndex() { enemiesIndex += 1 }
 	method end() {
 		game.removeTickEvent(tickId)
+        tdGame.currentStage().completeRound()
 	}
 
     method discountEnemy() {
         enemiesRemaining -= 1
+        if (self.isComplete()){
+            self.end()
+        }
     }
 
     method isComplete() = enemiesRemaining == 0
