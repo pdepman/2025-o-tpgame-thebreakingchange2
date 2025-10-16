@@ -1,0 +1,109 @@
+import models_enemies.*
+import models_towers.*
+
+describe "Tests de interaccion entre torres y enemigos" {
+  const basicTower = new BasicTower(
+    attack = slowingAttack,
+    position = game.origin(),
+    power = 10,
+    attackSpeed = 1000,
+    range = 2
+  )
+  const piercingTower = new PiercingTower(
+    attack = piercingAttack,
+    position = game.origin(),
+    power = 10,
+    attackSpeed = 1000,
+    range = 2
+  )
+  const slowingTower = new SlowingTower(
+    attack = slowingAttack,
+    position = game.origin(),
+    power = 10,
+    attackSpeed = 1000,
+    range = 2
+  )
+  const basicEnemy = new BasicEnemy(
+    position = game.origin(),
+    path = [],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+  const armoredEnemy = new ArmoredEnemy(
+    position = game.origin(),
+    path = [],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+  const explosiveEnemy = new ExplosiveEnemy(
+    position = game.origin(),
+    path = [],
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+  
+  test "Cuando una torre basica ataca a un enemigo basico este pierde vida igual al poder de la torre" {
+    basicTower.attackEnemy(basicEnemy)
+    assert.equals(90, basicEnemy.hp())
+  }
+  
+  test "Cuando una torre perforante ataca a un enemigo basico este pierde vida igual al poder de la torre" {
+    piercingTower.attackEnemy(basicEnemy)
+    assert.equals(90, basicEnemy.hp())
+  }
+  
+  test "Cuando una torre ralentizante ataca a un enemigo basico este pierde vida igual al poder de la torre" {
+    slowingTower.attackEnemy(basicEnemy)
+    assert.equals(90, basicEnemy.hp())
+  }
+  
+  test "Cuando una torre ralentizante ataca a un enemigo basico este reduce su velocidad a la mitad" {
+    slowingTower.attackEnemy(basicEnemy)
+    assert.equals(0.5, basicEnemy.speed())
+  }
+
+  test "Cuando una torre basica ataca a un enemigo blindado este no pierde vida" {
+    basicTower.attackEnemy(armoredEnemy)
+    assert.equals(100, armoredEnemy.hp())
+  }
+  
+  test "Cuando una torre perforante ataca a un enemigo blindado este pierde vida igual al poder de la torre" {
+    piercingTower.attackEnemy(armoredEnemy)
+    assert.equals(90, armoredEnemy.hp())
+  }
+  
+  test "Cuando una torre ralentizante ataca a un enemigo blindado este no pierde vida" {
+    slowingTower.attackEnemy(armoredEnemy)
+    assert.equals(100, armoredEnemy.hp())
+  }
+  
+    test "Cuando una torre ralentizante ataca a un enemigo blindado este reduce su velocidad a la mitad" {
+    slowingTower.attackEnemy(armoredEnemy)
+    assert.equals(0.5, armoredEnemy.speed())
+  }
+
+    test "Cuando una torre basica ataca a un enemigo explosivo este pierde vida igual al poder de la torre" {
+    basicTower.attackEnemy(explosiveEnemy)
+    assert.equals(90, explosiveEnemy.hp())
+  }
+  
+  test "Cuando una torre perforante ataca a un enemigo explosivo este muere instantaneamente" {
+    piercingTower.attackEnemy(explosiveEnemy)
+    assert.that(explosiveEnemy.isDead())
+  }
+  
+  test "Cuando una torre ralentizante ataca a un enemigo explosivo este pierde vida igual al poder de la torre" {
+    slowingTower.attackEnemy(explosiveEnemy)
+    assert.equals(90, explosiveEnemy.hp())
+  }
+  
+    test "Cuando una torre ralentizante ataca a un enemigo explosivo este reduce su velocidad a la mitad" {
+    slowingTower.attackEnemy(explosiveEnemy)
+    assert.equals(0.5, explosiveEnemy.speed())
+  }
+
+}
+

@@ -1,4 +1,4 @@
-import models_hud.gameOverScreen
+import models_hud.*
 import stage_0.*
 import models_towers.*
 
@@ -125,7 +125,7 @@ class Stage {
 	}
 
     method win(){
-        gameOverScreen.beDisplayed()
+        victoryScreen.beDisplayed()
     }
 
     method completeRound() {

@@ -99,11 +99,12 @@ object hudCoinSymbol {
   method image() = "resource_coin.png"
 }
 
-object gameOverScreen {
+class FancyScreen {
+    
   const property position = game.origin()
   var beingDisplayed = false
   
-  method image() = "screen_gameover.png"
+  method image()
   
   method beDisplayed() {
     game.onTick(500, "gameOverDisplayControl", { self.toggleVisual() })
@@ -123,6 +124,14 @@ object gameOverScreen {
       beingDisplayed = true
     }
   }
+}
+
+object gameOverScreen inherits FancyScreen{
+    override method image() = "screen_gameover.png"
+}
+
+object victoryScreen inherits FancyScreen{
+    override method image() = "screen_victory.png"
 }
 
 object enemiesRemainingVisualizer {

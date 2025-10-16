@@ -11,6 +11,10 @@ class Enemy {
 
 	method pathPosition() = pathPosition
 
+    method hp() = hp
+
+    method speed() = speed
+
     method spawn() {
 		enemiesRegistry.add(self)
         game.addVisual(self)
@@ -112,10 +116,7 @@ class ExplosiveEnemy inherits Enemy {
 	}
 
 	override method receivePiercingAttack(damage){
-		self.receiveDamage(damage)
-		if (self.isDead()){
-			self.blowUp()
-		}
+		self.blowUp()
 	}
 
 	override method receiveSlowingAttack(damage){
@@ -124,6 +125,7 @@ class ExplosiveEnemy inherits Enemy {
 	}
 
     method blowUp() {
+        hp = 0
         enemiesRegistry.all()
             .filter({ e => e != self && position.distance(e.position()) <= radius })
             .forEach({ e => e.receiveDamage(power) })
