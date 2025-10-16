@@ -16,16 +16,13 @@ program TowerDefenseGame {
 	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
 	keyboard.num1().onPressDo({player.addBasicTower()})
-	keyboard.num2().onPressDo({player.addPiercingTower()})
+	keyboard.num2().onPressDo({player.addPiercingTower()})1
 	keyboard.num3().onPressDo({player.addSlowingTower()})
 	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
 	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
 
-	//OnTick de la torre
-	// game.onTick(900, "attackEnemy", {
-	// 	if(!player.towersIsEmpty()){
-	// 		player.towers().forEach({ tower => tower.attackEnemy(enemies)})
-	// 	}})
+	keyboard.q().onPressDo({stage_0.startCurrentRound()})
+	keyboard.w().onPressDo({stage_0.currentRound().end()})
 
 	keyboard.a().onPressDo({stage_0.addResources(10)})
 	keyboard.s().onPressDo({stage_0.substractResources(10)})

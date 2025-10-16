@@ -15,10 +15,12 @@ class Enemy {
     var speed
 	const tickName = "moveEnemy_" + self.identity()
 
+	method pathPosition() = pathPosition
+
     method spawn() {
 		enemiesRegistry.add(self)
         game.addVisual(self)
-        game.onTick(speed * 1000, tickName, { self.goForward() })
+        game.onTick(1000/speed, tickName, { self.goForward() })
     }
 
     method despawn() {
@@ -44,6 +46,7 @@ class Enemy {
 
 	method receiveDamage(amount) {
 		hp -= amount
+		game.sound("sfx_hit_basic.mp3")
 		if (self.isDead()){
 			self.despawn()
 		} 
@@ -56,6 +59,7 @@ class Enemy {
 	method receiveSlowingAttack(damage)
 
 	method beSlowed(){
+		game.sound("sfx_hit_slowing.wav")
 		speed = (speed / 2).max(0)
 	}
 
@@ -85,7 +89,7 @@ class ArmoredEnemy inherits Enemy {
     override method image() = "enemy_armored.png"
 
 	    override method receiveBasicAttack(damage){
-		self.receiveDamage(0)
+		game.sound("sfx_hit_resisted.wav")
 	}
 
 	override method receivePiercingAttack(damage){
@@ -100,6 +104,8 @@ class ArmoredEnemy inherits Enemy {
 
 class ExplosiveEnemy inherits Enemy {
 	const radius = 2
+
+	override method image() = "enemy_explosive.png"
 	
     override method receiveBasicAttack(damage){
 		self.receiveDamage(damage)
@@ -137,23 +143,28 @@ class Tower {
 	var power
 	var attackSpeed
 	var range
-	var enemiesInRange = []
 	var attack
+	const tickId = "towerScan_" + self.identity()
 
 	method image()
 	
-	method show() {
+	method spawn() {
 		game.addVisual(self)
 		game.sound("sfx_tower_spawn.mp3").play()
+		game.onTick(500, tickId, {self.attackEnemy()})
 	}
-	method attackEnemy(enemies) {
-			var target = self.detectEnemyToAttack(enemies)
+
+
+
+	method attackEnemy() {
+			var target = self.detectEnemyToAttack()
 			if(target!=null){
-				attack.doAttack(self, target)
+				attack.doAttack(power, target)
 			}
 	}
 
-	method detectEnemyToAttack(enemies) {
+	method detectEnemyToAttack() {
+		var enemies = tdGame.currentStage().currentRound().enemies()
 		var enemiesFiltered = enemies.filter({ enemy => position.distance(enemy.position()) <= range }) 
 		if(enemiesFiltered.isEmpty()){
 			return null
@@ -166,19 +177,19 @@ class Tower {
 
 }
 
-class BasicAttack {
+object basicAttack {
 	method doAttack(damage, enemy){
 		enemy.receiveBasicAttack(damage)
 	}
 }
 
-class PiercingAttack {
+object piercingAttack {
 	method doAttack(damage, enemy){
 		enemy.receivePiercingAttack(damage)
 	}
 }
 
-class SlowingAttack {
+object slowingAttack {
 	method doAttack(damage, enemy) {
 		enemy.receiveSlowingAttack(damage)
 	} 
@@ -206,40 +217,40 @@ class BasicPlayer {
 	method addBasicTower() {
 		towers.add(
 			new BasicTower(
-				attack = 10,
+				attack = basicAttack,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
 				range = 2
 			)
 		)
-		towers.last().show()
+		towers.last().spawn()
 	}
 
 	method addPiercingTower() {
 		towers.add(
 			new PiercingTower(
-				attack = 10,
+				attack = piercingAttack,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
 				range = 2
 			)
 		)
-		towers.last().show()
+		towers.last().spawn()
 	}
 
 	method addSlowingTower() {
 		towers.add(
 			new SlowingTower(
-				attack = 10,
+				attack = slowingAttack,
 				position = position,
 				power = 10,
 				attackSpeed = 1000,
 				range = 2
 			)
 		)
-		towers.last().show()
+		towers.last().spawn()
 	}
 
 	method towersIsEmpty() = towers.isEmpty()
@@ -341,14 +352,18 @@ class Round {
 	var enemiesIndex = 0
 	const tickId = "round-" + self.identity() + "control"
 
+	method enemies() = enemies
+
 	method resourcesReward() = resourcesReward
 
 	method start() {
-		game.onTick(1000, tickId, { self.spawnNextEnemy() })
+		game.onTick(2000, tickId, { self.spawnNextEnemy() })
 	}
 	method spawnNextEnemy() {
-		self.nextEnemy().spawn()
-		self.advanceEnemiesIndex()
+		if (enemiesIndex < enemies.size()) {
+			self.nextEnemy().spawn()
+			self.advanceEnemiesIndex()
+		}
 	}
 	method nextEnemy() = enemies.get(enemiesIndex)
 	method advanceEnemiesIndex() { enemiesIndex += 1 }

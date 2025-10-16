@@ -148,7 +148,8 @@ object gameOverScreen {
 const placeHolderStage = new Stage(
   path = new Path(roads = []),
   core = new Core(position = game.start(), hp = 100),
-  resources = 100
+  resources = 100,
+  rounds = []
 )
 
 object enemiesRegistry {

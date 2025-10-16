@@ -1,6 +1,6 @@
 import classes.*
 
-const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100)
+const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100, rounds = [round_0] )
 
 // Path Configuration
 const stage_0_path = new Path(roads = [
@@ -107,3 +107,11 @@ new Road(position = game.at(15, 11))
 ]) 
 
 const stage_0_core = new Core(position = game.at(15,11), hp = 100)
+
+const round_0 = new Round(enemies = [
+    new BasicEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 1),
+    new BasicEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 1.5),
+    new ArmoredEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 0.5),
+    new ExplosiveEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 1)
+], resourcesReward = 1000)
+
