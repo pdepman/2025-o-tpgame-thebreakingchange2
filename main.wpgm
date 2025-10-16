@@ -1,7 +1,8 @@
 import wollok.game.*
-import objects.*
-import classes.*
 import stage_0.*
+import models_game.*
+import models_hud.*
+
 program TowerDefenseGame {
 
 	tdGame.start()

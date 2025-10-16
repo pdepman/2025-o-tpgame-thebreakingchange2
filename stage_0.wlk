@@ -1,4 +1,5 @@
-import classes.*
+import models_game.*
+import models_enemies.*
 
 const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100, rounds = [round_0] )
 
@@ -114,4 +115,5 @@ const round_0 = new Round(enemies = [
     new ArmoredEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 0.5),
     new ExplosiveEnemy(position = game.at(0, 0), path =  stage_0_path, hp = 1 , power = 10, speed = 1)
 ], resourcesReward = 1000)
+
 

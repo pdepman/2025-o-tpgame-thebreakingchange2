@@ -1,33 +1,12 @@
-import classes.*
-import stage_0.*
+import models_game.*
 
-object tdGame {
-  const stages = [stage_0]
-  var currentStage = placeHolderStage
-  
-  method currentStage() = currentStage
-
-  method setupConfig() {
-    game.title("Tower Defense")
-    game.height(14)
-    game.width(23)
-    game.cellSize(60)
-    game.ground("tile_default.png")
-  }
-  
-  method start() {
-    self.setupConfig()
-    game.start()
-  }
-  
-  method selectStage(stageNumber) {
-    currentStage = stages.get(stageNumber)
-  }
-  
-  method loadStage() {
-    currentStage.load()
-  }
+class HudTile {
+	var property position
+	const hudPosition
+	
+	method image() = "hud_bg_"+ hudPosition +".png"
 }
+
 
 object hud {
   const hudTiles = []
@@ -82,6 +61,7 @@ object hud {
     hudTiles.forEach({ tile => game.addVisual(tile) })
     resourcesVisualizer.beDisplayed()
     hpVisualizer.beDisplayed()
+    enemiesRemainingVisualizer.beDisplayed()
   }
 }
 
@@ -145,23 +125,15 @@ object gameOverScreen {
   }
 }
 
-const placeHolderStage = new Stage(
-  path = new Path(roads = []),
-  core = new Core(position = game.start(), hp = 100),
-  resources = 100,
-  rounds = []
-)
+object enemiesRemainingVisualizer {
+  const property position = game.at(20, 5)
 
-object enemiesRegistry {
-    var enemies = []
+  method image() = "core.png" 
 
-    method add(e) {
-        enemies.add(e)
-    }
+  method text() = tdGame.currentStage().currentRound().enemiesRemaining().toString()
+  method textColor() = "00FF00"
 
-    method remove(e) {
-        enemies.remove(e)
-    }
-
-    method all() = enemies
+  method beDisplayed(){
+    game.addVisual(self)
+  }
 }
