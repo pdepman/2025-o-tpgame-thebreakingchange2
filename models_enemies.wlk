@@ -2,8 +2,8 @@ import models_game.*
 
 class Enemy {
     var pathPosition = 0
-    var property position
     const path
+    var property position = game.at(99, 99)
     var hp
     var power
     var speed
@@ -28,13 +28,14 @@ class Enemy {
 	}
 
     method goForward() {
-        pathPosition = path.length().min(pathPosition + 1)
         position = path.roadAt(pathPosition).position()
 
         // Si llegó al final, hace daño al core
         if (pathPosition == path.length() - 1) {
             self.doDamage(path.core())
         }
+        
+        pathPosition = path.length().min(pathPosition + 1)
     }
 
     method doDamage(core) {
