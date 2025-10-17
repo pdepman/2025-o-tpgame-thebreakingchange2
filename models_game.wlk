@@ -168,6 +168,8 @@ class Round {
 
 	method enemies() = enemies
 
+	method enemiesInPlay() = enemies.subList(0, enemiesIndex).filter({enemy => !enemy.isDead()})
+
 	method resourcesReward() = resourcesReward
 
     method enemiesRemaining() = enemiesRemaining

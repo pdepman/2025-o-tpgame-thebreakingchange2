@@ -13,9 +13,6 @@ program TowerDefenseGame {
 	hud.setupHudTiles()
 	hud.beDisplayed()
 	
-	
-	
-	// Enemy Configuration
 	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
 	keyboard.num1().onPressDo(
@@ -31,6 +28,7 @@ program TowerDefenseGame {
 				tdGame.currentStage()
 			) }
 	)
+
 	keyboard.num2().onPressDo(
 		{ player.addTower(
 				new PiercingTower(

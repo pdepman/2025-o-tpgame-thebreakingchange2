@@ -21,7 +21,7 @@ class Tower {
       tickId,
       { self.attackEnemy(
           self.enemyToAttack(
-            self.enemiesInRange(tdGame.currentStage().currentRound().enemies())
+            self.enemiesInRange(tdGame.currentStage().currentRound().enemiesInPlay())
           )
         ) 
       }
@@ -29,7 +29,7 @@ class Tower {
   }
   
   method attackEnemy(enemy) {
-    if (enemy != null){ // Queremos sacar esto de aca
+    if (enemy != null){
       attack.doAttack(power, enemy)
     }
   }
@@ -41,11 +41,23 @@ class Tower {
     return enemies.fold(
       enemies.get(0),
       { enemyWithMaxPath, otherEnemy =>
-        if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition())
-          otherEnemy
-        else enemyWithMaxPath }
+        if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition()) otherEnemy else enemyWithMaxPath 
+      }
     )
   }
+
+  // Alternative enemy selection technique
+
+  // method enemyToAttackBySort(enemies) {
+  //   if (enemies.isEmpty()) {
+  //     return null
+  //   } 
+  //   return self.orderedEnemiesInRange(enemies).head()
+  // }
+  
+  // method orderedEnemiesInRange(enemies) = self.enemiesInRange(enemies).sortedBy(
+  //   { e1, e2 => e1.pathPosition() > e2.pathPosition() }
+  // )
   
   method enemiesInRange(enemies) = enemies.filter(
     { enemy => self.isInRange(enemy) }
@@ -53,7 +65,7 @@ class Tower {
   
   method isInRange(enemy) = (position.distance(
     enemy.position()
-  ) <= range) && enemy.isDead().negate()
+  ) <= range)
 }
 
 object basicAttack {

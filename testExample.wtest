@@ -146,10 +146,6 @@ describe "Tests de deteccion de las torres" {
   test "Un enemigo ubicado a menos o igual cantidad casilleros del rango de la torre forma parte de sus enemigos en rango" {
     assert.that(basicTower.isInRange(enemyInRange))
   }
-
-    test "Un enemigo ubicado a menos o igual cantidad casilleros del rango de la torre pero que esta muerto no forma parte de sus enemigos en rango" {
-    assert.notThat(basicTower.isInRange(enemyInRangeDead))
-  }
   
   test "Un enemigo ubicado a mas casilleros del rango de la torre no forma parte de sus enemigos en rango" {
     assert.notThat(basicTower.isInRange(enemyOutsideRange))
