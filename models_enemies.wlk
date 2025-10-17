@@ -75,7 +75,7 @@ class Enemy {
 }
 
 class BasicEnemy inherits Enemy {
-    override method image() = "enemy_basic.png"
+    override method image() = "enemy_basic_" + hp.toString() +".png"
     
     override method receiveBasicAttack(damage){
 		self.receiveDamage(damage)
