@@ -4,7 +4,7 @@ class Enemy {
     var pathPosition = 0
     var property position = game.at(99, 99)
     var hp
-    var power
+    const power
     var speed
 	const tickName = "moveEnemy_" + self.identity()
 
@@ -137,7 +137,7 @@ class ExplosiveEnemy inherits Enemy {
 }
 
 object enemiesRegistry {
-    var enemies = []
+    const enemies = []
 
     method add(e) {
         enemies.add(e)

@@ -17,7 +17,7 @@ class Tower {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
     game.onTick(
-      1000,
+      attackSpeed,
       tickId,
       { self.attackEnemy(
           self.enemyToAttack(
