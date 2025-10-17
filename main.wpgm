@@ -2,30 +2,61 @@ import wollok.game.*
 import stage_0.*
 import models_game.*
 import models_hud.*
+import models_towers.*
 
 program TowerDefenseGame {
-
 	tdGame.start()
-
+	
 	tdGame.selectStage(0)
 	tdGame.loadStage()
 	
 	hud.setupHudTiles()
 	hud.beDisplayed()
-
+	
+	
 	// Enemy Configuration
 	const player = new BasicPlayer(position = game.center())
 	game.addVisualCharacter(player)
-	keyboard.num1().onPressDo({player.addBasicTower()})
-	keyboard.num2().onPressDo({player.addPiercingTower()})
-	keyboard.num3().onPressDo({player.addSlowingTower()})
-	keyboard.o().onPressDo({gameOverScreen.beDisplayed()})
-	keyboard.r().onPressDo({gameOverScreen.removeDisplay()})
-
-	keyboard.q().onPressDo({stage_0.startCurrentRound()})
-	keyboard.w().onPressDo({stage_0.currentRound().end()})
-
-	keyboard.a().onPressDo({stage_0.addResources(10)})
-	keyboard.s().onPressDo({stage_0.substractResources(10)})
-	keyboard.d().onPressDo({stage_0.core().receiveDamage(10)})
+	keyboard.num1().onPressDo(
+		{ player.addTower(
+				new BasicTower(
+					attack = basicAttack,
+					position = player.position(),
+					power = 10,
+					attackSpeed = 1000,
+					range = 2
+				)
+			) }
+	)
+	keyboard.num2().onPressDo(
+		{ player.addTower(
+				new PiercingTower(
+					attack = piercingAttack,
+					position = player.position(),
+					power = 10,
+					attackSpeed = 1000,
+					range = 2
+				)
+			) }
+	)
+	keyboard.num3().onPressDo(
+		{ player.addTower(
+				new SlowingTower(
+					attack = slowingAttack,
+					position = player.position(),
+					power = 10,
+					attackSpeed = 1000,
+					range = 2
+				)
+			) }
+	)
+	keyboard.o().onPressDo({ gameOverScreen.beDisplayed() })
+	keyboard.r().onPressDo({ gameOverScreen.removeDisplay() })
+	
+	keyboard.q().onPressDo({ stage_0.startCurrentRound() })
+	keyboard.w().onPressDo({ stage_0.currentRound().end() })
+	
+	keyboard.a().onPressDo({ stage_0.addResources(10) })
+	keyboard.s().onPressDo({ stage_0.substractResources(10) })
+	keyboard.d().onPressDo({ stage_0.core().receiveDamage(10) })
 }

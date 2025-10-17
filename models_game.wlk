@@ -35,44 +35,16 @@ class BasicPlayer {
 	
 	method image() = "player.png"
 	
-	method addBasicTower() {
-		towers.add(
-			new BasicTower(
-				attack = basicAttack,
-				position = position,
-				power = 10,
-				attackSpeed = 1000,
-				range = 2
-			)
-		)
-		towers.last().spawn()
+	method addTower(tower) {
+		if (self.isBuildingZone()){
+			towers.add(tower)
+			towers.last().spawn()
+		} else {
+			game.sound("sfx_cannot_build.mp3").play()
+		}
 	}
 
-	method addPiercingTower() {
-		towers.add(
-			new PiercingTower(
-				attack = piercingAttack,
-				position = position,
-				power = 10,
-				attackSpeed = 1000,
-				range = 2
-			)
-		)
-		towers.last().spawn()
-	}
-
-	method addSlowingTower() {
-		towers.add(
-			new SlowingTower(
-				attack = slowingAttack,
-				position = position,
-				power = 10,
-				attackSpeed = 1000,
-				range = 2
-			)
-		)
-		towers.last().spawn()
-	}
+	method isBuildingZone() = tdGame.currentStage().path().roads().any({road => road.position() == position}).negate()
 
 	method towersIsEmpty() = towers.isEmpty()
 }
@@ -95,6 +67,8 @@ class Stage {
 		// Limpio el personaje de la pantalla UFF PODRIA USAR EL PERSONAJE PARA SELECCIONAR EL NIVEL
 		// Vuelvo todas las variables a su estado inicial
 	}
+
+	method path() = path
 	
 	method core() = core
 
@@ -145,6 +119,7 @@ class Path {
 	const roads
 	method length() = roads.size()
 	method roadAt(indexNumber) = roads.get(indexNumber)
+	method roads() = roads
 	method beDisplayed() {
 	  roads.forEach({road => road.beDisplayed()})
 	}

@@ -26,7 +26,9 @@ class Tower {
   }
   
   method attackEnemy(enemy) {
-    attack.doAttack(power, enemy)
+    if (enemy != null){ // Queremos sacar esto de aca
+      attack.doAttack(power, enemy)
+    }
   }
   
   method enemyToAttack(enemies) {
