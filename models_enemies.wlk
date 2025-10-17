@@ -2,7 +2,6 @@ import models_game.*
 
 class Enemy {
     var pathPosition = 0
-    const path
     var property position = game.at(99, 99)
     var hp
     var power
@@ -15,10 +14,10 @@ class Enemy {
 
     method speed() = speed
 
-    method spawn() {
+    method spawn(stage) {
 		enemiesRegistry.add(self)
         game.addVisual(self)
-        game.onTick(1000/speed, tickName, { self.goForward() })
+        game.onTick(1000/speed, tickName, { self.goForward(stage) })
     }
 
     method despawn() {
@@ -27,20 +26,22 @@ class Enemy {
     	game.removeTickEvent(tickName)   // <--- uso la variable que ya definimos en spawn()
 	}
 
-    method goForward() {
-        position = path.get(pathPosition).position()
+    method goForward(stage) {
+        position = stage.path().get(pathPosition).position()
 
         // Si llegó al final, hace daño al core VER
-        if (pathPosition == path.size() - 1) {
-            self.doDamage(path.core()) // QUE ESTO NO FUNCIONA
+        if (self.isAtTheEndOfThePath(stage.path())) {
+            self.doDamage(stage.core()) // QUE ESTO NO FUNCIONA
         }
         
-        pathPosition = path.size().min(pathPosition + 1)
+        pathPosition = stage.path().size().min(pathPosition + 1)
     }
 
-    method doDamage(core) {
-        core.receiveDamage(power)
-        self.despawn()
+    method isAtTheEndOfThePath(path) = path.last().position() == position
+
+    method doDamage(damageable) {
+        damageable.receiveDamage(power)
+        self.die()
     }
 
 	method receiveDamage(amount) {

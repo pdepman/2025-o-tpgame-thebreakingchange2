@@ -29,21 +29,18 @@ describe "Tests de interaccion entre torres y enemigos" {
   )
   const basicEnemy = new BasicEnemy(
     position = game.origin(),
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
   )
   const armoredEnemy = new ArmoredEnemy(
     position = game.origin(),
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
   )
   const explosiveEnemy = new ExplosiveEnemy(
     position = game.origin(),
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
@@ -121,7 +118,6 @@ describe "Tests de deteccion de las torres" {
   )
   const enemyInRange = new BasicEnemy(
     position = game.at(0, 1),
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
@@ -129,14 +125,12 @@ describe "Tests de deteccion de las torres" {
   const enemyInRangeFirst = new BasicEnemy(
     position = game.at(0, 1),
     pathPosition = 100,
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
   )
   const enemyOutsideRange = new BasicEnemy(
     position = game.at(3, 3),
-    path = [],
     hp = 100,
     power = 10,
     speed = 1
@@ -144,7 +138,6 @@ describe "Tests de deteccion de las torres" {
 
   const enemyInRangeDead = new BasicEnemy(
     position = game.at(0, 1),
-    path = [],
     hp = 0,
     power = 10,
     speed = 1

@@ -110,10 +110,10 @@ new Road(position = game.at(15, 11))
 const stage_0_core = new Core(position = game.at(15,11), hp = 100)
 
 const round_0 = new Round(enemies = [
-    new BasicEnemy(path =  stage_0_path, hp = 1 , power = 10, speed = 1),
-    new BasicEnemy(path =  stage_0_path, hp = 1 , power = 10, speed = 1.5),
-    new ArmoredEnemy(path =  stage_0_path, hp = 1 , power = 10, speed = 0.5),
-    new ExplosiveEnemy(path =  stage_0_path, hp = 1 , power = 10, speed = 1)
+    new BasicEnemy(hp = 1 , power = 10, speed = 3),
+    new BasicEnemy(hp = 1 , power = 10, speed = 3),
+    new ArmoredEnemy(hp = 1 , power = 10, speed = 3),
+    new ExplosiveEnemy(hp = 1 , power = 10, speed = 3)
 ], resourcesReward = 1000)
 
 

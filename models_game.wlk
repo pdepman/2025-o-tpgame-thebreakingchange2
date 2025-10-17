@@ -91,7 +91,7 @@ class Stage {
 	method currentRound() = rounds.get(roundIndex)
 
 	method startCurrentRound() {
-		self.currentRound().start()
+		self.currentRound().start(self)
 	}
 
 	method advanceRoundIndex() {
@@ -168,12 +168,12 @@ class Round {
 
     method enemiesRemaining() = enemiesRemaining
 
-	method start() {
-		game.onTick(2000, tickId, { self.spawnNextEnemy() })
+	method start(stage) {
+		game.onTick(2000, tickId, { self.spawnNextEnemy(stage) })
 	}
-	method spawnNextEnemy() {
+	method spawnNextEnemy(stage) {
 		if (enemiesIndex < enemies.size()) {
-			self.nextEnemy().spawn()
+			self.nextEnemy().spawn(stage)
 			self.advanceEnemiesIndex()
 		}
 	}
