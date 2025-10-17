@@ -1,7 +1,7 @@
 import models_game.*
 import models_enemies.*
 
-const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100, rounds = [round_0] )
+const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100, rounds = [round_0, round_1] )
 
 // Path Configuration
 const stage_0_path = [
@@ -110,10 +110,25 @@ new Road(position = game.at(15, 11))
 const stage_0_core = new Core(position = game.at(15,11), hp = 100)
 
 const round_0 = new Round(enemies = [
+    new BasicEnemy(hp = 1 , power = 10, speed = 1),
+    new BasicEnemy(hp = 1 , power = 10, speed = 1),
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 3),
-    new BasicEnemy(hp = 1 , power = 10, speed = 3),
-    new ArmoredEnemy(hp = 1 , power = 10, speed = 3),
-    new ExplosiveEnemy(hp = 1 , power = 10, speed = 3)
-], resourcesReward = 1000)
+    new BasicEnemy(hp = 2 , power = 10, speed = 1),
+    new BasicEnemy(hp = 2 , power = 10, speed = 1),
+    new BasicEnemy(hp = 2 , power = 10, speed = 1)
+], resourcesReward = 100)
 
-
+const round_1 = new Round(enemies = [
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
+    new ArmoredEnemy(hp = 1, power = 10, speed = 1),
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
+    new BasicEnemy(hp = 1 , power = 10, speed = 2),
+    new ArmoredEnemy(hp = 1 , power = 10, speed = 2),
+    new BasicEnemy(hp = 2 , power = 10, speed = 2),
+    new ArmoredEnemy(hp = 1 , power = 10, speed = 2),
+    new BasicEnemy(hp = 2 , power = 10, speed = 2),
+    new ArmoredEnemy(hp = 1 , power = 10, speed = 2)
+], resourcesReward = 200)

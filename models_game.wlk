@@ -77,6 +77,8 @@ class Stage {
 		self.load()
 	}
 
+	method roundsRemaining() = rounds.size() - roundIndex
+
 	method addResources(amount){
 		resources += amount
 		game.sound("sfx_resources_added.wav").play()
@@ -106,6 +108,7 @@ class Stage {
       if (self.isComplete()){
         self.win()
       } else {
+		self.addResources(self.currentRound().resourcesReward())
         self.advanceRoundIndex()
       }
     }

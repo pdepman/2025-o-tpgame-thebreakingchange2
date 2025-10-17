@@ -23,8 +23,8 @@ program TowerDefenseGame {
 				new BasicTower(
 					attack = basicAttack,
 					position = player.position(),
-					power = 10,
-					attackSpeed = 1000,
+					power = 1,
+					attackSpeed = 2000,
 					range = 2,
 					cost = 50
 				),
@@ -36,8 +36,8 @@ program TowerDefenseGame {
 				new PiercingTower(
 					attack = piercingAttack,
 					position = player.position(),
-					power = 10,
-					attackSpeed = 1000,
+					power = 1,
+					attackSpeed = 2000,
 					range = 2,
 					cost = 100
 				),
@@ -49,8 +49,8 @@ program TowerDefenseGame {
 				new SlowingTower(
 					attack = slowingAttack,
 					position = player.position(),
-					power = 10,
-					attackSpeed = 1000,
+					power = 1,
+					attackSpeed = 2000,
 					range = 2,
 					cost = 100
 				),

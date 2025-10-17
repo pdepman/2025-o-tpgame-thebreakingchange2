@@ -59,45 +59,82 @@ object hud {
   
   method beDisplayed() {
     hudTiles.forEach({ tile => game.addVisual(tile) })
+    gameTitle.beDisplayed()
+    stageProgressVisualizer.beDisplayed()
+    enemiesRemainingVisualizer.beDisplayed()
     resourcesVisualizer.beDisplayed()
     hpVisualizer.beDisplayed()
-    enemiesRemainingVisualizer.beDisplayed()
   }
 }
 
-object resourcesVisualizer {
-  const property position = game.at(21, 11)
-  
-  // Descoplar de tdGame con un atributo currentStage en el objeto hud? 
-  method text() = tdGame.currentStage().resources().toString()
-  
-  method textColor() = "FFFFFFFF"
-  
-  method beDisplayed() {
-    game.addVisual(hudCoinSymbol)
-    game.addVisual(self)
-  }
-}
-
-object hpVisualizer {
-  const property position = game.at(20, 8)
-
-  method image() = "core.png" 
-
-  method text() = tdGame.currentStage().core().hp().toString()
-
-  method textColor() = "00FF00"
+object gameTitle {
+  const property position = game.at(19, 12)
+  method image() = "hud_game_title.png"
 
   method beDisplayed(){
     game.addVisual(self)
   }
 }
 
-object hudCoinSymbol {
-  var property position = game.at(19, 11)
-  
-  method image() = "resource_coin.png"
+
+object stageProgressVisualizer {
+  const property position = game.at(19, 10)
+
+  method text() = "🚩 " + tdGame.currentStage().roundsRemaining().toString()
+  method textColor() = "FFFFFFFF"
+
+  method beDisplayed(){
+    game.addVisual(self)
+  }
 }
+
+object enemiesRemainingVisualizer {
+  const property position = game.at(21, 10)
+
+  method text() = "💀 " + tdGame.currentStage().currentRound().enemiesRemaining().toString()
+  method textColor() = "FFFFFFFF"
+
+  method beDisplayed(){
+    game.addVisual(self)
+  }
+}
+
+object hpVisualizer {
+  const property position = game.at(19, 9)
+
+  method text() = "❤️ " + tdGame.currentStage().core().hp().toString()
+
+  method textColor() = "FFFFFFFF"
+
+  method beDisplayed(){
+    game.addVisual(self)
+  }
+}
+
+object resourcesVisualizer {
+  const property position = game.at(21, 9)
+  
+  method text() = "🪙 " + tdGame.currentStage().resources().toString()
+  
+  method textColor() = "FFFFFFFF"
+  
+  method beDisplayed() {
+    game.addVisual(self)
+  }
+}
+
+class ImageDisplayable {
+  const property position
+  const imagePath
+
+  method image() = imagePath
+
+  method beDisplayed() {
+    game.addVisual(self)
+  }
+
+}
+
 
 class FancyScreen {
     
@@ -132,17 +169,4 @@ object gameOverScreen inherits FancyScreen{
 
 object victoryScreen inherits FancyScreen{
     override method image() = "screen_victory.png"
-}
-
-object enemiesRemainingVisualizer {
-  const property position = game.at(20, 5)
-
-  method image() = "core.png" 
-
-  method text() = tdGame.currentStage().currentRound().enemiesRemaining().toString()
-  method textColor() = "00FF00"
-
-  method beDisplayed(){
-    game.addVisual(self)
-  }
 }
