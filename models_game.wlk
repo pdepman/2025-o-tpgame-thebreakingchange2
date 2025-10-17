@@ -1,9 +1,10 @@
 import models_hud.*
-import stage_0.*
+import stage_0.stage_0
+import stage_1.stage_1
 import models_towers.*
 
 object tdGame {
-  const stages = [stage_0]
+  const stages = [stage_0, stage_1]
   var currentStage = placeHolderStage
   
   method currentStage() = currentStage
