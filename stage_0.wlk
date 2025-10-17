@@ -4,7 +4,7 @@ import models_enemies.*
 const stage_0 = new Stage(path = stage_0_path, core = stage_0_core, resources = 100, rounds = [round_0] )
 
 // Path Configuration
-const stage_0_path = new Path(roads = [
+const stage_0_path = [
 // Subo
 new Road(position = game.at(2, 0)),
 new Road(position = game.at(2, 1)),
@@ -105,7 +105,7 @@ new Road(position = game.at(15, 8)),
 new Road(position = game.at(15, 9)),
 new Road(position = game.at(15, 10)),
 new Road(position = game.at(15, 11))
-]) 
+]
 
 const stage_0_core = new Core(position = game.at(15,11), hp = 100)
 

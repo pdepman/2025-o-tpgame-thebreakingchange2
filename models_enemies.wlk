@@ -28,14 +28,14 @@ class Enemy {
 	}
 
     method goForward() {
-        position = path.roadAt(pathPosition).position()
+        position = path.get(pathPosition).position()
 
-        // Si llegó al final, hace daño al core
-        if (pathPosition == path.length() - 1) {
-            self.doDamage(path.core())
+        // Si llegó al final, hace daño al core VER
+        if (pathPosition == path.size() - 1) {
+            self.doDamage(path.core()) // QUE ESTO NO FUNCIONA
         }
         
-        pathPosition = path.length().min(pathPosition + 1)
+        pathPosition = path.size().min(pathPosition + 1)
     }
 
     method doDamage(core) {

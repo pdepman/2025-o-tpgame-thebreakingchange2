@@ -121,22 +121,22 @@ describe "Tests de deteccion de las torres" {
   )
   const enemyInRange = new BasicEnemy(
     position = game.at(0, 1),
-    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    path = [],
     hp = 100,
     power = 10,
     speed = 1
   )
-const enemyInRangeFirst = new BasicEnemy(
+  const enemyInRangeFirst = new BasicEnemy(
     position = game.at(0, 1),
     pathPosition = 100,
-    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    path = [],
     hp = 100,
     power = 10,
     speed = 1
   )
   const enemyOutsideRange = new BasicEnemy(
     position = game.at(3, 3),
-    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    path = [],
     hp = 100,
     power = 10,
     speed = 1
@@ -144,7 +144,7 @@ const enemyInRangeFirst = new BasicEnemy(
 
   const enemyInRangeDead = new BasicEnemy(
     position = game.at(0, 1),
-    path = [game.at(0, 1), game.at(0, 2), game.at(0, 3), game.at(1, 3)],
+    path = [],
     hp = 0,
     power = 10,
     speed = 1

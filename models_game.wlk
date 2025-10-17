@@ -35,7 +35,7 @@ class BasicPlayer {
 	method image() = "player.png"
 	
 	method addTower(tower, stage) {
-		if (self.isInBuildingZone(stage.path().roads())){
+		if (self.isInBuildingZone(stage.path())){
 			stage.addTower(tower)
 		} else {
 			game.sound("sfx_cannot_build.mp3").play()
@@ -56,7 +56,7 @@ class Stage {
 
 
 	method load() {
-		path.beDisplayed()
+		self.displayPath()
 		core.beDisplayed()
 	}
 	method clear() {
@@ -122,16 +122,10 @@ class Stage {
 		}
 	}
 
-}
-
-class Path {
-	const roads
-	method length() = roads.size()
-	method roadAt(indexNumber) = roads.get(indexNumber)
-	method roads() = roads
-	method beDisplayed() {
-	  roads.forEach({road => road.beDisplayed()})
+	method displayPath() {
+	  path.forEach({road => road.beDisplayed()})
 	}
+
 }
 
 class Road {
@@ -202,7 +196,7 @@ class Round {
 }
 
 const placeHolderStage = new Stage(
-  path = new Path(roads = []),
+  path = [],
   core = new Core(position = game.start(), hp = 100),
   resources = 100,
   rounds = [placeHolderRound]
