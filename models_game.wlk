@@ -30,29 +30,27 @@ object tdGame {
   }
 }
 class BasicPlayer {
-	var property towers = []
 	var property position
 	
 	method image() = "player.png"
 	
-	method addTower(tower) {
-		if (self.isBuildingZone()){
-			towers.add(tower)
-			towers.last().spawn()
+	method addTower(tower, stage) {
+		if (self.isInBuildingZone(stage.path().roads())){
+			stage.addTower(tower)
 		} else {
 			game.sound("sfx_cannot_build.mp3").play()
 		}
 	}
 
-	method isBuildingZone() = tdGame.currentStage().path().roads().any({road => road.position() == position}).negate()
+	method isInBuildingZone(prohibitedZones) = prohibitedZones.any({road => road.position() == position}).negate()
 
-	method towersIsEmpty() = towers.isEmpty()
 }
 
 class Stage {
 	const path
 	const core
 	const rounds
+	const towers = []
 	var resources
 	var roundIndex = 0
 
@@ -71,6 +69,8 @@ class Stage {
 	method path() = path
 	
 	method core() = core
+
+	method towers() = towers
 
 	method reset() {
 		self.clear()
@@ -112,6 +112,15 @@ class Stage {
 
     method isComplete() = rounds.all({round => round.isComplete()})
     
+	method addTower(tower) {
+		if (tower.cost() <= resources) {
+			self.substractResources(tower.cost())
+			towers.add(tower)
+			tower.spawn()
+		} else {
+			game.sound("sfx_cannot_build.mp3").play()
+		}
+	}
 
 }
 

@@ -2,14 +2,17 @@ import models_game.*
 
 class Tower {
   var property position
-  var power
-  var attackSpeed
-  var range
-  var attack
+  const power
+  const attackSpeed
+  const range
+  const attack
+  const cost
   const tickId = "towerScan_" + self.identity()
   
   method image()
   
+  method cost() = cost
+
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()

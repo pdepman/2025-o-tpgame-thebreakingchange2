@@ -1,3 +1,4 @@
+import models_game.Stage
 import models_enemies.*
 import models_towers.*
 
@@ -7,21 +8,24 @@ describe "Tests de interaccion entre torres y enemigos" {
     position = game.origin(),
     power = 10,
     attackSpeed = 1000,
-    range = 2
+    range = 2,
+    cost = 1
   )
   const piercingTower = new PiercingTower(
     attack = piercingAttack,
     position = game.origin(),
     power = 10,
     attackSpeed = 1000,
-    range = 2
+    range = 2,
+    cost = 1
   )
   const slowingTower = new SlowingTower(
     attack = slowingAttack,
     position = game.origin(),
     power = 10,
     attackSpeed = 1000,
-    range = 2
+    range = 2,
+    cost = 1
   )
   const basicEnemy = new BasicEnemy(
     position = game.origin(),
@@ -112,7 +116,8 @@ describe "Tests de deteccion de las torres" {
     position = game.at(0, 0),
     power = 10,
     attackSpeed = 1000,
-    range = 2
+    range = 2,
+    cost = 50
   )
   const enemyInRange = new BasicEnemy(
     position = game.at(0, 1),
@@ -168,5 +173,25 @@ const enemyInRangeFirst = new BasicEnemy(
 
   test "El enemigo a ser atacado por una torre es el enemigo en rango mas avanzado en el path" {
     assert.equals(enemyInRangeFirst, basicTower.enemyToAttack([enemyInRange, enemyOutsideRange, enemyInRangeFirst]))
+  }
+}
+
+describe "Pruebas de los recursos" {
+  const basicTower = new BasicTower(
+    attack = slowingAttack,
+    position = game.at(0, 0),
+    power = 10,
+    attackSpeed = 1000,
+    range = 2,
+    cost = 50
+  )
+  const testStage = new Stage(path = [], core = null, rounds = [], towers = [], resources = 100)
+  test "Cuando se coloca una torre básica los recursos de un nivel disminuyen en 50" {
+    testStage.addTower(basicTower)
+    assert.equals(50, testStage.resources()) 
+  }
+  test "Cuando se coloca una torre esta forma parte de las torres de la stage" {
+    testStage.addTower(basicTower)
+    assert.that(testStage.towers().contains(basicTower)) 
   }
 }
