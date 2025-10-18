@@ -21,7 +21,7 @@ class Tower {
       { self.attackEnemy(
           self.enemyToAttack(
             self.enemiesInRange(
-              tdGame.currentStage().currentRound().enemiesInPlay()
+              tdGame.enemiesInPlay()
             )
           )
         ) },

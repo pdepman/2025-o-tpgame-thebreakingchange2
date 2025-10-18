@@ -93,7 +93,7 @@ object stageProgressVisualizer {
 object enemiesRemainingVisualizer {
   const property position = game.at(21, 10)
 
-  method text() = "💀 " + tdGame.currentStage().currentRound().enemiesRemaining().toString()
+  method text() = "💀 " + tdGame.enemiesRemaining().toString()
   method textColor() = "FFFFFFFF"
 
   method beDisplayed(){

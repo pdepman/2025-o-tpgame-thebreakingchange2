@@ -17,14 +17,12 @@ class Enemy {
     method tickMs() = 1000/speed
 
     method spawn(path) {
-		enemiesRegistry.add(self)
         game.addVisual(self)
         tickEvent = game.tick(self.tickMs(), {self.goForward(path)}, true)
         tickEvent.start()
     }
 
     method despawn() {
-		enemiesRegistry.remove(self)
     	game.removeVisual(self)
     	tickEvent.stop()
 	}
@@ -68,8 +66,8 @@ class Enemy {
 
     method die() {
         hp = 0
-        tdGame.currentStage().currentRound().discountEnemy()
         self.despawn()
+        tdGame.discountEnemy(self) 
     }
 
 	method isDead() = hp <= 0
@@ -112,7 +110,7 @@ class ArmoredEnemy inherits Enemy {
 }
 
 class ExplosiveEnemy inherits Enemy {
-	const radius = 2
+	const radius = 10
 
 	override method image() = "enemy_explosive.png"
 	
@@ -130,25 +128,12 @@ class ExplosiveEnemy inherits Enemy {
 	}
 
     method blowUp() {
-        enemiesRegistry.all()
-            .filter({ e => e != self && position.distance(e.position()) <= radius })
-            .forEach({ e => e.receiveDamage(power) })
+        self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveDamage(power)})
         game.sound("sfx_alf_pop.wav").play()
         self.die()
     }
 
-}
-
-object enemiesRegistry {
-    const enemies = []
-
-    method add(e) {
-        enemies.add(e)
-    }
-
-    method remove(e) {
-        enemies.remove(e)
-    }
-
-    method all() = enemies
-}
+    method enemiesInRange(enemies) = enemies.filter({ enemy => self.isInRange(enemy) })
+  
+    method isInRange(enemy) = position.distance(enemy.position()) <= radius
+ }

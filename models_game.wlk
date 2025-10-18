@@ -35,6 +35,14 @@ object tdGame {
 	}
 
 	method core() = currentStage.core()
+
+	method discountEnemy(enemy) {
+		currentStage.discountEnemy(enemy)
+	}
+
+	method enemiesRemaining() = currentStage.enemiesRemaining()
+
+	method enemiesInPlay() = currentStage.enemiesInPlay()
 }
 
 class BasicPlayer {
@@ -148,6 +156,15 @@ class Stage {
 		path.forEach({ road => road.beRemoved()})
 	}
 
+	method discountEnemy(enemy) {
+		self.currentRound().discountEnemy(enemy)
+	}
+
+	method enemiesRemaining() = self.currentRound().enemiesRemaining()
+
+	method enemiesInPlay() = self.currentRound().enemiesInPlay()
+
+
 }
 
 class Road {
@@ -190,37 +207,28 @@ class Core {
 }
 
 class Round {
-	const enemies
+	const enemiesQueue
+	const enemiesInPlay = []
 	const resourcesReward
-	var enemiesRemaining = enemies.size()
-	var enemiesIndex = 0
 	const tickId = ("round-" + self.identity()) + "control"
 	
-	method enemies() = enemies
+	method enemiesQueue() = enemiesQueue
+	method enemiesRemaining() = enemiesQueue.size() + enemiesInPlay.size()
 	
-	method enemiesInPlay() = enemies.subList(0, enemiesIndex).filter(
-		{ enemy => !enemy.isDead() }
-	)
+	method enemiesInPlay() = enemiesInPlay
 	
 	method resourcesReward() = resourcesReward
-	
-	method enemiesRemaining() = enemiesRemaining
-	
+		
 	method start(path) {
 		game.onTick(2000, tickId, { self.spawnNextEnemy(path) })
 	}
 	
 	method spawnNextEnemy(path) {
-		if (enemiesIndex < enemies.size()) {
-			self.nextEnemy().spawn(path)
-			self.advanceEnemiesIndex()
+		if (!enemiesQueue.isEmpty()) {
+			const enemy = enemiesQueue.dequeue()
+			enemy.spawn(path)
+			enemiesInPlay.add(enemy)
 		}
-	}
-	
-	method nextEnemy() = enemies.get(enemiesIndex)
-	
-	method advanceEnemiesIndex() {
-		enemiesIndex += 1
 	}
 	
 	method end() {
@@ -228,12 +236,13 @@ class Round {
 		tdGame.currentStage().completeRound()
 	}
 	
-	method discountEnemy() {
-		enemiesRemaining -= 1
+	method discountEnemy(enemy) {
+		enemiesInPlay.remove(enemy)
 		if (self.isComplete()) self.end()
 	}
-	
-	method isComplete() = enemiesRemaining == 0
+
+	method isComplete() = self.enemiesRemaining() == 0
+
 }
 
 const placeHolderStage = new Stage(
@@ -243,4 +252,23 @@ const placeHolderStage = new Stage(
 	rounds = [placeHolderRound]
 )
 
-const placeHolderRound = new Round(enemies = [], resourcesReward = 100)
+const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)
+
+class Queue {
+	const list = []
+
+	method enqueue(element) {
+		list.add(element)
+	}
+
+	method dequeue() {
+		if (list.isEmpty()) return null
+		const head = list.head()
+		list.remove(list.head())
+		return head
+	}
+
+	method size() = list.size()
+
+	method isEmpty() = list.isEmpty()
+}

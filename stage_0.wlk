@@ -23,23 +23,24 @@ new Road(position = game.at(15, 7))
 
 const core = new Core(position = game.at(15,7), hp = 100)
 
-const round_00 = new Round(enemies = [new BasicEnemy(hp = 3 , power = 10, speed = 2)], resourcesReward = 100)
+const round_00 = new Round(enemiesQueue = new Queue(list = [new BasicEnemy(hp = 3 , power = 10, speed = 2)]) , resourcesReward = 100)
 
-const round_0 = new Round(enemies = [
+const round_0 = new Round(enemiesQueue = new Queue(list = [
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new BasicEnemy(hp = 2 , power = 10, speed = 2),
     new BasicEnemy(hp = 2 , power = 10, speed = 2),
     new BasicEnemy(hp = 3 , power = 10, speed = 2)
-], resourcesReward = 100)
+]), resourcesReward = 100)
 
-const round_1 = new Round(enemies = [
+const round_1 = new Round(enemiesQueue = new Queue(list = [
+    new ExplosiveEnemy(hp = 1 , power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new ArmoredEnemy(hp = 1, power = 10, speed = 1)
-], resourcesReward = 200)
+]), resourcesReward = 200)
 
-const round_2 = new Round(enemies = [
+const round_2 = new Round(enemiesQueue = new Queue(list = [
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new ArmoredEnemy(hp = 1, power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
@@ -48,9 +49,9 @@ const round_2 = new Round(enemies = [
     new ArmoredEnemy(hp = 1, power = 10, speed = 2),
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new ArmoredEnemy(hp = 1, power = 10, speed = 2)
-], resourcesReward = 200)
+] ), resourcesReward = 200)
 
-const round_3 = new Round(enemies = [
+const round_3 = new Round(enemiesQueue = new Queue(list = [
     new BasicEnemy(hp = 1 , power = 10, speed = 2),
     new ArmoredEnemy(hp = 1, power = 10, speed = 2),
     new ExplosiveEnemy(hp = 1 , power = 10, speed = 2),
@@ -60,4 +61,4 @@ const round_3 = new Round(enemies = [
     new ExplosiveEnemy(hp = 1 , power = 10, speed = 2),
     new ExplosiveEnemy(hp = 1 , power = 10, speed = 2),
     new ExplosiveEnemy(hp = 1 , power = 10, speed = 2)
-], resourcesReward = 200)
+]), resourcesReward = 200)
