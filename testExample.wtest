@@ -105,6 +105,15 @@ describe "Tests de interaccion entre torres y enemigos" {
     slowingTower.attackEnemy(explosiveEnemy)
     assert.equals(0.5, explosiveEnemy.speed())
   }
+
+  test "Cuando una torre ralentizante ataca a un enemigo multiples veces, su velocidad no puede disminuir por debajo del 0.25" {
+    slowingTower.attackEnemy(explosiveEnemy)
+    slowingTower.attackEnemy(explosiveEnemy)
+    slowingTower.attackEnemy(explosiveEnemy)
+    slowingTower.attackEnemy(explosiveEnemy)
+    slowingTower.attackEnemy(explosiveEnemy)
+    assert.equals(0.25, explosiveEnemy.speed())
+  }
 }
 
 describe "Tests de deteccion de las torres" {
@@ -175,7 +184,7 @@ describe "Pruebas de los recursos" {
     cost = 50
   )
   const testStage = new Stage(path = [], core = null, rounds = [], towers = [], resources = 100)
-  test "Cuando se coloca una torre básica los recursos de un nivel disminuyen en 50" {
+  test "Cuando se coloca una torre los recursos de un nivel disminuyen en su coste" {
     testStage.addTower(basicTower)
     assert.equals(50, testStage.resources()) 
   }

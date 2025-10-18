@@ -21,8 +21,8 @@ program TowerDefenseGame {
 					attack = basicAttack,
 					position = player.position(),
 					power = 1,
-					attackSpeed = 2000,
-					range = 2,
+					attackSpeed = 1000,
+					range = 3,
 					cost = 50
 				),
 				tdGame.currentStage()
@@ -36,7 +36,7 @@ program TowerDefenseGame {
 					position = player.position(),
 					power = 1,
 					attackSpeed = 2000,
-					range = 2,
+					range = 3,
 					cost = 100
 				),
 				tdGame.currentStage()
@@ -47,9 +47,9 @@ program TowerDefenseGame {
 				new SlowingTower(
 					attack = slowingAttack,
 					position = player.position(),
-					power = 1,
-					attackSpeed = 2000,
-					range = 2,
+					power = 0,
+					attackSpeed = 1500,
+					range = 3,
 					cost = 100
 				),
 				tdGame.currentStage()

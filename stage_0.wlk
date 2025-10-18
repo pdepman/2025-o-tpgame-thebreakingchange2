@@ -1,7 +1,7 @@
 import models_game.*
 import models_enemies.*
 
-const stage_0 = new Stage(path = path, core = core, resources = 100, rounds = [round_0, round_1, round_2, round_3] )
+const stage_0 = new Stage(path = path, core = core, resources = 100, rounds = [round_00, round_0, round_1, round_2, round_3] )
 
 // Path Configuration
 const path = [
@@ -22,6 +22,8 @@ new Road(position = game.at(15, 7))
 ]
 
 const core = new Core(position = game.at(15,7), hp = 100)
+
+const round_00 = new Round(enemies = [new BasicEnemy(hp = 3 , power = 10, speed = 2)], resourcesReward = 100)
 
 const round_0 = new Round(enemies = [
     new BasicEnemy(hp = 1 , power = 10, speed = 2),

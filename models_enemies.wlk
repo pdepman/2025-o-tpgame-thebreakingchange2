@@ -6,7 +6,7 @@ class Enemy {
     var hp
     const power
     var speed
-	const tickName = "moveEnemy_" + self.identity()
+    var tickEvent = game.tick(1000, {}, false)
 
 	method pathPosition() = pathPosition
 
@@ -14,24 +14,26 @@ class Enemy {
 
     method speed() = speed
 
+    method tickMs() = 1000/speed
+
     method spawn(stage) {
 		enemiesRegistry.add(self)
         game.addVisual(self)
-        game.onTick(1000/speed, tickName, { self.goForward(stage) })
+        tickEvent = game.tick(self.tickMs(), {self.goForward(stage)}, true)
+        tickEvent.start()
     }
 
     method despawn() {
 		enemiesRegistry.remove(self)
     	game.removeVisual(self)
-    	game.removeTickEvent(tickName)   // <--- uso la variable que ya definimos en spawn()
+    	tickEvent.stop()
 	}
 
     method goForward(stage) {
         position = stage.path().get(pathPosition).position()
 
-        // Si llegó al final, hace daño al core VER
         if (self.isAtTheEndOfThePath(stage.path())) {
-            self.doDamage(stage.core()) // QUE ESTO NO FUNCIONA
+            self.doDamage(stage.core())
         }
         
         pathPosition = stage.path().size().min(pathPosition + 1)
@@ -46,7 +48,7 @@ class Enemy {
 
 	method receiveDamage(amount) {
 		hp -= amount
-		game.sound("sfx_hit_basic.mp3").play()
+        if (amount > 0 ) game.sound("sfx_hit_basic.mp3").play()
 		if (self.isDead()){
             self.die()
 		} 
@@ -60,7 +62,8 @@ class Enemy {
 
 	method beSlowed(){
 		game.sound("sfx_hit_slowing.wav").play()
-		speed = (speed / 2).max(0)
+		speed = 0.25.max(speed / 2)
+        tickEvent.interval(self.tickMs())
 	}
 
     method die() {
@@ -130,7 +133,7 @@ class ExplosiveEnemy inherits Enemy {
         enemiesRegistry.all()
             .filter({ e => e != self && position.distance(e.position()) <= radius })
             .forEach({ e => e.receiveDamage(power) })
-        
+        game.sound("sfx_alf_pop.wav").play()
         self.die()
     }
 
