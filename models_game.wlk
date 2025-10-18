@@ -160,10 +160,13 @@ class Core {
 		hp -= damage
 		if(hp <= 0){
 			self.isDead()
+			self.notifyMuerder()
 		}
 	}
 	
-	method isDead(){
+	method isDead() = hp <= 0
+
+	method notifyMuerder() {
 		tdGame.currentStage().lose()
 	}
 	
