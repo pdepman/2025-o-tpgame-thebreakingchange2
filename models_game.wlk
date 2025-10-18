@@ -109,7 +109,7 @@ class Stage {
 	}
 	
 	method lose() {
-		loseScreen.beDisplayed()
+		gameOverScreen.beDisplayed()
 	}
 	
 	method completeRound() {
@@ -162,7 +162,6 @@ class Core {
 	
 	method receiveDamage(damage) {
 		hp -= damage
-		if (hp <= 0) self.isDead()
 	}
 	
 	method isDead() = hp == 0
