@@ -133,10 +133,6 @@ class Stage {
 		}
 	}
 	
-	method isOver() {
-		if (core.isDead()) self.lose()
-	}
-	
 	method displayPath() {
 		path.forEach({ road => road.beDisplayed() })
 	}
@@ -162,9 +158,14 @@ class Core {
 	
 	method receiveDamage(damage) {
 		hp -= damage
+		if(hp <= 0){
+			self.isDead()
+		}
 	}
 	
-	method isDead() = hp == 0
+	method isDead(){
+		tdGame.currentStage().lose()
+	}
 	
 	method beDisplayed() {
 		game.addVisual(self)
