@@ -211,7 +211,7 @@ describe "Pruebas de interacción entre el core y el enemigo" {
   )
 
   const testCore = new Core(position = game.center(), hp = 100)
-  test "El enemigo le hace daño al core cuando colisionan" {
+  test "El core pierde vida cuando un enemigo lo ataca" {
     basicEnemy.doDamage(testCore)
     assert.equals(90, testCore.hp()) 
   }
@@ -222,6 +222,6 @@ describe "Pruebas de interacción entre el core y el enemigo" {
 
   test "El core muere al llegar a cero o menos de vida"{
     enemyToKillCore.doDamage(testCore)
-    assert.that(testCore.isDead())
+    assert.that(testCore.isDestroyed())
   }
 }

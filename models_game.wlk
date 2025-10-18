@@ -158,17 +158,12 @@ class Core {
 	
 	method receiveDamage(damage) {
 		hp -= damage
-		if(hp <= 0){
-			self.isDead()
-			self.notifyMuerder()
+		if(self.isDestroyed()){
+			tdGame.currentStage().lose()	
 		}
 	}
 	
-	method isDead() = hp <= 0
-
-	method notifyMuerder() {
-		tdGame.currentStage().lose()
-	}
+	method isDestroyed() = hp <= 0
 	
 	method beDisplayed() {
 		game.addVisual(self)
