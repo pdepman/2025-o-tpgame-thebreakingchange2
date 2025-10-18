@@ -1,7 +1,7 @@
 import models_game.*
 import models_enemies.*
 
-const stage_1 = new Stage(path = path, core = core, resources = 100, rounds = [round_0, round_1] )
+const stage_1 = new Stage(path = path, core = core, resources = 100, rounds = new Queue(list = [round_0, round_1]) )
 
 // Path Configuration
 const path = [

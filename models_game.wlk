@@ -43,6 +43,11 @@ object tdGame {
 	method enemiesRemaining() = currentStage.enemiesRemaining()
 
 	method enemiesInPlay() = currentStage.enemiesInPlay()
+
+	method completeRound() {
+		currentStage.completeRound()
+	  
+	}
 }
 
 class BasicPlayer {
@@ -67,9 +72,9 @@ class Stage {
 	const path
 	const core
 	const rounds
+	var currentRound = rounds.dequeue()
 	const towers = []
 	var resources
-	var roundIndex = 0
 	
 	method load() {
 		self.displayPath()
@@ -96,7 +101,7 @@ class Stage {
 		self.load()
 	}
 	
-	method roundsRemaining() = rounds.size() - roundIndex
+	method roundsRemaining() = rounds.size() + 1
 	
 	method addResources(amount) {
 		resources += amount
@@ -109,14 +114,10 @@ class Stage {
 	
 	method resources() = resources
 	
-	method currentRound() = rounds.get(roundIndex)
+	method currentRound() = currentRound
 	
 	method startCurrentRound() {
-		self.currentRound().start(path)
-	}
-	
-	method advanceRoundIndex() {
-		roundIndex += 1
+		currentRound.start(path)
 	}
 	
 	method win() {
@@ -131,12 +132,12 @@ class Stage {
 		if (self.isComplete()) {
 			self.win()
 		} else {
-			self.addResources(self.currentRound().resourcesReward())
-			self.advanceRoundIndex()
+			self.addResources(currentRound.resourcesReward())
+			currentRound = rounds.dequeue()
 		}
 	}
 	
-	method isComplete() = rounds.all({ round => round.isComplete() })
+	method isComplete() = rounds.size() == 0
 	
 	method addTower(tower) {
 		if (tower.cost() <= resources) {
@@ -157,12 +158,12 @@ class Stage {
 	}
 
 	method discountEnemy(enemy) {
-		self.currentRound().discountEnemy(enemy)
+		currentRound.discountEnemy(enemy)
 	}
 
-	method enemiesRemaining() = self.currentRound().enemiesRemaining()
+	method enemiesRemaining() = currentRound.enemiesRemaining()
 
-	method enemiesInPlay() = self.currentRound().enemiesInPlay()
+	method enemiesInPlay() = currentRound.enemiesInPlay()
 
 
 }
@@ -233,7 +234,7 @@ class Round {
 	
 	method end() {
 		game.removeTickEvent(tickId)
-		tdGame.currentStage().completeRound()
+		tdGame.completeRound()
 	}
 	
 	method discountEnemy(enemy) {
@@ -249,7 +250,7 @@ const placeHolderStage = new Stage(
 	path = [],
 	core = new Core(position = game.start(), hp = 100),
 	resources = 100,
-	rounds = [placeHolderRound]
+	rounds = new Queue(list = [placeHolderRound])
 )
 
 const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)

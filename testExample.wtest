@@ -1,3 +1,4 @@
+import models_game.Queue
 import models_game.Core
 import models_game.Stage
 import models_enemies.*
@@ -184,7 +185,7 @@ describe "Pruebas de los recursos" {
     range = 2,
     cost = 50
   )
-  const testStage = new Stage(path = [], core = null, rounds = [], towers = [], resources = 100)
+  const testStage = new Stage(path = [], core = null, rounds = new Queue(list=[]), towers = [], resources = 100)
   test "Cuando se coloca una torre los recursos de un nivel disminuyen en su coste" {
     testStage.addTower(basicTower)
     assert.equals(50, testStage.resources()) 
