@@ -56,7 +56,9 @@ object hud {
         ) }
     )
   }
-  
+
+  method limit() = hudTiles.get(0).position().x()-1
+
   method beDisplayed() {
     hudTiles.forEach({ tile => game.addVisual(tile) })
     gameTitle.beDisplayed()
@@ -169,4 +171,8 @@ object gameOverScreen inherits FancyScreen{
 
 object victoryScreen inherits FancyScreen{
     override method image() = "screen_victory.png"
+}
+
+object loseScreen inherits FancyScreen{
+    override method image() = "screen_gameover.png" 
 }
