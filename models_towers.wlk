@@ -7,31 +7,36 @@ class Tower {
   const range
   const attack
   const cost
-  const tickId = "towerScan_" + self.identity()
+  var tickEvent = game.tick(1000, {   }, false)
   
   method image()
   
   method cost() = cost
-
+  
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
-    game.onTick(
+    tickEvent = game.tick(
       attackSpeed,
-      tickId,
       { self.attackEnemy(
           self.enemyToAttack(
-            self.enemiesInRange(tdGame.currentStage().currentRound().enemiesInPlay())
+            self.enemiesInRange(
+              tdGame.currentStage().currentRound().enemiesInPlay()
+            )
           )
-        ) 
-      }
+        ) },
+      true
     )
+    tickEvent.start()
+  }
+  
+  method despawn() {
+    game.removeVisual(self)
+    tickEvent.stop()
   }
   
   method attackEnemy(enemy) {
-    if (enemy != null){
-      attack.doAttack(power, enemy)
-    }
+    if (enemy != null) attack.doAttack(power, enemy)
   }
   
   method enemyToAttack(enemies) {
@@ -41,31 +46,27 @@ class Tower {
     return enemies.fold(
       enemies.get(0),
       { enemyWithMaxPath, otherEnemy =>
-        if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition()) otherEnemy else enemyWithMaxPath 
-      }
+        if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition())
+          otherEnemy
+        else enemyWithMaxPath }
     )
   }
-
+  
   // Alternative enemy selection technique
-
   // method enemyToAttackBySort(enemies) {
   //   if (enemies.isEmpty()) {
   //     return null
   //   } 
   //   return self.orderedEnemiesInRange(enemies).head()
   // }
-  
   // method orderedEnemiesInRange(enemies) = self.enemiesInRange(enemies).sortedBy(
   //   { e1, e2 => e1.pathPosition() > e2.pathPosition() }
   // )
-  
   method enemiesInRange(enemies) = enemies.filter(
     { enemy => self.isInRange(enemy) }
   )
   
-  method isInRange(enemy) = (position.distance(
-    enemy.position()
-  ) <= range)
+  method isInRange(enemy) = position.distance(enemy.position()) <= range
 }
 
 object basicAttack {

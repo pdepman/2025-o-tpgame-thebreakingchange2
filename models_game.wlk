@@ -63,8 +63,9 @@ class Stage {
 	}
 	
 	method clear() {
-		
-		// Limpio el path de la pantalla
+		self.removePath()
+		core.beRemoved()
+		towers.forEach({tower => tower.despawn()})
 		// Limpio coro de la pantalla
 		// Limpio el personaje de la pantalla UFF PODRIA USAR EL PERSONAJE PARA SELECCIONAR EL NIVEL
 		// Vuelvo todas las variables a su estado inicial
@@ -75,7 +76,7 @@ class Stage {
 	method core() = core
 	
 	method towers() = towers
-	
+
 	method reset() {
 		self.clear()
 		self.load()
@@ -136,6 +137,11 @@ class Stage {
 	method displayPath() {
 		path.forEach({ road => road.beDisplayed() })
 	}
+
+	method removePath() {
+		path.forEach({ road => road.beRemoved()})
+	}
+
 }
 
 class Road {
@@ -145,6 +151,9 @@ class Road {
 	
 	method beDisplayed() {
 		game.addVisual(self)
+	}
+	method beRemoved() {
+		game.removeVisual(self)
 	}
 }
 
@@ -167,6 +176,10 @@ class Core {
 	
 	method beDisplayed() {
 		game.addVisual(self)
+	}
+
+	method beRemoved() {
+		game.removeVisual(self)
 	}
 }
 

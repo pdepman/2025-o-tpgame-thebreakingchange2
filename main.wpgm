@@ -4,13 +4,6 @@ import models_game.*
 import models_hud.*
 import models_towers.*
 
-// Requerimientos de hoy (18/10):
-// -Que se pueda perder una ronda
-// -Que el player no se mueva en el hud
-//  ----------------------------------
-// todo: 
-// -Conectar la logica de perder(IMPLEMENTADA) con la accion
-//
 program TowerDefenseGame {
 	tdGame.start()
 	
@@ -74,13 +67,8 @@ program TowerDefenseGame {
 				tdGame.currentStage()
 			) }
 	)
-	keyboard.o().onPressDo({ gameOverScreen.beDisplayed() })
-	keyboard.r().onPressDo({ gameOverScreen.removeDisplay() })
 	
-	keyboard.q().onPressDo({ stage_0.startCurrentRound() })
-	keyboard.w().onPressDo({ stage_0.currentRound().end() })
-	
-	keyboard.a().onPressDo({ stage_0.addResources(10) })
-	keyboard.s().onPressDo({ stage_0.substractResources(10) })
-	keyboard.d().onPressDo({ stage_0.core().receiveDamage(10) })
-}
+	keyboard.q().onPressDo({ tdGame.currentStage().startCurrentRound() })
+	keyboard.w().onPressDo({ tdGame.currentStage().currentRound().end() })
+	keyboard.c().onPressDo({ tdGame.currentStage().clear() })
+	}
