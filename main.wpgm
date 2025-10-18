@@ -68,7 +68,6 @@ program TowerDefenseGame {
 			) }
 	)
 	
-	keyboard.q().onPressDo({ tdGame.currentStage().startCurrentRound() })
-	keyboard.w().onPressDo({ tdGame.currentStage().currentRound().end() })
+	keyboard.q().onPressDo({ tdGame.startCurrentRound() })
 	keyboard.c().onPressDo({ tdGame.currentStage().clear() })
 	}

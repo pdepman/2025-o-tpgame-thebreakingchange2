@@ -29,6 +29,12 @@ object tdGame {
 	method loadStage() {
 		currentStage.load()
 	}
+
+	method startCurrentRound() {
+		currentStage.startCurrentRound()
+	}
+
+	method core() = currentStage.core()
 }
 
 class BasicPlayer {
@@ -98,7 +104,7 @@ class Stage {
 	method currentRound() = rounds.get(roundIndex)
 	
 	method startCurrentRound() {
-		self.currentRound().start(self)
+		self.currentRound().start(path)
 	}
 	
 	method advanceRoundIndex() {
@@ -200,13 +206,13 @@ class Round {
 	
 	method enemiesRemaining() = enemiesRemaining
 	
-	method start(stage) {
-		game.onTick(2000, tickId, { self.spawnNextEnemy(stage) })
+	method start(path) {
+		game.onTick(2000, tickId, { self.spawnNextEnemy(path) })
 	}
 	
-	method spawnNextEnemy(stage) {
+	method spawnNextEnemy(path) {
 		if (enemiesIndex < enemies.size()) {
-			self.nextEnemy().spawn(stage)
+			self.nextEnemy().spawn(path)
 			self.advanceEnemiesIndex()
 		}
 	}

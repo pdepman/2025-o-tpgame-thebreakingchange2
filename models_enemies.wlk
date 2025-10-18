@@ -16,10 +16,10 @@ class Enemy {
 
     method tickMs() = 1000/speed
 
-    method spawn(stage) {
+    method spawn(path) {
 		enemiesRegistry.add(self)
         game.addVisual(self)
-        tickEvent = game.tick(self.tickMs(), {self.goForward(stage)}, true)
+        tickEvent = game.tick(self.tickMs(), {self.goForward(path)}, true)
         tickEvent.start()
     }
 
@@ -29,14 +29,14 @@ class Enemy {
     	tickEvent.stop()
 	}
 
-    method goForward(stage) {
-        position = stage.path().get(pathPosition).position()
+    method goForward(path) {
+        position = path.get(pathPosition).position()
 
-        if (self.isAtTheEndOfThePath(stage.path())) {
-            self.doDamage(stage.core())
+        if (self.isAtTheEndOfThePath(path)) {
+            self.doDamage(tdGame.core())
         }
         
-        pathPosition = stage.path().size().min(pathPosition + 1)
+        pathPosition = path.size().min(pathPosition + 1)
     }
 
     method isAtTheEndOfThePath(path) = path.last().position() == position
