@@ -12,6 +12,8 @@ class Tower {
   method image()
   
   method cost() = cost
+  method power() = power
+  method range() = range
   
   method spawn() {
     game.addVisual(self)
