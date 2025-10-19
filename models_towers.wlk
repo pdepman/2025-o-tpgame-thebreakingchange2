@@ -7,6 +7,7 @@ class Tower {
   const range
   const attack
   const cost
+  var status = "idle"
   var attackTick = game.tick(1000, {   }, false)
   
   method image()
@@ -36,9 +37,19 @@ class Tower {
   }
   
   method attackEnemy(enemy) {
-    if (enemy != null) attack.doAttack(power, enemy)
+    if (enemy != null) {
+      self.triggerAttackAnimation()
+      attack.doAttack(power, enemy)
+    }
   }
+
+  method status(newStatus) { status = newStatus} 
   
+  method triggerAttackAnimation() {
+    self.status("attacking")
+    game.schedule(250, { self.status("idle") })
+  }
+
   method enemyToAttack(enemies) {
     if (enemies.isEmpty()) {
       return null
@@ -84,7 +95,7 @@ class BasicTower inherits Tower (
   range = 3,
   attackSpeed = 1000
 ) {
-  override method image() = "tower_basic.png"
+  override method image() = "tower_basic_" + status + ".png"
 }
 
 class PiercingTower inherits Tower (
@@ -94,7 +105,7 @@ class PiercingTower inherits Tower (
   range = 3,
   attackSpeed = 2000
 ) {
-  override method image() = "tower_piercing.png"
+  override method image() = "tower_piercing_" + status + ".png"
 }
 
 class SlowingTower inherits Tower (
@@ -104,5 +115,5 @@ class SlowingTower inherits Tower (
   range = 3,
   attackSpeed = 1500
 ) {
-  override method image() = "tower_slowing.png"
+  override method image() = "tower_slowing_" + status + ".png"
 }
