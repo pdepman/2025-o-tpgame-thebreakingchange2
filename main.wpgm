@@ -14,45 +14,7 @@ program TowerDefenseGame {
 	hud.beDisplayed()
 	
 	const player = new BasicPlayer(position = game.center())
-	game.addVisual(player)
-
-	keyboard.up().onPressDo(
-		{ if(player.position().y() < game.height()-1) player.position(player.position().up(1)) })
-    keyboard.down().onPressDo(
-		{ if(player.position().y() > 0) player.position(player.position().down(1)) })
-    keyboard.right().onPressDo(
-		{ if (player.position().x() < hud.limit()) player.position(
-			player.position().right(1)
-		)})
-    keyboard.left().onPressDo(
-		{ if (player.position().x() > 0) player.position(player.position().left(1)) })
-
-	keyboard.num1().onPressDo(
-		{ player.addTower(
-				new BasicTower(
-					position = player.position()
-				),
-				tdGame.currentStage()
-			) }
-	)
-	
-	keyboard.num2().onPressDo(
-		{ player.addTower(
-				new PiercingTower(
-					position = player.position()
-				),
-				tdGame.currentStage()
-			) }
-	)
-	
-	keyboard.num3().onPressDo(
-		{ player.addTower(
-				new SlowingTower(
-					position = player.position()
-				),
-				tdGame.currentStage()
-			) }
-	)
+	player.beDisplayed()
 	
 	keyboard.q().onPressDo({ tdGame.startCurrentRound() })
 	keyboard.c().onPressDo({ tdGame.currentStage().clear() })

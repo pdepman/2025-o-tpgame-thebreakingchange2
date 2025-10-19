@@ -69,6 +69,18 @@ class BasicPlayer {
 	method isInBuildingZone(prohibitedZones) = prohibitedZones.any(
 		{ element => element.position() == position }
 	).negate()
+
+	method beDisplayed(){
+		game.addVisual(self)
+		keyboard.up().onPressDo({ if(self.position().y() < game.height()-1) self.position(self.position().up(1)) })
+    	keyboard.down().onPressDo({ if(self.position().y() > 0) self.position(self.position().down(1)) })
+    	keyboard.right().onPressDo({ if (self.position().x() < hud.limit()) self.position(self.position().right(1))})
+    	keyboard.left().onPressDo({ if (self.position().x() > 0) self.position(self.position().left(1)) })
+		
+		keyboard.num1().onPressDo({ self.addTower(new BasicTower(position = self.position()), tdGame.currentStage())})
+		keyboard.num2().onPressDo({ self.addTower(new PiercingTower(position = self.position()), tdGame.currentStage())})
+		keyboard.num3().onPressDo({ self.addTower(new SlowingTower(position = self.position()), tdGame.currentStage())})
+	}
 }
 
 class Stage {
