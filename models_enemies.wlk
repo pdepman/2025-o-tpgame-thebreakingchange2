@@ -120,7 +120,7 @@ class ArmoredEnemy inherits Enemy {
 }
 
 class ExplosiveEnemy inherits Enemy {
-	const radius = 10
+	const radius = 5
 
 	override method image() = "enemy_explosive.png"
 	
@@ -142,9 +142,9 @@ class ExplosiveEnemy inherits Enemy {
 	}
 
     method blowUp() {
+        self.die()
         self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveBlowUpDamage(power)})
         game.sound("sfx_alf_pop.wav").play()
-        self.die()
     }
 
     method enemiesInRange(enemies) = enemies.filter({ enemy => self.isInRange(enemy) })

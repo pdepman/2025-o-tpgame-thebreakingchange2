@@ -1,4 +1,6 @@
 import models_game.*
+import stage_0.stage_0
+import stage_1.stage_1
 
 const stage_selector = new Stage(
 	path = path,
@@ -45,6 +47,9 @@ new Road(position = game.at(14, 7)),
 new Road(position = game.at(15, 7)),
 new Road(position = game.at(16, 8)),
 new Road(position = game.at(16, 9)),
-new Road(position = game.at(16, 10))
+new Road(position = game.at(16, 10)),
+// Stage Selectors
+new StageSelector(position = game.at(8, 2), stage = stage_0, name = "0"),
+new StageSelector(position = game.at(10, 2), stage = stage_1, name = "1")
 ]
 

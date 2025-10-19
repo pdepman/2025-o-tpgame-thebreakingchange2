@@ -1,20 +1,6 @@
 import wollok.game.*
-import stage_0.*
-import models_game.*
-import models_hud.*
-import models_towers.*
+import models_game.tdGame
 
 program TowerDefenseGame {
 	tdGame.start()
-	
-	tdGame.selectStage(0)
-	tdGame.loadStage()
-	
-	hud.setupHudTiles()
-	hud.beDisplayed()
-	
-	player.beDisplayed()
-	
-	keyboard.q().onPressDo({ tdGame.startCurrentRound() })
-	keyboard.c().onPressDo({ tdGame.currentStage().clear() })
 }
