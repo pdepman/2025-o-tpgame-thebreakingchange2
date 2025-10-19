@@ -7,7 +7,7 @@ class Tower {
   const range
   const attack
   const cost
-  var tickEvent = game.tick(1000, {   }, false)
+  var attackTick = game.tick(1000, {   }, false)
   
   method image()
   
@@ -16,23 +16,19 @@ class Tower {
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
-    tickEvent = game.tick(
-      attackSpeed,
-      { self.attackEnemy(
-          self.enemyToAttack(
-            self.enemiesInRange(
-              tdGame.enemiesInPlay()
-            )
-          )
-        ) },
-      true
-    )
-    tickEvent.start()
+    attackTick = game.tick(attackSpeed, { self.attackInRange() }, true)
+    attackTick.start()
   }
   
   method despawn() {
     game.removeVisual(self)
-    tickEvent.stop()
+    attackTick.stop()
+  }
+  
+  method attackInRange() {
+    self.attackEnemy(
+      self.enemyToAttack(self.enemiesInRange(tdGame.enemiesInPlay()))
+    )
   }
   
   method attackEnemy(enemy) {
@@ -51,17 +47,7 @@ class Tower {
         else enemyWithMaxPath }
     )
   }
-  
-  // Alternative enemy selection technique
-  // method enemyToAttackBySort(enemies) {
-  //   if (enemies.isEmpty()) {
-  //     return null
-  //   } 
-  //   return self.orderedEnemiesInRange(enemies).head()
-  // }
-  // method orderedEnemiesInRange(enemies) = self.enemiesInRange(enemies).sortedBy(
-  //   { e1, e2 => e1.pathPosition() > e2.pathPosition() }
-  // )
+
   method enemiesInRange(enemies) = enemies.filter(
     { enemy => self.isInRange(enemy) }
   )

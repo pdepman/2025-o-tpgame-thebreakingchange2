@@ -57,37 +57,29 @@ object hud {
     )
   }
 
-  method limit() = hudTiles.get(0).position().x()-1
-
   method beDisplayed() {
     hudTiles.forEach({ tile => game.addVisual(tile) })
-    gameTitle.beDisplayed()
-    stageProgressVisualizer.beDisplayed()
-    enemiesRemainingVisualizer.beDisplayed()
-    resourcesVisualizer.beDisplayed()
-    hpVisualizer.beDisplayed()
+    game.addVisual(gameTitle)
+    game.addVisual(stageProgressVisualizer)
+    game.addVisual(enemiesRemainingVisualizer)
+    game.addVisual(resourcesVisualizer)
+    game.addVisual(hpVisualizer)
   }
+
+  method limit() = hudTiles.get(0).position().x()-1
 }
 
 object gameTitle {
   const property position = game.at(19, 12)
+  
   method image() = "hud_game_title.png"
-
-  method beDisplayed(){
-    game.addVisual(self)
-  }
 }
-
 
 object stageProgressVisualizer {
   const property position = game.at(19, 10)
 
   method text() = "🚩 " + tdGame.currentStage().roundsRemaining().toString()
   method textColor() = "FFFFFFFF"
-
-  method beDisplayed(){
-    game.addVisual(self)
-  }
 }
 
 object enemiesRemainingVisualizer {
@@ -95,50 +87,24 @@ object enemiesRemainingVisualizer {
 
   method text() = "💀 " + tdGame.enemiesRemaining().toString()
   method textColor() = "FFFFFFFF"
-
-  method beDisplayed(){
-    game.addVisual(self)
-  }
 }
 
 object hpVisualizer {
   const property position = game.at(19, 9)
 
   method text() = "❤️ " + tdGame.currentStage().core().hp().toString()
-
   method textColor() = "FFFFFFFF"
-
-  method beDisplayed(){
-    game.addVisual(self)
-  }
 }
 
 object resourcesVisualizer {
   const property position = game.at(21, 9)
   
   method text() = "🪙 " + tdGame.currentStage().resources().toString()
-  
   method textColor() = "FFFFFFFF"
   
-  method beDisplayed() {
-    game.addVisual(self)
-  }
 }
 
-class ImageDisplayable {
-  const property position
-  const imagePath
-
-  method image() = imagePath
-
-  method beDisplayed() {
-    game.addVisual(self)
-  }
-
-}
-
-
-class FancyScreen {
+class BlinkScreen {
     
   const property position = game.origin()
   var beingDisplayed = false
@@ -165,14 +131,10 @@ class FancyScreen {
   }
 }
 
-object gameOverScreen inherits FancyScreen{
+object gameOverScreen inherits BlinkScreen{
     override method image() = "screen_gameover.png"
 }
 
-object victoryScreen inherits FancyScreen{
+object victoryScreen inherits BlinkScreen{
     override method image() = "screen_victory.png"
-}
-
-object loseScreen inherits FancyScreen{
-    override method image() = "screen_gameover.png" 
 }

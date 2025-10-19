@@ -6,7 +6,7 @@ class Enemy {
     var hp
     const power
     var speed
-    var tickEvent = game.tick(1000, {}, false)
+    var movementTick = game.tick(1000, {}, false)
 
 	method pathPosition() = pathPosition
 
@@ -18,13 +18,13 @@ class Enemy {
 
     method spawn(path) {
         game.addVisual(self)
-        tickEvent = game.tick(self.tickMs(), {self.goForward(path)}, true)
-        tickEvent.start()
+        movementTick = game.tick(self.tickMs(), {self.goForward(path)}, true)
+        movementTick.start()
     }
 
     method despawn() {
     	game.removeVisual(self)
-    	tickEvent.stop()
+    	movementTick.stop()
 	}
 
     method goForward(path) {
@@ -61,7 +61,7 @@ class Enemy {
 	method beSlowed(){
 		game.sound("sfx_hit_slowing.wav").play()
 		speed = 0.25.max(speed / 2)
-        tickEvent.interval(self.tickMs())
+        movementTick.interval(self.tickMs())
 	}
 
     method die() {

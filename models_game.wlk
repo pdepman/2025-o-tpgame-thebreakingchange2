@@ -1,4 +1,5 @@
 import models_hud.*
+import stage_placeholder.placeHolderStage
 import stage_0.stage_0
 import stage_1.stage_1
 import models_towers.*
@@ -46,7 +47,6 @@ object tdGame {
 
 	method completeRound() {
 		currentStage.completeRound()
-	  
 	}
 }
 
@@ -63,19 +63,22 @@ class BasicPlayer {
 	method isInBuildingZone(prohibitedZones) = prohibitedZones.any(
 		{ road => road.position() == position }
 	).negate()
-
-	
-	// method blockedMove()
 }
 
 class Stage {
 	const path
 	const core
 	const rounds
-	var currentRound = rounds.dequeue()
 	const towers = []
+	var currentRound = rounds.dequeue()
 	var resources
 	
+	method path() = path
+	method core() = core
+	method towers() = towers
+	method resources() = resources
+	method currentRound() = currentRound
+
 	method load() {
 		self.displayPath()
 		core.beDisplayed()
@@ -85,17 +88,8 @@ class Stage {
 		self.removePath()
 		core.beRemoved()
 		towers.forEach({tower => tower.despawn()})
-		// Limpio coro de la pantalla
-		// Limpio el personaje de la pantalla UFF PODRIA USAR EL PERSONAJE PARA SELECCIONAR EL NIVEL
-		// Vuelvo todas las variables a su estado inicial
 	}
 	
-	method path() = path
-	
-	method core() = core
-	
-	method towers() = towers
-
 	method reset() {
 		self.clear()
 		self.load()
@@ -111,10 +105,6 @@ class Stage {
 	method substractResources(amount) {
 		resources -= amount
 	}
-	
-	method resources() = resources
-	
-	method currentRound() = currentRound
 	
 	method startCurrentRound() {
 		currentRound.start(path)
@@ -150,11 +140,11 @@ class Stage {
 	}
 	
 	method displayPath() {
-		path.forEach({ road => road.beDisplayed() })
+		path.forEach({ road => game.addVisual(road)})
 	}
 
 	method removePath() {
-		path.forEach({ road => road.beRemoved()})
+		path.forEach({ road => game.removeVisual(road)})
 	}
 
 	method discountEnemy(enemy) {
@@ -172,13 +162,6 @@ class Road {
 	const property position
 	
 	method image() = "tile_road.png"
-	
-	method beDisplayed() {
-		game.addVisual(self)
-	}
-	method beRemoved() {
-		game.removeVisual(self)
-	}
 }
 
 class Core {
@@ -211,7 +194,8 @@ class Round {
 	const enemiesQueue
 	const enemiesInPlay = []
 	const resourcesReward
-	const tickId = ("round-" + self.identity()) + "control"
+	const enemySpawnFrecuency = 2000
+	var enemySpawnTick = game.tick(1000, { }, false)
 	
 	method enemiesQueue() = enemiesQueue
 	method enemiesRemaining() = enemiesQueue.size() + enemiesInPlay.size()
@@ -221,7 +205,8 @@ class Round {
 	method resourcesReward() = resourcesReward
 		
 	method start(path) {
-		game.onTick(2000, tickId, { self.spawnNextEnemy(path) })
+		enemySpawnTick = game.tick(enemySpawnFrecuency, { self.spawnNextEnemy(path) }, true)
+		enemySpawnTick.start()
 	}
 	
 	method spawnNextEnemy(path) {
@@ -233,7 +218,7 @@ class Round {
 	}
 	
 	method end() {
-		game.removeTickEvent(tickId)
+		enemySpawnTick.stop()
 		tdGame.completeRound()
 	}
 	
@@ -245,15 +230,6 @@ class Round {
 	method isComplete() = self.enemiesRemaining() == 0
 
 }
-
-const placeHolderStage = new Stage(
-	path = [],
-	core = new Core(position = game.start(), hp = 100),
-	resources = 100,
-	rounds = new Queue(list = [placeHolderRound])
-)
-
-const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)
 
 class Queue {
 	const list = []
