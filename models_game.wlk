@@ -10,22 +10,24 @@ object tdGame {
 	method currentStage() = currentStage
 	method currentStage(stage) { currentStage = stage }
 	
-	method setupConfig() {
+	method setupGame() {
 		game.title("Tower Defense")
 		game.height(14)
 		game.width(23)
 		game.cellSize(60)
 		game.ground("tile_default.png")
-			
+		game.start()
+	}
+
+	method setupControls() {
 		keyboard.space().onPressDo({ self.startCurrentRound() })
 		keyboard.r().onPressDo({ self.swapStages(stage_selector) })
-
 		player.controlSetup()
 	}
 	
 	method start() {
-		self.setupConfig()
-		game.start()
+		self.setupGame()
+		self.setupControls()
 		self.loadStage()
 		hud.beDisplayed()
 		game.addVisual(player)
