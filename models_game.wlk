@@ -50,6 +50,10 @@ object tdGame {
 	}
 
 	method hp() = currentStage.hp()
+
+	method roundsRemaining() = currentStage.roundsRemaining()
+
+	method resources() = currentStage.resources()
 }
 
 class BasicPlayer {

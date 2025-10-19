@@ -78,7 +78,7 @@ object gameTitle {
 object stageProgressVisualizer {
   const property position = game.at(19, 10)
 
-  method text() = "🚩 " + tdGame.currentStage().roundsRemaining().toString()
+  method text() = "🚩 " + tdGame.roundsRemaining().toString()
   method textColor() = "FFFFFFFF"
 }
 
@@ -99,9 +99,8 @@ object hpVisualizer {
 object resourcesVisualizer {
   const property position = game.at(21, 9)
   
-  method text() = "🪙 " + tdGame.currentStage().resources().toString()
-  method textColor() = "FFFFFFFF"
-  
+  method text() = "🪙 " + tdGame.resources().toString()
+  method textColor() = "FFFFFFFF"  
 }
 
 class BlinkScreen {
