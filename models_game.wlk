@@ -56,8 +56,8 @@ object tdGame {
 	method resources() = currentStage.resources()
 }
 
-class BasicPlayer {
-	var property position
+object player {
+	var property position = game.center()
 	
 	method image() = "player.png"
 	

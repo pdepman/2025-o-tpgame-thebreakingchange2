@@ -13,7 +13,6 @@ program TowerDefenseGame {
 	hud.setupHudTiles()
 	hud.beDisplayed()
 	
-	const player = new BasicPlayer(position = game.center())
 	player.beDisplayed()
 	
 	keyboard.q().onPressDo({ tdGame.startCurrentRound() })
