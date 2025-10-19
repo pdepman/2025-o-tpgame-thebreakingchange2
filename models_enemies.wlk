@@ -57,6 +57,8 @@ class Enemy {
 	method receivePiercingAttack(damage)
 
 	method receiveSlowingAttack(damage)
+    
+    method receiveBlowUpDamage(damage)
 
 	method beSlowed(){
 		game.sound("sfx_hit_slowing.wav").play()
@@ -90,6 +92,10 @@ class BasicEnemy inherits Enemy {
 		self.receiveDamage(damage)
 		self.beSlowed()
 	}
+
+    override method receiveBlowUpDamage(damage){
+        self.receiveDamage(damage)
+    }
 }
 
 class ArmoredEnemy inherits Enemy {
@@ -106,6 +112,10 @@ class ArmoredEnemy inherits Enemy {
 	override method receiveSlowingAttack(damage){
 		self.receiveDamage(0)
 		self.beSlowed()
+	}
+
+    override method receiveBlowUpDamage(damage){
+		self.receiveDamage(0)
 	}
 }
 
@@ -127,8 +137,12 @@ class ExplosiveEnemy inherits Enemy {
 		self.beSlowed()
 	}
 
+    override method receiveBlowUpDamage(damage){
+		self.blowUp()
+	}
+
     method blowUp() {
-        self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveDamage(power)})
+        self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveBlowUpDamage(power)})
         game.sound("sfx_alf_pop.wav").play()
         self.die()
     }

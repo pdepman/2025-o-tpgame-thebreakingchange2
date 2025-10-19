@@ -146,13 +146,6 @@ describe "Tests de deteccion de las torres" {
     power = 10,
     speed = 1
   )
-
-  const enemyInRangeDead = new BasicEnemy(
-    position = game.at(0, 1),
-    hp = 0,
-    power = 10,
-    speed = 1
-  )
   
   test "Un enemigo ubicado a menos o igual cantidad casilleros del rango de la torre forma parte de sus enemigos en rango" {
     assert.that(basicTower.isInRange(enemyInRange))

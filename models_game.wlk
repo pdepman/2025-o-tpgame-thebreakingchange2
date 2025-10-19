@@ -62,12 +62,12 @@ class BasicPlayer {
 	method image() = "player.png"
 	
 	method addTower(tower, stage) {
-		if (self.isInBuildingZone(stage.path())) stage.addTower(tower)
+		if (self.isInBuildingZone(stage.path() + stage.towers())) stage.addTower(tower)
 		else game.sound("sfx_cannot_build.mp3").play()
 	}
 	
 	method isInBuildingZone(prohibitedZones) = prohibitedZones.any(
-		{ road => road.position() == position }
+		{ element => element.position() == position }
 	).negate()
 }
 

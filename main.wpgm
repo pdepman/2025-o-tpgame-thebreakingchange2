@@ -7,7 +7,7 @@ import models_towers.*
 program TowerDefenseGame {
 	tdGame.start()
 	
-	tdGame.selectStage(0)
+	tdGame.selectStage(1)
 	tdGame.loadStage()
 	
 	hud.setupHudTiles()
@@ -30,12 +30,7 @@ program TowerDefenseGame {
 	keyboard.num1().onPressDo(
 		{ player.addTower(
 				new BasicTower(
-					attack = basicAttack,
-					position = player.position(),
-					power = 1,
-					attackSpeed = 1000,
-					range = 3,
-					cost = 50
+					position = player.position()
 				),
 				tdGame.currentStage()
 			) }
@@ -44,12 +39,7 @@ program TowerDefenseGame {
 	keyboard.num2().onPressDo(
 		{ player.addTower(
 				new PiercingTower(
-					attack = piercingAttack,
-					position = player.position(),
-					power = 1,
-					attackSpeed = 2000,
-					range = 3,
-					cost = 100
+					position = player.position()
 				),
 				tdGame.currentStage()
 			) }
@@ -58,12 +48,7 @@ program TowerDefenseGame {
 	keyboard.num3().onPressDo(
 		{ player.addTower(
 				new SlowingTower(
-					attack = slowingAttack,
-					position = player.position(),
-					power = 0,
-					attackSpeed = 1500,
-					range = 3,
-					cost = 100
+					position = player.position()
 				),
 				tdGame.currentStage()
 			) }

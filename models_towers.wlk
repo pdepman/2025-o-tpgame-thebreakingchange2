@@ -12,7 +12,9 @@ class Tower {
   method image()
   
   method cost() = cost
+  
   method power() = power
+  
   method range() = range
   
   method spawn() {
@@ -49,7 +51,7 @@ class Tower {
         else enemyWithMaxPath }
     )
   }
-
+  
   method enemiesInRange(enemies) = enemies.filter(
     { enemy => self.isInRange(enemy) }
   )
@@ -75,14 +77,32 @@ object slowingAttack {
   }
 }
 
-class BasicTower inherits Tower {
+class BasicTower inherits Tower (
+  attack = basicAttack,
+  power = 1,
+  cost = 50,
+  range = 3,
+  attackSpeed = 1000
+) {
   override method image() = "tower_basic.png"
 }
 
-class PiercingTower inherits Tower {
+class PiercingTower inherits Tower (
+  attack = piercingAttack,
+  power = 1,
+  cost = 150,
+  range = 3,
+  attackSpeed = 2000
+) {
   override method image() = "tower_piercing.png"
 }
 
-class SlowingTower inherits Tower {
+class SlowingTower inherits Tower (
+  attack = slowingAttack,
+  power = 0,
+  cost = 100,
+  range = 3,
+  attackSpeed = 1500
+) {
   override method image() = "tower_slowing.png"
 }
