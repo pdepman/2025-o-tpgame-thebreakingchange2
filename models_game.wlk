@@ -216,7 +216,7 @@ class Road {
 class Core {
 	var property position
 	
-	method image() = "core.png"
+	method image() = "tile_core.png"
 
 	method beDisplayed() {
 		game.addVisual(self)
