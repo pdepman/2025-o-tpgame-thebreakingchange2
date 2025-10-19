@@ -96,12 +96,14 @@ class BasicEnemy inherits Enemy {
     override method receiveBlowUpDamage(damage){
         self.receiveDamage(damage)
     }
+
+    method clone() = new BasicEnemy(hp = hp, power = power , speed = speed)
 }
 
 class ArmoredEnemy inherits Enemy {
     override method image() = "enemy_armored.png"
 
-	    override method receiveBasicAttack(damage){
+	override method receiveBasicAttack(damage){
 		game.sound("sfx_hit_resisted.wav").play()
 	}
 
@@ -117,6 +119,8 @@ class ArmoredEnemy inherits Enemy {
     override method receiveBlowUpDamage(damage){
 		self.receiveDamage(0)
 	}
+
+    method clone() = new ArmoredEnemy(hp = hp , power = power, speed = speed)
 }
 
 class ExplosiveEnemy inherits Enemy {
@@ -150,4 +154,6 @@ class ExplosiveEnemy inherits Enemy {
     method enemiesInRange(enemies) = enemies.filter({ enemy => self.isInRange(enemy) })
   
     method isInRange(enemy) = position.distance(enemy.position()) <= radius
+
+    method clone() = new ExplosiveEnemy(hp = hp, power = power, speed = speed)
  }

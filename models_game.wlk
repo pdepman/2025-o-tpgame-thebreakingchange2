@@ -5,10 +5,10 @@ import stage_1.stage_1
 import models_towers.*
 
 object tdGame {
-	var currentStage = stage_selector
+	var currentStage = stage_selector.clone()
 	
 	method currentStage() = currentStage
-	method currentStage(stage) { currentStage = stage }
+	method currentStage(stage) { currentStage = stage.clone() }
 	
 	method setupGame() {
 		game.title("Tower Defense")
@@ -36,16 +36,9 @@ object tdGame {
 	method swapStages(stage) {
 		currentStage.clear()
 		player.position(game.at(9,4))
-		currentStage = stage
+		self.currentStage(stage)
 		currentStage.load()
 		player.refreshVisualZIndex()
-
-
-	}
-	
-	method selectStage(stage) {
-		currentStage = stage
-		self.loadStage()
 	}
 	
 	method loadStage() {
@@ -112,7 +105,7 @@ class Stage {
 	const path
 	const rounds
 	const towers = []
-	var currentRound = rounds.dequeue()
+	var currentRound = new Round(enemiesQueue = [], resourcesReward = 0)
 	var resources
 	var hp = 100
 	
@@ -124,14 +117,19 @@ class Stage {
 
 	method load() {
 		self.displayPath()
+		currentRound = rounds.dequeue()
 	}
 	
 	method clear() {
+		victoryScreen.removeDisplay()
+		gameOverScreen.removeDisplay()
 		self.removePath()
 		currentRound.clear()
 		towers.forEach({tower => tower.despawn()})
 	}
-	
+
+	method clone() = new Stage(path = path, rounds = rounds.clone(), resources = resources) 
+
 	method reset() {
 		self.clear()
 		self.load()
@@ -239,6 +237,9 @@ class Round {
 	
 	method resourcesReward() = resourcesReward
 
+	method clone() = new Round(enemiesQueue = enemiesQueue.clone(), resourcesReward = resourcesReward)
+	
+
 	method clear() {
 		enemySpawnTick.stop()
 		enemiesInPlay.forEach({ enemy => enemy.despawn()})
@@ -276,6 +277,13 @@ class Queue {
 
 	method enqueue(element) {
 		list.add(element)
+	}
+
+	method clone() {
+		// La buena lista, nada le gana
+		const clonedQueue = new Queue(list = [])
+		list.forEach({element => clonedQueue.enqueue(element.clone())})
+		return clonedQueue
 	}
 
 	method dequeue() {
