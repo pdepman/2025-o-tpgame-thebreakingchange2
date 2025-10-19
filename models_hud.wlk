@@ -71,7 +71,7 @@ object hud {
 
 object gameTitle {
   const property position = game.at(19, 12)
-  
+
   method image() = "hud_game_title.png"
 }
 
@@ -92,7 +92,7 @@ object enemiesRemainingVisualizer {
 object hpVisualizer {
   const property position = game.at(19, 9)
 
-  method text() = "❤️ " + tdGame.currentStage().core().hp().toString()
+  method text() = "❤️ " + tdGame.hp().toString()
   method textColor() = "FFFFFFFF"
 }
 

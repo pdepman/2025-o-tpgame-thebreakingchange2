@@ -54,6 +54,7 @@ program TowerDefenseGame {
 				tdGame.currentStage()
 			) }
 	)
+	
 	keyboard.num3().onPressDo(
 		{ player.addTower(
 				new SlowingTower(
@@ -70,4 +71,4 @@ program TowerDefenseGame {
 	
 	keyboard.q().onPressDo({ tdGame.startCurrentRound() })
 	keyboard.c().onPressDo({ tdGame.currentStage().clear() })
-	}
+}

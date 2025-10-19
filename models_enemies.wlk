@@ -31,7 +31,7 @@ class Enemy {
         position = path.get(pathPosition).position()
 
         if (self.isAtTheEndOfThePath(path)) {
-            self.doDamage(tdGame.core())
+            self.doDamage(tdGame.currentStage())
         }
         
         pathPosition = path.size().min(pathPosition + 1)

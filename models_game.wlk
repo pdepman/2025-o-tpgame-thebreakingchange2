@@ -48,6 +48,8 @@ object tdGame {
 	method completeRound() {
 		currentStage.completeRound()
 	}
+
+	method hp() = currentStage.hp()
 }
 
 class BasicPlayer {
@@ -67,26 +69,24 @@ class BasicPlayer {
 
 class Stage {
 	const path
-	const core
 	const rounds
 	const towers = []
 	var currentRound = rounds.dequeue()
 	var resources
+	var hp = 100
 	
 	method path() = path
-	method core() = core
 	method towers() = towers
 	method resources() = resources
 	method currentRound() = currentRound
+	method hp() = hp
 
 	method load() {
 		self.displayPath()
-		core.beDisplayed()
 	}
 	
 	method clear() {
 		self.removePath()
-		core.beRemoved()
 		towers.forEach({tower => tower.despawn()})
 	}
 	
@@ -155,7 +155,14 @@ class Stage {
 
 	method enemiesInPlay() = currentRound.enemiesInPlay()
 
+	method receiveDamage(damage) {
+		hp -= damage
+		if(self.shouldLose()){
+			self.lose()	
+		}
+	}
 
+	method shouldLose() = hp <= 0
 }
 
 class Road {
@@ -166,28 +173,8 @@ class Road {
 
 class Core {
 	var property position
-	var hp
 	
 	method image() = "core.png"
-	
-	method hp() = hp
-	
-	method receiveDamage(damage) {
-		hp -= damage
-		if(self.isDestroyed()){
-			tdGame.currentStage().lose()	
-		}
-	}
-	
-	method isDestroyed() = hp <= 0
-	
-	method beDisplayed() {
-		game.addVisual(self)
-	}
-
-	method beRemoved() {
-		game.removeVisual(self)
-	}
 }
 
 class Round {

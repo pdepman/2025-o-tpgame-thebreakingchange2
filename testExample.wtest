@@ -185,7 +185,7 @@ describe "Pruebas de los recursos" {
     range = 2,
     cost = 50
   )
-  const testStage = new Stage(path = [], core = null, rounds = new Queue(list=[]), towers = [], resources = 100)
+  const testStage = new Stage(path = [], rounds = new Queue(list=[]), towers = [], resources = 100)
   test "Cuando se coloca una torre los recursos de un nivel disminuyen en su coste" {
     testStage.addTower(basicTower)
     assert.equals(50, testStage.resources()) 
@@ -204,25 +204,25 @@ describe "Pruebas de interacción entre el core y el enemigo" {
     speed = 1
   )
 
-  const enemyToKillCore = new BasicEnemy(
+  const enemyToLoseStage = new BasicEnemy(
     position = game.origin(),
     hp = 100,
     power = 100,
     speed = 1
   )
 
-  const testCore = new Core(position = game.center(), hp = 100)
-  test "El core pierde vida cuando un enemigo lo ataca" {
-    basicEnemy.doDamage(testCore)
-    assert.equals(90, testCore.hp()) 
+  const testStage = new Stage(path = [], rounds = new Queue(list=[]), towers = [], resources = 100)
+  test "Una stage pierde vida cuando un enemigo le hace danio" {
+    basicEnemy.doDamage(testStage)
+    assert.equals(90, testStage.hp()) 
   }
-  test "El enemigo muere al llegar al core"{
-    basicEnemy.doDamage(testCore)
+  test "El enemigo muere al hacer danio"{
+    basicEnemy.doDamage(testStage)
     assert.that(basicEnemy.isDead())
   }
 
-  test "El core muere al llegar a cero o menos de vida"{
-    enemyToKillCore.doDamage(testCore)
-    assert.that(testCore.isDestroyed())
+  test "Una stage deberia perder si su vida llega a cero"{
+    enemyToLoseStage.doDamage(testStage)
+    assert.that(testStage.shouldLose())
   }
 }
