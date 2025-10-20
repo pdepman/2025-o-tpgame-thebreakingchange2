@@ -49,8 +49,6 @@ object tdGame {
 		currentStage.startCurrentRound()
 	}
 
-	method core() = currentStage.core()
-
 	method discountEnemy(enemy) {
 		currentStage.discountEnemy(enemy)
 	}
@@ -68,6 +66,10 @@ object tdGame {
 	method roundsRemaining() = currentStage.roundsRemaining()
 
 	method resources() = currentStage.resources()
+
+	method addTower(tower) { currentStage.addTower(tower)}
+
+	method prohibitedZones() = currentStage.prohibitedZones()
 }
 
 object player {
@@ -75,12 +77,12 @@ object player {
 	
 	method image() = "player.png"
 	
-	method addTower(tower, stage) {
-		if (self.isInBuildingZone(stage.path() + stage.towers())) stage.addTower(tower)
+	method addTower(tower) {
+		if (self.isInBuildingZone()) tdGame.addTower(tower)
 		else game.sound("sfx_cannot_build.mp3").play()
 	}
 	
-	method isInBuildingZone(prohibitedZones) = prohibitedZones.any(
+	method isInBuildingZone() = tdGame.prohibitedZones().any(
 		{ element => element.position() == position }
 	).negate()
 
@@ -90,9 +92,9 @@ object player {
     	keyboard.right().onPressDo({ if (self.position().x() < hud.limit()) self.position(self.position().right(1))})
     	keyboard.left().onPressDo({ if (self.position().x() > 0) self.position(self.position().left(1)) })
 		
-		keyboard.num1().onPressDo({ self.addTower(new BasicTower(position = self.position()), tdGame.currentStage())})
-		keyboard.num2().onPressDo({ self.addTower(new PiercingTower(position = self.position()), tdGame.currentStage())})
-		keyboard.num3().onPressDo({ self.addTower(new SlowingTower(position = self.position()), tdGame.currentStage())})
+		keyboard.num1().onPressDo({ self.addTower(new BasicTower(position = self.position()))})
+		keyboard.num2().onPressDo({ self.addTower(new PiercingTower(position = self.position()))})
+		keyboard.num3().onPressDo({ self.addTower(new SlowingTower(position = self.position()))})
 	}
 
 	method refreshVisualZIndex() {
@@ -129,11 +131,6 @@ class Stage {
 	}
 
 	method clone() = new Stage(path = path, rounds = rounds.clone(), resources = resources) 
-
-	method reset() {
-		self.clear()
-		self.load()
-	}
 	
 	method roundsRemaining() = rounds.size() + 1
 	
@@ -203,6 +200,8 @@ class Stage {
 	}
 
 	method shouldLose() = hp <= 0
+
+	method prohibitedZones() = path + towers
 }
 
 class Road {
@@ -227,7 +226,7 @@ class Round {
 	const enemiesQueue
 	const enemiesInPlay = []
 	const resourcesReward
-	const enemySpawnFrecuency = 2000
+	const enemySpawnFrequency = 2000
 	var enemySpawnTick = game.tick(1000, { }, false)
 	
 	method enemiesQueue() = enemiesQueue
@@ -246,7 +245,7 @@ class Round {
 	}
 		
 	method start(path) {
-		enemySpawnTick = game.tick(enemySpawnFrecuency, { self.spawnNextEnemy(path) }, true)
+		enemySpawnTick = game.tick(enemySpawnFrequency, { self.spawnNextEnemy(path) }, true)
 		enemySpawnTick.start()
 	}
 	
