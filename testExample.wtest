@@ -1,3 +1,4 @@
+import models_game.Round
 import models_game.Queue
 import models_game.Core
 import models_game.Stage
@@ -189,7 +190,7 @@ describe "Pruebas de los recursos" {
   }
 }
 
-describe "Pruebas de interacción entre el core y el enemigo" {
+describe "Pruebas de stage" {
   const basicEnemy = new BasicEnemy(
     position = game.origin(),
     hp = 100,
@@ -205,6 +206,8 @@ describe "Pruebas de interacción entre el core y el enemigo" {
   )
 
   const testStage = new Stage(path = [], rounds = new Queue(list=[]), towers = [], resources = 100)
+
+  const testIncompleteStage = new Stage(path = [], rounds = new Queue(list=[new Round(enemiesQueue = [], resourcesReward = 0)]), towers = [], resources = 100)
   test "Una stage pierde vida cuando un enemigo le hace danio" {
     basicEnemy.doDamage(testStage)
     assert.equals(90, testStage.hp()) 
@@ -217,5 +220,13 @@ describe "Pruebas de interacción entre el core y el enemigo" {
   test "Una stage deberia perder si su vida llega a cero"{
     enemyToLoseStage.doDamage(testStage)
     assert.that(testStage.shouldLose())
+  }
+
+  test "Una stage esta completa (ganada) cuando ya no quedan rondas" {
+    assert.that(testStage.isComplete())
+  }
+
+  test "Una stage no esta completa (ganada) cuando todavia le quedan rondas" {
+    assert.notThat(testIncompleteStage.isComplete())
   }
 }
