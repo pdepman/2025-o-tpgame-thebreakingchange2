@@ -1,6 +1,5 @@
 ## Explicación breve del juego
-**WoToDe** es un juego de tipo tower defense, él cual consiste en defender nuestro núcleo vital de los enemigos que quieren destruirlo, para ello podemos crear torres, con distintos efectos, para cubrir nuestra razón de existir. Además, según el personaje elegido, tendremos poderes adicionales.
-
+**WoToDe** es un juego de tipo tower defense, él cual consiste en defender nuestro núcleo vital de los enemigos que quieren destruirlo, para ello podemos crear torres, con distintos efectos, para cubrir nuestra razón de existir.
 
 ## Objetos
 - player
