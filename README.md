@@ -24,7 +24,7 @@ UTN - Facultad Regional Buenos Aires - Materia Paradigmas de Programación
 
 ## Explicaciones teóricas y diagramas
 
-- Completar Link a .md
+- [Aplicación de conceptos teóricos](./aplicacionTeorica.md)
 
 
 
