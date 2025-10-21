@@ -77,6 +77,7 @@ Lo mismo sucede cuando el **player** quiere poner una torre en una posición esp
 
 # Diagramas
 ![Diagrama de Gameflor](diagrama_gameflow.png)
-* (Imagen 1) *
+*(Imagen 1)*
+
 ![Diagram de Tower y Enemy](diagrama_tower-enemy.png)
-* (Imagen 2)*
+*(Imagen 2)*
