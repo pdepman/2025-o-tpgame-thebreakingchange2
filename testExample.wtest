@@ -31,18 +31,21 @@ describe "Tests de interaccion entre torres y enemigos" {
     cost = 1
   )
   const basicEnemy = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.origin(),
     hp = 100,
     power = 10,
     speed = 1
   )
   const armoredEnemy = new ArmoredEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.origin(),
     hp = 100,
     power = 10,
     speed = 1
   )
   const explosiveEnemy = new ExplosiveEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.origin(),
     hp = 100,
     power = 10,
@@ -129,12 +132,14 @@ describe "Tests de deteccion de las torres" {
     cost = 50
   )
   const enemyInRange = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.at(0, 1),
     hp = 100,
     power = 10,
     speed = 1
   )
   const enemyInRangeFirst = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.at(0, 1),
     pathPosition = 100,
     hp = 100,
@@ -142,6 +147,7 @@ describe "Tests de deteccion de las torres" {
     speed = 1
   )
   const enemyOutsideRange = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.at(3, 3),
     hp = 100,
     power = 10,
@@ -192,6 +198,7 @@ describe "Pruebas de los recursos" {
 
 describe "Pruebas de stage" {
   const basicEnemy = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.origin(),
     hp = 100,
     power = 10,
@@ -199,6 +206,7 @@ describe "Pruebas de stage" {
   )
 
   const enemyToLoseStage = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
     position = game.origin(),
     hp = 100,
     power = 100,
