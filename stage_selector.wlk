@@ -26,14 +26,32 @@ new Road(position = game.at(5, 9)),
 new Road(position = game.at(5, 10)),
 new Road(position = game.at(5, 11)),
 //T
+
+new Road(position = game.at(7, 12)),
+new Road(position = game.at(9, 12)),
+new Road(position = game.at(11, 12)),
+
+
+
 new Road(position = game.at(7, 11)),
 new Road(position = game.at(8, 11)),
+new Road(position = game.at(8, 10)),
+new Road(position = game.at(8, 9)),
+new Road(position = game.at(8, 8)),
+new Road(position = game.at(8, 7)),
+
+
 new Road(position = game.at(9, 11)),
 new Road(position = game.at(10, 11)),
+new Road(position = game.at(10, 10)),
+new Road(position = game.at(10, 9)),
+new Road(position = game.at(10, 8)),
+new Road(position = game.at(10, 7)),
+
 new Road(position = game.at(11, 11)),
-new Road(position = game.at(9, 10)),
-new Road(position = game.at(9, 9)),
-new Road(position = game.at(9, 8)),
+// new Road(position = game.at(9, 10)),
+// new Road(position = game.at(9, 9)),
+// new Road(position = game.at(9, 8)),
 new Road(position = game.at(9, 7)),
 //D
 new Road(position = game.at(13, 11)),

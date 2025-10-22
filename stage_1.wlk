@@ -108,25 +108,25 @@ new Core(position = game.at(15, 11))
 ]
 
 const round_0 = new Round(enemiesQueue = new Queue(list = [
-    new BasicEnemy(hp = 1 , power = 10, speed = 1),
-    new BasicEnemy(hp = 1 , power = 10, speed = 1),
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 1 , power = 10, speed = 3),
-    new BasicEnemy(hp = 2 , power = 10, speed = 1),
-    new BasicEnemy(hp = 2 , power = 10, speed = 1),
-    new BasicEnemy(hp = 2 , power = 10, speed = 1)
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new BasicEnemy(hp = 2),
+    new BasicEnemy(hp = 2),
+    new BasicEnemy(hp = 2)
 ]), resourcesReward = 100)
 
 const round_1 = new Round(enemiesQueue = new Queue(list = [
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new ArmoredEnemy(hp = 1, power = 10, speed = 1),
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 1 , power = 10, speed = 2),
-    new ArmoredEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 2 , power = 10, speed = 2),
-    new ArmoredEnemy(hp = 1 , power = 10, speed = 2),
-    new BasicEnemy(hp = 2 , power = 10, speed = 2),
-    new ArmoredEnemy(hp = 1 , power = 10, speed = 2)
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new ArmoredEnemy(),
+    new BasicEnemy(),
+    new BasicEnemy(),
+    new ArmoredEnemy(),
+    new BasicEnemy(hp = 2),
+    new BasicEnemy(hp = 2),
+    new ArmoredEnemy(),
+    new ArmoredEnemy()
 ]), resourcesReward = 200)

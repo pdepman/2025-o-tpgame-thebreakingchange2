@@ -68,6 +68,7 @@ object hud {
     basicTowerVisualizer.beDisplayed()
     piercingTowerVisualizer.beDisplayed()
     slowingTowerVisualizer.beDisplayed()
+    game.addVisual(controlsTooltip)
   }
   
   method limit() = hudTiles.get(0).position().x() - 1
@@ -204,4 +205,13 @@ object gameOverScreen inherits BlinkScreen {
 
 object victoryScreen inherits BlinkScreen {
   override method image() = "screen_victory.png"
+}
+
+object controlsTooltip {
+  const property position = game.at(20, 1)
+  
+  method text() = "R: Reset Game\nSpace: Start round"
+  method textColor() = "FFFFFFFF"
+
+
 }

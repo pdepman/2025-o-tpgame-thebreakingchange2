@@ -6,7 +6,7 @@ class Enemy {
     var hp
     const power
     var speed
-    var movementTick = game.tick(1000, {}, false)
+    var movementTick = null
 
 	method pathPosition() = pathPosition
 
@@ -66,6 +66,8 @@ class Enemy {
         movementTick.interval(self.tickMs())
 	}
 
+
+
     method die() {
         hp = 0
         self.despawn()
@@ -77,7 +79,8 @@ class Enemy {
     method image()
 }
 
-class BasicEnemy inherits Enemy {
+class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2){
+
     override method image() = "enemy_basic_" + hp.toString() +".png"
     
     override method receiveBasicAttack(damage){
@@ -100,7 +103,7 @@ class BasicEnemy inherits Enemy {
     method clone() = new BasicEnemy(hp = hp, power = power , speed = speed)
 }
 
-class ArmoredEnemy inherits Enemy {
+class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
     override method image() = "enemy_armored.png"
 
 	override method receiveBasicAttack(damage){
@@ -123,7 +126,7 @@ class ArmoredEnemy inherits Enemy {
     method clone() = new ArmoredEnemy(hp = hp , power = power, speed = speed)
 }
 
-class ExplosiveEnemy inherits Enemy {
+class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2) {
 	const radius = 5
 
 	override method image() = "enemy_explosive.png"
