@@ -52,13 +52,22 @@ class Enemy {
 		} 
 	}
 
-    method receiveBasicAttack(damage)
+    method receiveBasicAttack(damage){
+		self.receiveDamage(damage)
+	}
 
-	method receivePiercingAttack(damage)
+	method receivePiercingAttack(damage){
+		self.receiveDamage(damage)
+	}
 
-	method receiveSlowingAttack(damage)
+	method receiveSlowingAttack(damage){
+		self.receiveDamage(damage)
+		self.beSlowed()
+	}
     
-    method receiveBlowUpDamage(damage)
+    method receiveBlowUpDamage(damage){
+        self.receiveDamage(damage)
+    }
 
 	method beSlowed(){
 		game.sound("sfx_hit_slowing.wav").play()
@@ -83,23 +92,6 @@ class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2){
 
     override method image() = "enemy_basic_" + hp.toString() +".png"
     
-    override method receiveBasicAttack(damage){
-		self.receiveDamage(damage)
-	}
-
-	override method receivePiercingAttack(damage){
-		self.receiveDamage(damage)
-	}
-
-	override method receiveSlowingAttack(damage){
-		self.receiveDamage(damage)
-		self.beSlowed()
-	}
-
-    override method receiveBlowUpDamage(damage){
-        self.receiveDamage(damage)
-    }
-
     method clone() = new BasicEnemy(hp = hp, power = power , speed = speed)
 }
 
@@ -108,10 +100,6 @@ class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
 
 	override method receiveBasicAttack(damage){
 		game.sound("sfx_hit_resisted.wav").play()
-	}
-
-	override method receivePiercingAttack(damage){
-		self.receiveDamage(damage)
 	}
 
 	override method receiveSlowingAttack(damage){
@@ -131,20 +119,11 @@ class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2) {
 
 	override method image() = "enemy_explosive.png"
 	
-    override method receiveBasicAttack(damage){
-		self.receiveDamage(damage)
-	}
-
-	override method receivePiercingAttack(damage){
+  	override method receivePiercingAttack(damage){
 		self.blowUp()
 	}
 
-	override method receiveSlowingAttack(damage){
-		self.receiveDamage(damage)
-		self.beSlowed()
-	}
-
-    override method receiveBlowUpDamage(damage){
+	override method receiveBlowUpDamage(damage){
 		self.blowUp()
 	}
 
