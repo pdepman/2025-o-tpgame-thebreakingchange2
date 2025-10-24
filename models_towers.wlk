@@ -7,10 +7,12 @@ class Tower {
   const range
   const attack
   const cost
+  const image
   var status = "idle"
   var attackTick = game.tick(1000, {   }, false)
+
   
-  method image()
+  method image() = image + "_" + status + ".png"
   
   method cost() = cost
   
@@ -68,6 +70,7 @@ class Tower {
   )
   
   method isInRange(enemy) = position.distance(enemy.position()) <= range
+
 }
 
 object basicAttack {
@@ -88,32 +91,4 @@ object slowingAttack {
   }
 }
 
-class BasicTower inherits Tower (
-  attack = basicAttack,
-  power = 1,
-  cost = 50,
-  range = 3,
-  attackSpeed = 1000
-) {
-  override method image() = "tower_basic_" + status + ".png"
-}
 
-class PiercingTower inherits Tower (
-  attack = piercingAttack,
-  power = 1,
-  cost = 150,
-  range = 3,
-  attackSpeed = 2000
-) {
-  override method image() = "tower_piercing_" + status + ".png"
-}
-
-class SlowingTower inherits Tower (
-  attack = slowingAttack,
-  power = 0,
-  cost = 100,
-  range = 3,
-  attackSpeed = 1500
-) {
-  override method image() = "tower_slowing_" + status + ".png"
-}

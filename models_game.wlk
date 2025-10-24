@@ -92,9 +92,33 @@ object player {
     	keyboard.right().onPressDo({ if (self.position().x() < hud.limit()) self.position(self.position().right(1))})
     	keyboard.left().onPressDo({ if (self.position().x() > 0) self.position(self.position().left(1)) })
 		
-		keyboard.num1().onPressDo({ self.addTower(new BasicTower(position = self.position()))})
-		keyboard.num2().onPressDo({ self.addTower(new PiercingTower(position = self.position()))})
-		keyboard.num3().onPressDo({ self.addTower(new SlowingTower(position = self.position()))})
+		keyboard.num1().onPressDo({ self.addTower(new Tower(
+			position = self.position(),
+			attack = basicAttack,
+			power = 1,
+			cost = 50,
+			range = 3,
+			attackSpeed = 1000,
+			image = "tower_basic"
+			))})
+		keyboard.num2().onPressDo({ self.addTower(new Tower(
+			position = self.position(),
+			attack = piercingAttack,
+			power = 1,
+			cost =  150,
+			range = 3,
+			attackSpeed = 2000,
+			image = "tower_piercing"
+			))})
+		keyboard.num3().onPressDo({ self.addTower(new Tower(
+			position = self.position(),
+			attack = slowingAttack,
+			power = 0,
+			cost = 100,
+			range = 3,
+			attackSpeed = 1500,
+			image = "tower_slowing"
+			))})
 	}
 
 	method refreshVisualZIndex() {
