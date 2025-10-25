@@ -4,6 +4,8 @@ import stage_0.stage_0
 import stage_1.stage_1
 import models_towers.*
 
+const optimized_mode = false
+
 object tdGame {
 	var currentStage = stage_selector.clone()
 	
@@ -15,8 +17,9 @@ object tdGame {
 		game.height(14)
 		game.width(23)
 		game.cellSize(60)
-		game.ground("tile_default.png")
 		game.start()
+		if (optimized_mode) game.boardGround("optimized_background.png")
+		else game.ground("tile_default.png")
 	}
 
 	method setupControls() {
@@ -31,6 +34,7 @@ object tdGame {
 		self.setupGame()
 		self.setupControls()
 		self.loadStage()
+		if (optimized_mode) game.addVisual(pathDisplayer)
 		hud.beDisplayed()
 		game.addVisual(player)
 	}
@@ -239,6 +243,7 @@ class Stage {
 	var currentRound = new Round(enemiesQueue = [], resourcesReward = 0)
 	var resources
 	var hp = 100
+	const optimized_path_image = null
 	
 	method path() = path
 	method towers() = towers
@@ -259,7 +264,7 @@ class Stage {
 		towers.forEach({tower => tower.despawn()})
 	}
 
-	method clone() = new Stage(path = path, rounds = rounds.clone(), resources = resources) 
+	method clone() = new Stage(path = path, rounds = rounds.clone(), resources = resources, optimized_path_image = optimized_path_image) 
 	
 	method roundsRemaining() = rounds.size() + 1
 	
@@ -306,7 +311,8 @@ class Stage {
 	}
 	
 	method displayPath() {
-		path.forEach({ road => road.beDisplayed()})
+		if (optimized_mode) pathDisplayer.pathImage(optimized_path_image)
+		else path.forEach({ road => road.beDisplayed()})
 	}
 
 	method removePath() {
@@ -437,4 +443,12 @@ class StageSelectorTile {
 	method beDisplayed() {
 		game.addVisual(self)
 	}
+}
+
+object pathDisplayer {
+	const property position = game.at(0,0)
+	var pathImage = "optimized_stage_selector.png"
+
+	method pathImage(newImage){ pathImage = newImage }
+	method image() = pathImage
 }

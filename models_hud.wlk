@@ -59,7 +59,7 @@ object hud {
   
   method beDisplayed() {
     self.setupHudTiles()
-    hudTiles.forEach({ tile => game.addVisual(tile) })
+    if (!optimized_mode) hudTiles.forEach({ tile => game.addVisual(tile) })
     game.addVisual(gameTitle)
     game.addVisual(stageProgressVisualizer)
     game.addVisual(enemiesRemainingVisualizer)

@@ -5,7 +5,8 @@ import stage_1.stage_1
 const stage_selector = new Stage(
 	path = path,
 	resources = 0,
-	rounds = new Queue(list = [placeHolderRound])
+	rounds = new Queue(list = [placeHolderRound]),
+	optimized_path_image = "optimized_stage_selector.png"
 )
 
 const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)

@@ -1,10 +1,12 @@
 import models_game.*
 import models_enemies.*
 
-const stage_0 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_00, round_0, round_1, round_2, round_3] ))
+const stage_0 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_00, round_0, round_1, round_2, round_3] ), optimized_path_image = "optimized_stage_0.png")
 
 // Path Configuration
 const path = [
+new Road(position = game.at(0, 7)),
+new Road(position = game.at(1, 7)),
 new Road(position = game.at(2, 7)),
 new Road(position = game.at(3, 7)),
 new Road(position = game.at(4, 7)),
@@ -18,7 +20,8 @@ new Road(position = game.at(11, 7)),
 new Road(position = game.at(12, 7)),
 new Road(position = game.at(13, 7)),
 new Road(position = game.at(14, 7)),
-new Core(position = game.at(15, 7))
+new Road(position = game.at(15, 7)),
+new Core(position = game.at(16, 7))
 ]
 
 const a = new MutablePosition()

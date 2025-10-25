@@ -1,7 +1,7 @@
 import models_game.*
 import models_enemies.*
 
-const stage_1 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_0, round_1]) )
+const stage_1 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_0, round_1]), optimized_path_image = "optimized_stage_1.png")
 
 // Path Configuration
 const path = [
