@@ -4,7 +4,7 @@ import stage_0.stage_0
 import stage_1.stage_1
 import models_towers.*
 
-const optimized_mode = false
+const optimized_mode = true
 
 object tdGame {
 	var currentStage = stage_selector.clone()
@@ -79,19 +79,25 @@ object tdGame {
 	method prohibitedZones() = currentStage.prohibitedZones()
 }
 
-object rangePrevisualizer{
-	var property position = player.position()
-	var property range = player.towerToPlace().range()
+class RangePrevisualizer{
+	var property position
+	var property range
 	var tiles = []
 
+	method tiles() = tiles
+
 	method beDisplayed() {
-	  game.addVisual(self)
 	  tiles.forEach({tile => tile.beDisplayed()})
 	}
 
 	method beRemoved() {
 		game.removeVisual(self)
 		tiles.forEach({tile => tile.beRemoved()})
+	}
+
+	method flash(){
+		self.beDisplayed()
+		game.schedule(500, {self.beRemoved()})
 	}
 
 	method tilesSquare() {
@@ -106,8 +112,8 @@ object rangePrevisualizer{
 		tiles = self.tilesArea()
 	}
 
-	method refreshPosition() {
-		position = player.position()
+	method refreshPosition(newPosition) {
+		position = newPosition
 		tiles.forEach({tile => tile.refresh(position)})
 	}
 
@@ -119,6 +125,13 @@ object rangePrevisualizer{
 			self.beDisplayed()
 		}
 		
+	}
+
+	method clone() = new RangePrevisualizer(position = position, range = range, tiles = tiles.map({tile => tile.clone()}))
+
+	method cloneWithTiles() {
+		self.setPreviewTiles()
+		return new RangePrevisualizer(position = position, range = range, tiles = tiles.map({tile => tile.clone()}))
 	}
 
 }
@@ -143,6 +156,8 @@ class PrevisualizerTile {
 		position.y(newCenterPosition.y() + offsetY)
 	}
 
+	method clone() = new PrevisualizerTile(position = position, offsetX = offsetX, offsetY = offsetY)
+
 }
 
 object player {
@@ -150,6 +165,7 @@ object player {
 	var isPlacingTower = false
 	var towerToPlace = basicTower
 	var image = "player.png"
+	const rangePrevisualizer = new RangePrevisualizer(position = position, range = towerToPlace.range())
 	
 	method image() = image
 	method towerToPlace() = towerToPlace
@@ -213,22 +229,22 @@ object player {
 
 	method moveUp() {
 		if(position.y() < game.height()-1) self.position(position.up(1))
-		rangePrevisualizer.refreshPosition()
+		rangePrevisualizer.refreshPosition(position)
 	}
 
 	method moveDown() {
 		if(position.y() > 0) self.position(position.down(1))
-		rangePrevisualizer.refreshPosition()
+		rangePrevisualizer.refreshPosition(position)
 	}
 
 	method moveLeft() {
 		if (position.x() > 0) self.position(position.left(1))
-		rangePrevisualizer.refreshPosition()
+		rangePrevisualizer.refreshPosition(position)
 	}
 
 	method moveRight(){
 		if (position.x() < hud.limit()) self.position(position.right(1))
-		rangePrevisualizer.refreshPosition()
+		rangePrevisualizer.refreshPosition(position)
 	}
 
 	method refreshVisualZIndex() {
