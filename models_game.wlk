@@ -23,7 +23,7 @@ object tdGame {
 	}
 
 	method setupControls() {
-		keyboard.space().onPressDo({ self.startCurrentRound() })
+		keyboard.e().onPressDo({ self.startCurrentRound() })
 		keyboard.r().onPressDo({ self.swapStages(stage_selector) })
 		keyboard.t().onPressDo({ self.swapStages(stage_0) })
 		keyboard.y().onPressDo({ self.swapStages(stage_1) })
@@ -41,6 +41,7 @@ object tdGame {
 
 	method swapStages(stage) {
 		currentStage.clear()
+		player.exitTowerSelectionMode()
 		player.position(game.at(9,4))
 		self.currentStage(stage)
 		currentStage.load()
@@ -190,16 +191,16 @@ object player {
 
 	method controlSetup() {
 		//Movement
-		keyboard.up().onPressDo({ self.moveUp() })
-    	keyboard.down().onPressDo({ self.moveDown() })
-		keyboard.right().onPressDo({ self.moveRight() })
-    	keyboard.left().onPressDo({ self.moveLeft() })
+		keyboard.w().onPressDo({ self.moveUp() })
+    	keyboard.a().onPressDo({ self.moveLeft() })
+    	keyboard.s().onPressDo({ self.moveDown() })
+		keyboard.d().onPressDo({ self.moveRight() })
 		//Tower Selection
 		keyboard.q().onPressDo({ self.toggleTowerSelectionMode()})
 		keyboard.num1().onPressDo({ self.selectTower(basicTower)})
 		keyboard.num2().onPressDo({ self.selectTower(piercingTower)})
 		keyboard.num3().onPressDo({ self.selectTower(slowingTower)})
-		keyboard.enter().onPressDo({ self.addTower(towerToPlace)})
+		keyboard.space().onPressDo({ self.addTower(towerToPlace)})
 	}
 
 	method selectTower(tower) {
