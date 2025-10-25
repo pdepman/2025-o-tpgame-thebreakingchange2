@@ -210,7 +210,7 @@ object victoryScreen inherits BlinkScreen {
 object controlsTooltip {
   const property position = game.at(20, 1)
   
-  method text() = "R: Reset Game\nSpace: Start round"
+  method text() = "R: Reset Game\nSpace: Start round\nQ: Tower Selection Mode\nEnter:Place Tower"
   method textColor() = "FFFFFFFF"
 
 

@@ -145,18 +145,14 @@ object player {
 	var isPlacingTower = false
 	var towerToPlace = basicTower
 	var image = "player.png"
-	method image() = image
 	
+	method image() = image
 	method towerToPlace() = towerToPlace
 	method towerToPlace(tower) { towerToPlace = tower }
 
-
 	method toggleTowerSelectionMode(){
-		if (isPlacingTower){
-			self.exitTowerSelectionMode()
-		} else {
-			self.enterTowerSelectionMode()
-		}
+		if (isPlacingTower) self.exitTowerSelectionMode()
+		else self.enterTowerSelectionMode()
 	}
 
 	method enterTowerSelectionMode() {
@@ -189,18 +185,17 @@ object player {
 	).negate()
 
 	method controlSetup() {
+		//Movement
 		keyboard.up().onPressDo({ self.moveUp() })
     	keyboard.down().onPressDo({ self.moveDown() })
 		keyboard.right().onPressDo({ self.moveRight() })
     	keyboard.left().onPressDo({ self.moveLeft() })
-		
+		//Tower Selection
+		keyboard.q().onPressDo({ self.toggleTowerSelectionMode()})
 		keyboard.num1().onPressDo({ self.selectTower(basicTower)})
 		keyboard.num2().onPressDo({ self.selectTower(piercingTower)})
 		keyboard.num3().onPressDo({ self.selectTower(slowingTower)})
-
-		keyboard.q().onPressDo({ self.toggleTowerSelectionMode()})
 		keyboard.enter().onPressDo({ self.addTower(towerToPlace)})
-
 	}
 
 	method selectTower(tower) {
