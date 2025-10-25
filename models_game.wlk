@@ -74,14 +74,115 @@ object tdGame {
 	method prohibitedZones() = currentStage.prohibitedZones()
 }
 
+object rangePrevisualizer{
+	var property position = player.position()
+	var property range = player.towerToPlace().range()
+	var tiles = []
+
+	method beDisplayed() {
+	  game.addVisual(self)
+	  tiles.forEach({tile => tile.beDisplayed()})
+	}
+
+	method beRemoved() {
+		game.removeVisual(self)
+		tiles.forEach({tile => tile.beRemoved()})
+	}
+
+	method tilesSquare() {
+		const tilesSquare = []
+		(position.x()-range .. position.x()+range).forEach({tileX => (position.y()-range .. position.y()+range).forEach({tileY => tilesSquare.add(new PrevisualizerTile(position = new MutablePosition(x= tileX, y=tileY), offsetX = tileX - position.x(), offsetY = tileY - position.y()))})})
+		return tilesSquare
+	}
+
+	method tilesArea() = self.tilesSquare().filter({tile => position.distance(tile.position()) <= range })
+
+	method setPreviewTiles() {
+		tiles = self.tilesArea()
+	}
+
+	method refreshPosition() {
+		position = player.position()
+		tiles.forEach({tile => tile.refresh(position)})
+	}
+
+	method refreshPreview(displayAfterRefresh) {
+		range = player.towerToPlace().range()
+		self.beRemoved()
+		self.setPreviewTiles()
+		if (displayAfterRefresh) {
+			self.beDisplayed()
+		}
+		
+	}
+
+}
+
+class PrevisualizerTile {
+	var property position
+	const offsetX
+	const offsetY
+
+	method image() = "tile_rangePreview.png"
+
+	method beDisplayed() {
+	  game.addVisual(self)
+	}
+
+	method beRemoved() {
+		game.removeVisual(self)
+	}
+
+	method refresh(newCenterPosition) {
+		position.x(newCenterPosition.x() + offsetX)
+		position.y(newCenterPosition.y() + offsetY)
+	}
+
+}
+
 object player {
 	var property position = game.at(9,4)
+	var isPlacingTower = false
+	var towerToPlace = basicTower
+	var image = "player.png"
+	method image() = image
 	
-	method image() = "player.png"
-	
+	method towerToPlace() = towerToPlace
+	method towerToPlace(tower) { towerToPlace = tower }
+
+
+	method toggleTowerSelectionMode(){
+		if (isPlacingTower){
+			self.exitTowerSelectionMode()
+		} else {
+			self.enterTowerSelectionMode()
+		}
+	}
+
+	method enterTowerSelectionMode() {
+		image = towerToPlace.image()
+		rangePrevisualizer.beDisplayed()
+		keyboard.enter().onPressDo({ self.addTower(towerToPlace)})
+		isPlacingTower = true
+
+	}
+
+	method exitTowerSelectionMode() {
+		image = "player.png"
+		rangePrevisualizer.beRemoved()
+		keyboard.enter().onPressDo({})
+		isPlacingTower = false
+
+	}
+
 	method addTower(tower) {
-		if (self.isInBuildingZone()) tdGame.addTower(tower)
-		else game.sound("sfx_cannot_build.mp3").play()
+		if (self.isInBuildingZone()) {
+			tdGame.addTower(towerToPlace.cloneInPosition(position))
+			self.exitTowerSelectionMode()
+		}
+		else {
+			game.sound("sfx_cannot_build.mp3").play()
+		}
 	}
 	
 	method isInBuildingZone() = tdGame.prohibitedZones().any(
@@ -89,14 +190,44 @@ object player {
 	).negate()
 
 	method controlSetup() {
-		keyboard.up().onPressDo({ if(self.position().y() < game.height()-1) self.position(self.position().up(1)) })
-    	keyboard.down().onPressDo({ if(self.position().y() > 0) self.position(self.position().down(1)) })
-    	keyboard.right().onPressDo({ if (self.position().x() < hud.limit()) self.position(self.position().right(1))})
-    	keyboard.left().onPressDo({ if (self.position().x() > 0) self.position(self.position().left(1)) })
+		keyboard.up().onPressDo({ self.moveUp() })
+    	keyboard.down().onPressDo({ self.moveDown() })
+		keyboard.right().onPressDo({ self.moveRight() })
+    	keyboard.left().onPressDo({ self.moveLeft() })
 		
-		keyboard.num1().onPressDo({ self.addTower(basicTower.cloneInPosition(position))})
-		keyboard.num2().onPressDo({ piercingTower.cloneInPosition(position)})
-		keyboard.num3().onPressDo({ slowingTower.cloneInPosition(position)})
+		keyboard.num1().onPressDo({ self.selectTower(basicTower)})
+		keyboard.num2().onPressDo({ self.selectTower(piercingTower)})
+		keyboard.num3().onPressDo({ self.selectTower(slowingTower)})
+
+		keyboard.q().onPressDo({ self.toggleTowerSelectionMode()})
+	}
+
+	method selectTower(tower) {
+		self.towerToPlace(tower)
+		rangePrevisualizer.refreshPreview(isPlacingTower)
+		if (isPlacingTower) {
+		image = towerToPlace.image()
+		}
+	}
+
+	method moveUp() {
+		if(position.y() < game.height()-1) self.position(position.up(1))
+		rangePrevisualizer.refreshPosition()
+	}
+
+	method moveDown() {
+		if(position.y() > 0) self.position(position.down(1))
+		rangePrevisualizer.refreshPosition()
+	}
+
+	method moveLeft() {
+		if (position.x() > 0) self.position(position.left(1))
+		rangePrevisualizer.refreshPosition()
+	}
+
+	method moveRight(){
+		if (position.x() < hud.limit()) self.position(position.right(1))
+		rangePrevisualizer.refreshPosition()
 	}
 
 	method refreshVisualZIndex() {
