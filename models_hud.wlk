@@ -150,7 +150,7 @@ class TowerSpecs {
   const property position
   const tower
   
-  method text() = (((("🪙 " + tower.cost().toString()) + " | ⚔️ ") + tower.power().toString()) + " | 🎯 ") + tower.range().toString()
+  method text() = (((("🪙 " + tower.cost().toString()) + " | ⚔️ ") + tower.power().toString()) + " | 🎯 ") + tower.range().toString() + " | ⚡ " + tower.attackSpeed() / 1000 + " sec"
   
   method textColor() = "FFFFFFFF"
 }

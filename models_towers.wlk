@@ -18,6 +18,8 @@ class Tower {
   method power() = power
   
   method range() = range
+
+  method attackSpeed() = attackSpeed
   
   method spawn() {
     game.addVisual(self)
