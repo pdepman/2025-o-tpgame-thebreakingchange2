@@ -162,26 +162,25 @@ object player {
 	method enterTowerSelectionMode() {
 		image = towerToPlace.image()
 		rangePrevisualizer.beDisplayed()
-		keyboard.enter().onPressDo({ self.addTower(towerToPlace)})
 		isPlacingTower = true
-
 	}
 
 	method exitTowerSelectionMode() {
 		image = "player.png"
 		rangePrevisualizer.beRemoved()
-		keyboard.enter().onPressDo({})
 		isPlacingTower = false
 
 	}
 
 	method addTower(tower) {
-		if (self.isInBuildingZone()) {
-			tdGame.addTower(towerToPlace.cloneInPosition(position))
-			self.exitTowerSelectionMode()
-		}
-		else {
-			game.sound("sfx_cannot_build.mp3").play()
+		if (isPlacingTower){
+			if (self.isInBuildingZone()) {
+				tdGame.addTower(towerToPlace.cloneInPosition(position))
+				self.exitTowerSelectionMode()
+			}
+			else {
+				game.sound("sfx_cannot_build.mp3").play()
+			}
 		}
 	}
 	
@@ -200,6 +199,8 @@ object player {
 		keyboard.num3().onPressDo({ self.selectTower(slowingTower)})
 
 		keyboard.q().onPressDo({ self.toggleTowerSelectionMode()})
+		keyboard.enter().onPressDo({ self.addTower(towerToPlace)})
+
 	}
 
 	method selectTower(tower) {
