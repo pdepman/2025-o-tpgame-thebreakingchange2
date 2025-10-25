@@ -158,19 +158,19 @@ class TowerSpecs {
 const basicTowerVisualizer = new TowerSpecsVisualizer(
   startingPosition = game.at(20, 7),
   buttonToPlace = "1️⃣",
-  tower = new BasicTower(position = game.at(99, 99))
+  tower = basicTower
 )
 
 const piercingTowerVisualizer = new TowerSpecsVisualizer(
   startingPosition = game.at(20, 5),
   buttonToPlace = "2️⃣",
-  tower = new PiercingTower(position = game.at(99, 99))
+  tower = piercingTower
 )
 
 const slowingTowerVisualizer = new TowerSpecsVisualizer(
   startingPosition = game.at(20, 3),
   buttonToPlace = "3️⃣",
-  tower = new SlowingTower(position = game.at(99, 99))
+  tower = slowingTower
 )
 
 class BlinkScreen {

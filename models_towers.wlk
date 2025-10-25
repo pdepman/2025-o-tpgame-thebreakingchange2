@@ -10,9 +10,8 @@ class Tower {
   const image
   var status = "idle"
   var attackTick = game.tick(1000, {   }, false)
-
   
-  method image() = image + "_" + status + ".png"
+  method image() = ((image + "_") + status) + ".png"
   
   method cost() = cost
   
@@ -44,14 +43,16 @@ class Tower {
       attack.doAttack(power, enemy)
     }
   }
-
-  method status(newStatus) { status = newStatus} 
+  
+  method status(newStatus) {
+    status = newStatus
+  }
   
   method triggerAttackAnimation() {
     self.status("attacking")
     game.schedule(250, { self.status("idle") })
   }
-
+  
   method enemyToAttack(enemies) {
     if (enemies.isEmpty()) {
       return null
@@ -70,7 +71,16 @@ class Tower {
   )
   
   method isInRange(enemy) = position.distance(enemy.position()) <= range
-
+  
+  method cloneInPosition(newPosition) = new Tower(
+    position = newPosition,
+    power = power,
+    attackSpeed = attackSpeed,
+    range = range,
+    attack = attack,
+    cost = cost,
+    image = image
+  )
 }
 
 object basicAttack {
@@ -91,4 +101,32 @@ object slowingAttack {
   }
 }
 
+const basicTower = new Tower(
+  position = game.at(99,99),
+  power = 1,
+  attackSpeed = 1000,
+  range = 3,
+  attack = basicAttack,
+  cost = 50,
+  image = "tower_basic"
+)
 
+const piercingTower = new Tower(
+  position = game.at(99,99),
+  attack = piercingAttack,
+  power = 1,
+  cost = 150,
+  range = 3,
+  attackSpeed = 2000,
+  image = "tower_piercing"
+)
+
+const slowingTower = new Tower(
+  position = game.at(99,99),
+  attack = slowingAttack,
+  power = 0,
+  cost = 100,
+  range = 3,
+  attackSpeed = 1500,
+  image = "tower_slowing"
+)
