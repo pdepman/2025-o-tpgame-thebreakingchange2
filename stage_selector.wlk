@@ -67,7 +67,7 @@ new Road(position = game.at(16, 8)),
 new Road(position = game.at(16, 9)),
 new Road(position = game.at(16, 10)),
 // Stage Selectors
-new StageSelector(position = game.at(8, 2), stage = stage_0, name = "0"),
-new StageSelector(position = game.at(10, 2), stage = stage_1, name = "1")
+new StageSelectorTile(position = game.at(8, 2), name = "T"),
+new StageSelectorTile(position = game.at(10, 2), name = "Y")
 ]
 

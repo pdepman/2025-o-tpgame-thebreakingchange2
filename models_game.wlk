@@ -22,6 +22,8 @@ object tdGame {
 	method setupControls() {
 		keyboard.space().onPressDo({ self.startCurrentRound() })
 		keyboard.r().onPressDo({ self.swapStages(stage_selector) })
+		keyboard.t().onPressDo({ self.swapStages(stage_0) })
+		keyboard.y().onPressDo({ self.swapStages(stage_1) })
 		player.controlSetup()
 	}
 	
@@ -297,9 +299,8 @@ class Queue {
 	method isEmpty() = list.isEmpty()
 }
 
-class StageSelector {
+class StageSelectorTile {
 	const property position
-	const stage
 	const name
 
 	method image() = "tile_selector.png"
@@ -308,10 +309,5 @@ class StageSelector {
 
 	method beDisplayed() {
 		game.addVisual(self)
-		game.onCollideDo(self, {a => self.selectStage()})
-	}
-
-	method selectStage() {
-		tdGame.swapStages(stage)
 	}
 }
