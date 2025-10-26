@@ -199,8 +199,21 @@ class BlinkScreen {
   }
 }
 
-object gameOverScreen inherits BlinkScreen {
-  override method image() = "screen_gameover.png"
+object gameOverScreen {
+  var property position = game.at(0,0)
+  const sound = game.sound("sfx_gameover.wav") 
+  method image() = "screen_gameover_impact.png"
+
+
+  method beDisplayed(){
+    game.addVisual(self)
+    sound.play()
+  }
+
+  method beRemoved(){
+    game.removeVisual(self)
+    if (sound.played()) sound.stop()
+  }
 }
 
 object victoryScreen inherits BlinkScreen {

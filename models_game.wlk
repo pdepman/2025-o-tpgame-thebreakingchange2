@@ -4,7 +4,7 @@ import stage_0.stage_0
 import stage_1.stage_1
 import models_towers.*
 
-const optimized_mode = false
+const optimized_mode = true
 
 object tdGame {
 	var currentStage = stage_selector.clone()
@@ -41,6 +41,8 @@ object tdGame {
 
 	method swapStages(stage) {
 		currentStage.clear()
+		victoryScreen.removeDisplay()
+		gameOverScreen.beRemoved()
 		player.exitTowerSelectionMode()
 		player.position(game.at(9,4))
 		self.currentStage(stage)
@@ -260,7 +262,7 @@ object player {
 
 class Stage {
 	const path
-	const rounds
+	var rounds
 	const towers = []
 	var currentRound = new Round(enemiesQueue = [], resourcesReward = 0)
 	var resources
@@ -285,11 +287,10 @@ class Stage {
 	}
 	
 	method clear() {
-		victoryScreen.removeDisplay()
-		gameOverScreen.removeDisplay()
 		self.removePath()
 		currentRound.clear()
 		towers.forEach({tower => tower.despawn()})
+		rounds = []
 	}
 
 	method clone() = new Stage(path = path, rounds = rounds.clone(), resources = resources, optimized_path_image = optimized_path_image) 
@@ -315,6 +316,8 @@ class Stage {
 	
 	method lose() {
 		gameOverScreen.beDisplayed()
+		resources = 0
+		self.clear()
 	}
 	
 	method completeRound() {
@@ -357,6 +360,7 @@ class Stage {
 
 	method receiveDamage(damage) {
 		hp -= damage
+		game.sound("sfx_hit_core.wav").play()
 		if(self.shouldLose()){
 			self.lose()	
 		}
