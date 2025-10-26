@@ -77,6 +77,10 @@ object tdGame {
 	method addTower(tower) { currentStage.addTower(tower)}
 
 	method prohibitedZones() = currentStage.prohibitedZones()
+
+	method towers() = currentStage.towers()
+
+	method sellTower(tower) { currentStage.sellTower(tower)}
 }
 
 object rangePrevisualizer{
@@ -201,6 +205,8 @@ object player {
 		keyboard.num2().onPressDo({ self.selectTower(piercingTower)})
 		keyboard.num3().onPressDo({ self.selectTower(slowingTower)})
 		keyboard.space().onPressDo({ self.addTower(towerToPlace)})
+
+		keyboard.x().onPressDo({ self.sellTower(self.towerInCurrentPosition()) })
 	}
 
 	method selectTower(tower) {
@@ -210,6 +216,21 @@ object player {
 		image = towerToPlace.image()
 		}
 	}
+
+	method sellTower(tower) {
+		if(tower != null) {
+			tdGame.sellTower(tower)
+		}
+	}
+
+	method towerInCurrentPosition() {
+		const towerInList = tdGame.towers().filter({tower => tower.position() == self.position()})
+		if (towerInList.isEmpty()){
+			return null
+		}
+		return towerInList.head()
+		}
+	
 
 	method moveUp() {
 		if(position.y() < game.height()-1) self.position(position.up(1))
@@ -251,6 +272,12 @@ class Stage {
 	method resources() = resources
 	method currentRound() = currentRound
 	method hp() = hp
+
+	method sellTower(tower){
+		tower.despawn()
+		towers.remove(tower)
+		self.addResources(tower.cost()/2)
+	}
 
 	method load() {
 		self.displayPath()
