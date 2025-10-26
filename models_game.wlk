@@ -95,18 +95,23 @@ class RangePrevisualizer{
 		tiles.forEach({tile => tile.beRemoved()})
 	}
 
+	method beRemovedAnimated(){
+		game.removeVisual(self)
+		tiles.forEach({tile => tile.beRemovedAnimated()})
+	}
+
 	method flash(){
 		self.beDisplayed()
-		game.schedule(500, {self.beRemoved()})
+		game.schedule(250, {self.beRemovedAnimated()})
 	}
 
 	method tilesSquare() {
 		const tilesSquare = []
-		(position.x()-range .. position.x()+range).forEach({tileX => (position.y()-range .. position.y()+range).forEach({tileY => tilesSquare.add(new PrevisualizerTile(position = new MutablePosition(x= tileX, y=tileY), offsetX = tileX - position.x(), offsetY = tileY - position.y()))})})
+		(position.x()-range .. position.x()+range).forEach({tileX => (position.y()-range .. position.y()+range).forEach({tileY => tilesSquare.add(new PrevisualizerTile(position = new MutablePosition(x= tileX, y=tileY), offsetX = tileX - position.x(), offsetY = tileY - position.y(), distance = position.distance(game.at(tileX, tileY))))})})
 		return tilesSquare
 	}
 
-	method tilesArea() = self.tilesSquare().filter({tile => position.distance(tile.position()) <= range })
+	method tilesArea() = self.tilesSquare().filter({tile => tile.distance() <= range })
 
 	method setPreviewTiles() {
 		tiles = self.tilesArea()
@@ -140,6 +145,9 @@ class PrevisualizerTile {
 	var property position
 	const offsetX
 	const offsetY
+	const distance
+
+	method distance() = distance
 
 	method image() = "tile_rangePreview.png"
 
@@ -151,12 +159,17 @@ class PrevisualizerTile {
 		game.removeVisual(self)
 	}
 
+	method beRemovedAnimated() {
+		game.schedule(25*distance, {game.removeVisual(self)})
+		
+	}
+
 	method refresh(newCenterPosition) {
 		position.x(newCenterPosition.x() + offsetX)
 		position.y(newCenterPosition.y() + offsetY)
 	}
 
-	method clone() = new PrevisualizerTile(position = position, offsetX = offsetX, offsetY = offsetY)
+	method clone() = new PrevisualizerTile(position = position, offsetX = offsetX, offsetY = offsetY, distance = distance)
 
 }
 
