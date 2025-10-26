@@ -9,7 +9,8 @@ class Tower {
   const cost
   const image
   var status = "idle"
-  var attackTick = game.tick(1000, {   }, false)
+  const attackTick = game.tick(500, { self.attackInRange() }, true)
+  var attackInCooldown = false
   
   method image() = ((image + "_") + status) + ".png"
   
@@ -22,7 +23,6 @@ class Tower {
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
-    attackTick = game.tick(attackSpeed, { self.attackInRange() }, true)
     attackTick.start()
   }
   
@@ -30,13 +30,15 @@ class Tower {
     game.removeVisual(self)
     attackTick.stop()
   }
-  
+
   method attackInRange() {
-    self.attackEnemy(
-      self.enemyToAttack(self.enemiesInRange(tdGame.enemiesInPlay()))
-    )
+    if (!attackInCooldown){
+      attackInCooldown = true
+      game.schedule(attackSpeed-100, {attackInCooldown = false})
+      self.attackEnemy(self.enemyToAttack(self.enemiesInRange(tdGame.enemiesInPlay())))
+    }
   }
-  
+
   method attackEnemy(enemy) {
     if (enemy != null) {
       self.triggerAttackAnimation()
@@ -54,16 +56,8 @@ class Tower {
   }
   
   method enemyToAttack(enemies) {
-    if (enemies.isEmpty()) {
-      return null
-    }
-    return enemies.fold(
-      enemies.get(0),
-      { enemyWithMaxPath, otherEnemy =>
-        if (otherEnemy.pathPosition() > enemyWithMaxPath.pathPosition())
-          otherEnemy
-        else enemyWithMaxPath }
-    )
+    if (enemies.isEmpty()) return null
+    return enemies.max({enemy => enemy.pathPosition()})
   }
   
   method enemiesInRange(enemies) = enemies.filter(
@@ -104,7 +98,7 @@ object slowingAttack {
 const basicTower = new Tower(
   position = game.at(99,99),
   power = 1,
-  attackSpeed = 1500,
+  attackSpeed = 1000,
   range = 4,
   attack = basicAttack,
   cost = 50,
