@@ -41,7 +41,7 @@ object tdGame {
 
 	method swapStages(stage) {
 		currentStage.clear()
-		victoryScreen.removeDisplay()
+		victoryScreen.beRemoved()
 		gameOverScreen.beRemoved()
 		player.exitTowerSelectionMode()
 		player.position(game.at(9,4))

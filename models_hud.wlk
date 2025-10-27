@@ -173,39 +173,14 @@ const slowingTowerVisualizer = new TowerSpecsVisualizer(
   tower = slowingTower
 )
 
-class BlinkScreen {
-  const property position = game.origin()
-  var beingDisplayed = false
-  
-  method image()
-  
-  method beDisplayed() {
-    game.onTick(500, "gameOverDisplayControl", { self.toggleVisual() })
-  }
-  
-  method removeDisplay() {
-    game.removeTickEvent("gameOverDisplayControl")
-    game.removeVisual(self)
-  }
-  
-  method toggleVisual() {
-    if (beingDisplayed) {
-      game.removeVisual(self)
-      beingDisplayed = false
-    } else {
-      game.addVisual(self)
-      beingDisplayed = true
-    }
-  }
-}
+class EndGameScreen {
+   var property position = game.at(0,0)
+    const sound
+    const image
 
-object gameOverScreen {
-  var property position = game.at(0,0)
-  const sound = game.sound("sfx_gameover.wav") 
-  method image() = "screen_gameover_impact.png"
+     method image() = image
 
-
-  method beDisplayed(){
+    method beDisplayed(){
     game.addVisual(self)
     sound.play()
   }
@@ -216,9 +191,9 @@ object gameOverScreen {
   }
 }
 
-object victoryScreen inherits BlinkScreen {
-  override method image() = "screen_victory.png"
-}
+const gameOverScreen = new EndGameScreen(sound = game.sound("sfx_gameover.wav"), image = "screen_gameover_impact.png")
+const victoryScreen = new EndGameScreen(sound = game.sound("sfx_win.wav"), image = "screen_victory.png")
+
 
 object controlsTooltip {
   const property position = game.at(20, 1)

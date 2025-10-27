@@ -1,7 +1,7 @@
 import models_game.*
 import models_enemies.*
 
-const stage_1 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_0, round_1]), optimized_path_image = "optimized_stage_1.png")
+const stage_1 = new Stage(path = path, resources = 100, rounds = new Queue(list = [round_0]), optimized_path_image = "optimized_stage_1.png")
 
 // Path Configuration
 const path = [
@@ -108,25 +108,6 @@ new Core(position = game.at(15, 11))
 ]
 
 const round_0 = new Round(enemiesQueue = new Queue(list = [
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new BasicEnemy(hp = 2),
-    new BasicEnemy(hp = 2),
-    new BasicEnemy(hp = 2)
-]), resourcesReward = 100)
+    new BasicEnemy()
 
-const round_1 = new Round(enemiesQueue = new Queue(list = [
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new ArmoredEnemy(),
-    new BasicEnemy(),
-    new BasicEnemy(),
-    new ArmoredEnemy(),
-    new BasicEnemy(hp = 2),
-    new BasicEnemy(hp = 2),
-    new ArmoredEnemy(),
-    new ArmoredEnemy()
-]), resourcesReward = 200)
+]), resourcesReward = 100)
