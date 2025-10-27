@@ -40,14 +40,14 @@ class Tower {
 
   method attackInRange() {
     if (!attackInCooldown){
-      attackInCooldown = true
-      game.schedule(attackSpeed-100, {attackInCooldown = false})
       self.attackEnemy(self.enemyToAttack(self.enemiesInRange(tdGame.enemiesInPlay())))
     }
   }
 
   method attackEnemy(enemy) {
     if (enemy != null) {
+      attackInCooldown = true
+      game.schedule(attackSpeed-100, {attackInCooldown = false})
       self.triggerAttackAnimation()
       attack.doAttack(power, enemy)
     }
