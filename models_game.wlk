@@ -252,28 +252,28 @@ object player {
 		}
 
 	method movementActions(){
-		rangePrevisualizer.refreshPosition()
+		rangePrevisualizer.refreshPosition(position)
 		tdGame.checkTowersCollide()
 	}
 
 	method moveUp() {
 		if(position.y() < game.height()-1) self.position(position.up(1))
-		rangePrevisualizer.refreshPosition(position)
+		self.movementActions()
 	}
 
 	method moveDown() {
 		if(position.y() > 0) self.position(position.down(1))
-		rangePrevisualizer.refreshPosition(position)
+		self.movementActions()
 	}
 
 	method moveLeft() {
 		if (position.x() > 0) self.position(position.left(1))
-		rangePrevisualizer.refreshPosition(position)
+		self.movementActions()
 	}
 
 	method moveRight(){
 		if (position.x() < hud.limit()) self.position(position.right(1))
-		rangePrevisualizer.refreshPosition(position)
+		self.movementActions()
 	}
 
 	method refreshVisualZIndex() {
