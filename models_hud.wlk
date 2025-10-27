@@ -198,7 +198,7 @@ const victoryScreen = new EndGameScreen(sound = game.sound("sfx_win.wav"), image
 object controlsTooltip {
   const property position = game.at(20, 1)
   
-  method text() = "R: Reset Game\nSpace: Start round\nQ: Tower Selection Mode\nEnter:Place Tower"
+  method text() = "R: Reset Game\nE: Start round\nQ: Tower Selection Mode\nSpace: Place Tower\n X: Sell Tower"
   method textColor() = "FFFFFFFF"
 
 
