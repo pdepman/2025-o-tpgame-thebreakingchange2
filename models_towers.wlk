@@ -8,13 +8,20 @@ class Tower {
   const attack
   const cost
   const image
+  var text = ""
   var status = "idle"
   const attackTick = game.tick(500, { self.attackInRange() }, true)
   var attackInCooldown = false
   
   method image() = ((image + "_") + status) + ".png"
+
+  method text() = text
+
+  method textColor() = "004e01"
   
   method cost() = cost
+
+  method sellPrice() = cost / 2
   
   method power() = power
   
@@ -75,6 +82,11 @@ class Tower {
     cost = cost,
     image = image
   )
+
+  method checkCollide() {
+    if (position == player.position()) text = "$" + self.sellPrice().toString()
+    else text = ""
+  }
 }
 
 object basicAttack {

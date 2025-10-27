@@ -83,6 +83,8 @@ object tdGame {
 	method towers() = currentStage.towers()
 
 	method sellTower(tower) { currentStage.sellTower(tower)}
+
+	method checkTowersCollide() = currentStage.checkTowersCollide()
 }
 
 object rangePrevisualizer{
@@ -232,26 +234,30 @@ object player {
 		}
 		return towerInList.head()
 		}
-	
+
+	method movementActions(){
+		rangePrevisualizer.refreshPosition()
+		tdGame.checkTowersCollide()
+	}
 
 	method moveUp() {
 		if(position.y() < game.height()-1) self.position(position.up(1))
-		rangePrevisualizer.refreshPosition()
+		self.movementActions()
 	}
 
 	method moveDown() {
 		if(position.y() > 0) self.position(position.down(1))
-		rangePrevisualizer.refreshPosition()
+		self.movementActions()
 	}
 
 	method moveLeft() {
 		if (position.x() > 0) self.position(position.left(1))
-		rangePrevisualizer.refreshPosition()
+		self.movementActions()
 	}
 
 	method moveRight(){
 		if (position.x() < hud.limit()) self.position(position.right(1))
-		rangePrevisualizer.refreshPosition()
+		self.movementActions()
 	}
 
 	method refreshVisualZIndex() {
@@ -278,7 +284,7 @@ class Stage {
 	method sellTower(tower){
 		tower.despawn()
 		towers.remove(tower)
-		self.addResources(tower.cost()/2)
+		self.addResources(tower.sellPrice())
 	}
 
 	method load() {
@@ -369,6 +375,10 @@ class Stage {
 	method shouldLose() = hp <= 0
 
 	method prohibitedZones() = path + towers
+
+	method checkTowersCollide() {
+		towers.forEach({tower => tower.checkCollide()})
+	}
 }
 
 class Road {
