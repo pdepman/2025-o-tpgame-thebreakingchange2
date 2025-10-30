@@ -7,12 +7,17 @@ class Enemy {
     const power
     var speed
     var movementTick = null
+    var status = "alive"
 
 	method pathPosition() = pathPosition
 
     method hp() = hp
 
     method speed() = speed
+
+	method status() = status
+
+	method isDying() = status == "dying"
 
     method tickMs() = 1000/speed
 
@@ -48,8 +53,16 @@ class Enemy {
 		hp -= amount
         if (amount > 0 ) game.sound("sfx_hit_basic.mp3").play()
 		if (self.isDead()){
-            self.die()
-		} 
+			self.startDying()
+		}
+	}
+
+	method startDying(){
+		if (status != "dying") {
+			status = "dying"
+			if (movementTick != null) movementTick.stop()
+			game.schedule(2000, { self.die() }) //le puse con delay de 2 segundos 
+		}
 	}
 
     method receiveBasicAttack(damage){
@@ -90,13 +103,19 @@ class Enemy {
 
 class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2){
 
-    override method image() = "enemy_basic_" + hp.toString() +".png"
+    override method image() {
+    	if (self.isDying()) return "enemy_basic_attacked.png"
+    	return "enemy_basic_" + hp.toString() + ".png"
+    }
     
     method clone() = new BasicEnemy(hp = hp, power = power , speed = speed)
 }
 
 class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
-    override method image() = "enemy_armored.png"
+    override method image() {
+    	if (self.isDying()) return "enemy_basic_attacked.png" // debemos crear el enemy_armored_attacked.png
+    	return "enemy_armored.png"
+    }
 
 	override method receiveBasicAttack(damage){
 		game.sound("sfx_hit_resisted.wav").play()
@@ -117,7 +136,10 @@ class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
 class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2) {
 	const radius = 5
 
-	override method image() = "enemy_explosive.png"
+    override method image() {
+    	if (self.isDying()) return "enemy_basic_attacked.png"  // debemos crear el enemy_explosive_attacked.png
+    	return "enemy_explosive.png"
+    }
 	
   	override method receivePiercingAttack(damage){
 		self.blowUp()
