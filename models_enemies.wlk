@@ -132,9 +132,6 @@ class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2, name = "armored
 class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explosive") {
 	const radius = 2
     const aoe = aoe2.cloneWithTiles()
-    var image = "enemy_explosive.png"
-
-	override method image() = image
 	
   	override method receivePiercingAttack(damage){
 		self.blowUp()
@@ -159,16 +156,16 @@ class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explo
     }
 
     method blowUpAnimation(){
-        game.schedule(500, {image = "enemy_explosive_exploding_1.png"})
-        game.schedule(1000, {image = "enemy_explosive_exploding_2.png"})
-        game.schedule(1500, {image = "enemy_explosive_exploding_3.png"})
+        game.schedule(500, {status = "exploding_1"})
+        game.schedule(1000, {status = "exploding_2"})
+        game.schedule(1500, {status = "dying"})
     }
 
     method blowUpEffect(){
         aoe.flash()
         self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveBlowUpDamage(power)})
         game.sound("sfx_alf_pop.wav").play()
-        game.schedule(500, {self.despawn()})
+        game.schedule(1000, {self.despawn()})
     }
 
     method enemiesInRange(enemies) = enemies.filter({ enemy => self.isInRange(enemy) })

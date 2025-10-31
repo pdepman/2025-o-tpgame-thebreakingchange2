@@ -105,7 +105,7 @@ class RangePrevisualizer{
 
 	method flash(){
 		self.beDisplayed()
-		game.schedule(500, {self.beRemoved()})
+		game.schedule(1000, {self.beRemoved()})
 	}
 
 	method tilesSquare() {
