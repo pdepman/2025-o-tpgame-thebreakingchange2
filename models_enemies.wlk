@@ -130,7 +130,8 @@ class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2, name = "armored
 }
 
 class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explosive") {
-	const radius = 5
+	const radius = 2
+    const aoe = aoe2.cloneWithTiles()
 	
   	override method receivePiercingAttack(damage){
 		self.blowUp()
@@ -141,9 +142,30 @@ class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explo
 	}
 
     method blowUp() {
-        self.die()
+        game.sound("sfx_hit_basic.mp3").play()
+        self.dieByBlowUpDamage()
+        self.blowUpAnimation()
+        game.schedule(1500, {self.blowUpEffect()})
+    }
+
+    method dieByBlowUpDamage(){
+        hp = 0
+        movementTick.stop()
+        tdGame.discountEnemy(self) 
+        aoe.refreshPosition(position)
+    }
+
+    method blowUpAnimation(){
+        game.schedule(500, {status = "exploding_1"})
+        game.schedule(1000, {status = "exploding_2"})
+        game.schedule(1500, {status = "dying"})
+    }
+
+    method blowUpEffect(){
+        aoe.flash()
         self.enemiesInRange(tdGame.enemiesInPlay()).forEach({enemy => enemy.receiveBlowUpDamage(power)})
         game.sound("sfx_alf_pop.wav").play()
+        game.schedule(1000, {self.despawn()})
     }
 
     method enemiesInRange(enemies) = enemies.filter({ enemy => self.isInRange(enemy) })
@@ -151,4 +173,8 @@ class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explo
     method isInRange(enemy) = position.distance(enemy.position()) <= radius
 
     method clone() = new ExplosiveEnemy(hp = hp, power = power, speed = speed, name = name)
- }
+
+}
+
+// Area of Effect 🥸
+const aoe2 = new RangePrevisualizer(position = game.at(99,99), range = 2)
