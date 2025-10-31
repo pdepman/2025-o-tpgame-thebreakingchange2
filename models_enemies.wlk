@@ -7,17 +7,19 @@ class Enemy {
     const power
     var speed
     var movementTick = null
+    const name
     var status = "alive"
+    var text = ""
+
+    method image() = "enemy_" + name + "_" + status + ".png"
+
+    method text() = text
 
 	method pathPosition() = pathPosition
 
     method hp() = hp
 
     method speed() = speed
-
-	method status() = status
-
-	method isDying() = status == "dying"
 
     method tickMs() = 1000/speed
 
@@ -28,8 +30,8 @@ class Enemy {
     }
 
     method despawn() {
+        movementTick.stop()
     	game.removeVisual(self)
-    	movementTick.stop()
 	}
 
     method goForward(path) {
@@ -53,15 +55,7 @@ class Enemy {
 		hp -= amount
         if (amount > 0 ) game.sound("sfx_hit_basic.mp3").play()
 		if (self.isDead()){
-			self.startDying()
-		}
-	}
-
-	method startDying(){
-		if (status != "dying") {
-			status = "dying"
-			if (movementTick != null) movementTick.stop()
-			game.schedule(2000, { self.die() }) //le puse con delay de 2 segundos 
+			self.die()
 		}
 	}
 
@@ -86,40 +80,41 @@ class Enemy {
 		game.sound("sfx_hit_slowing.wav").play()
 		speed = 0.25.max(speed / 2)
         movementTick.interval(self.tickMs())
+        text += "❄️"
 	}
-
-
 
     method die() {
         hp = 0
-        self.despawn()
-        tdGame.discountEnemy(self) 
+        tdGame.discountEnemy(self)
+        movementTick.stop()
+        status = "dying"
+        game.schedule(1000, {self.despawn()})
     }
 
 	method isDead() = hp <= 0
 
-    method image()
 }
 
-class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2){
+class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2, name = "basic"){
 
     override method image() {
-    	if (self.isDying()) return "enemy_basic_attacked.png"
-    	return "enemy_basic_" + hp.toString() + ".png"
+    	return "enemy_" + name + "_" + status + "_" + hp + ".png"
     }
     
-    method clone() = new BasicEnemy(hp = hp, power = power , speed = speed)
+    method clone() = new BasicEnemy(hp = hp, power = power , speed = speed, name = name)
 }
 
-class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
-    override method image() {
-    	if (self.isDying()) return "enemy_basic_attacked.png" // debemos crear el enemy_armored_attacked.png
-    	return "enemy_armored.png"
-    }
+class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2, name = "armored") {
 
 	override method receiveBasicAttack(damage){
+        self.triggerResistAttackAnimation()
 		game.sound("sfx_hit_resisted.wav").play()
 	}
+
+    method triggerResistAttackAnimation() {
+        status = "resisted"
+        game.schedule(200, { if (status == "resisted") status = "alive"})
+    }
 
 	override method receiveSlowingAttack(damage){
 		self.receiveDamage(0)
@@ -127,19 +122,15 @@ class ArmoredEnemy inherits Enemy(hp = 1, power = 20, speed = 2) {
 	}
 
     override method receiveBlowUpDamage(damage){
+        self.triggerResistAttackAnimation()
 		self.receiveDamage(0)
 	}
 
-    method clone() = new ArmoredEnemy(hp = hp , power = power, speed = speed)
+    method clone() = new ArmoredEnemy(hp = hp , power = power, speed = speed, name = name)
 }
 
-class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2) {
+class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2, name = "explosive") {
 	const radius = 5
-
-    override method image() {
-    	if (self.isDying()) return "enemy_basic_attacked.png"  // debemos crear el enemy_explosive_attacked.png
-    	return "enemy_explosive.png"
-    }
 	
   	override method receivePiercingAttack(damage){
 		self.blowUp()
@@ -159,5 +150,5 @@ class ExplosiveEnemy inherits Enemy(hp = 1, power = 50, speed = 2) {
   
     method isInRange(enemy) = position.distance(enemy.position()) <= radius
 
-    method clone() = new ExplosiveEnemy(hp = hp, power = power, speed = speed)
+    method clone() = new ExplosiveEnemy(hp = hp, power = power, speed = speed, name = name)
  }
