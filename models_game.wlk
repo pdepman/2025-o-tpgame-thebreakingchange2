@@ -546,7 +546,6 @@ class StageSelectorTile {
 	method textColor() = "FFFFFFFF"
 
 	method beDisplayed() {
-		console.println(self.image())
 		game.addVisual(self)
 	}
 
