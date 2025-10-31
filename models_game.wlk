@@ -18,6 +18,7 @@ object tdGame {
 		game.width(23)
 		game.cellSize(60)
 		game.start()
+		player.refreshPrevisualizer()
 		if (optimized_mode) game.boardGround("optimized_background.png")
 		else game.ground("tile_default.png")
 	}
@@ -48,6 +49,7 @@ object tdGame {
 		self.currentStage(stage)
 		currentStage.load()
 		player.refreshVisualZIndex()
+		player.refreshPrevisualizer()
 	}
 	
 	method loadStage() {
@@ -235,6 +237,11 @@ object player {
 		if (isPlacingTower) {
 		image = towerToPlace.image()
 		}
+	}
+
+	method refreshPrevisualizer(){
+		rangePrevisualizer.refreshPreview(false)
+		rangePrevisualizer.refreshPosition(position)
 	}
 
 	method sellTower(tower) {
