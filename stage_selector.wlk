@@ -2,15 +2,20 @@ import models_game.*
 import stage_0.stage_0
 import stage_1.stage_1
 
-const stage_selector = new Stage(
+const stage_selector = new HomeStage(
 	path = path,
 	resources = 0,
 	rounds = new Queue(list = [placeHolderRound]),
-	optimized_path_image = "optimized_stage_selector.png"
+	optimized_path_image = "optimized_stage_selector.png",
+	stageSelectors = stageSelectors
 )
 
 const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)
 
+const stageSelectors = [
+	new StageSelectorTile(position = game.at(8, 2), name = "T", stage = stage_0),
+	new StageSelectorTile(position = game.at(10, 2), name = "Y", stage = stage_1)
+]
 
 const path = [
 // W
@@ -31,8 +36,6 @@ new Road(position = game.at(5, 11)),
 new Road(position = game.at(7, 12)),
 new Road(position = game.at(9, 12)),
 new Road(position = game.at(11, 12)),
-
-
 
 new Road(position = game.at(7, 11)),
 new Road(position = game.at(8, 11)),
@@ -66,9 +69,7 @@ new Road(position = game.at(14, 7)),
 new Road(position = game.at(15, 7)),
 new Road(position = game.at(16, 8)),
 new Road(position = game.at(16, 9)),
-new Road(position = game.at(16, 10)),
-// Stage Selectors
-new StageSelectorTile(position = game.at(8, 2), name = "T"),
-new StageSelectorTile(position = game.at(10, 2), name = "Y")
+new Road(position = game.at(16, 10))
 ]
+
 

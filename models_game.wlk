@@ -7,8 +7,9 @@ import models_towers.*
 const optimized_mode = true
 
 object tdGame {
+	const stageList = [stage_selector, stage_0, stage_1]
+	var stageIndex = 0
 	var currentStage = stage_selector.clone()
-	
 	method currentStage() = currentStage
 	method currentStage(stage) { currentStage = stage.clone() }
 	
@@ -25,35 +26,40 @@ object tdGame {
 
 	method setupControls() {
 		keyboard.e().onPressDo({ self.startCurrentRound() })
-		keyboard.r().onPressDo({ self.swapStages(stage_selector) })
-		keyboard.t().onPressDo({ self.swapStages(stage_0) })
-		keyboard.y().onPressDo({ self.swapStages(stage_1) })
+		keyboard.r().onPressDo({ self.swapStages(0) })
+		keyboard.t().onPressDo({ self.swapStages(1) })
+		keyboard.y().onPressDo({ self.swapStages(2) })
 		player.controlSetup()
 	}
 	
 	method start() {
 		self.setupGame()
 		self.setupControls()
-		self.loadStage()
+		currentStage.load()
 		if (optimized_mode) game.addVisual(pathDisplayer)
 		hud.beDisplayed()
 		game.addVisual(player)
 	}
+	
+	method swapStages(newStageIndex) {
+		self.clearOldStage()
+		self.selectNewStage(newStageIndex)
+	}
 
-	method swapStages(stage) {
+	method clearOldStage(){
 		currentStage.clear()
 		victoryScreen.beRemoved()
 		gameOverScreen.beRemoved()
 		player.exitTowerSelectionMode()
 		player.position(game.at(9,4))
-		self.currentStage(stage)
+	}
+
+	method selectNewStage(newStageIndex){
+		stageIndex = newStageIndex
+		self.currentStage(stageList.get(newStageIndex))
 		currentStage.load()
 		player.refreshVisualZIndex()
 		player.refreshPrevisualizer()
-	}
-	
-	method loadStage() {
-		currentStage.load()
 	}
 
 	method startCurrentRound() {
@@ -71,6 +77,8 @@ object tdGame {
 	method completeRound() {
 		currentStage.completeRound()
 	}
+
+	method markStageAsCompleted() = stageList.get(stageIndex).markAsCompleted()
 
 	method hp() = currentStage.hp()
 
@@ -297,12 +305,14 @@ class Stage {
 	var resources
 	var hp = 100
 	const optimized_path_image = null
+	var status = "pending"
 	
 	method path() = path
 	method towers() = towers
 	method resources() = resources
 	method currentRound() = currentRound
 	method hp() = hp
+	method status() = status
 
 	method sellTower(tower){
 		tower.despawn()
@@ -341,6 +351,7 @@ class Stage {
 	
 	method win() {
 		victoryScreen.beDisplayed()
+		tdGame.markStageAsCompleted()
 	}
 	
 	method lose() {
@@ -402,6 +413,10 @@ class Stage {
 	method checkTowersCollide() {
 		towers.forEach({tower => tower.checkCollide()})
 	}
+
+	method markAsCompleted(){
+		status = "completed"
+	}
 }
 
 class Road {
@@ -426,7 +441,7 @@ class Round {
 	const enemiesQueue
 	const enemiesInPlay = []
 	const resourcesReward
-	const enemySpawnFrequency = 2000
+	const enemySpawnFrequency = 1000
 	var enemySpawnTick = game.tick(1000, { }, false)
 	
 	method enemiesQueue() = enemiesQueue
@@ -497,16 +512,45 @@ class Queue {
 	method isEmpty() = list.isEmpty()
 }
 
+class HomeStage inherits Stage {
+	const stageSelectors
+	method displayStageSelectors(){
+		stageSelectors.forEach({selector => selector.beDisplayed()})
+	}
+
+	method removeStageSelectors(){
+		stageSelectors.forEach({selector => selector.beRemoved()})
+	}
+
+	override method load(){
+		super()
+		self.displayStageSelectors()
+	}
+
+	override method clear(){
+		super()
+		self.removeStageSelectors()
+	}
+
+	override method clone() = new HomeStage(path = path, rounds = rounds.clone(), resources = resources, optimized_path_image = optimized_path_image, stageSelectors = stageSelectors) 
+
+}
+
 class StageSelectorTile {
 	const property position
 	const name
+	const stage
 
-	method image() = "tile_selector.png"
+	method image() = "tile_selector_" + stage.status() + ".png"
 	method text() = name
 	method textColor() = "FFFFFFFF"
 
 	method beDisplayed() {
 		game.addVisual(self)
+	}
+
+	method beRemoved() {
+		game.removeVisual(self)
 	}
 }
 
