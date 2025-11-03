@@ -12,34 +12,34 @@ UTN - Facultad Regional Buenos Aires - Materia Paradigmas de Programación
 WoToDe es un juego de tipo tower defense, él cual consiste en defender nuestro núcleo vital de los enemigos que buscan destruirlo, para ello podemos crear torres, con distintos efectos, para cubrir nuestra razón de existir.
 
 ## Capturas
-![Imagen de la pantalla principal del juego WoToDe](captura_pantalla-principal.png)
 *Pantalla principal*
+![Imagen de la pantalla principal del juego WoToDe](captura_pantalla-principal.png "Pantalla pirncipal de WoToDo")
 
-![Modo construcción de torres](captura_construccion.png)
 *Etapa de construcción*
+![Modo construcción de torres](captura_construccion.png "Personaje observando rango de torre básica")
 
-![Enemigo avanzando en el mapa y siendo ejecutado](captura_enemigo.png)
 *Enemigos en acción*
-
-![Enemigos y torres en acción](captura_jugabilidad.png)
+![Enemigo avanzando en el mapa y siendo ejecutado](captura_enemigo.png "Enemigos avanzando en el mapa")
 
 *Interacción enemigos-torres*
+![Enemigos y torres en acción](captura_jugabilidad.png "Torres atacando a los enemigos")
 
-![Nivel completado atisfactoriamente](captura_victoria.png)
 *¡Victoria!*
+![Nivel completado satisfactoriamente](captura_victoria.png  "Nivel completado satisfactoriamente")
+
 
 ## Reglas de Juego / Instrucciones
 
 ### Instrucciones del juego
 > Una vez iniciado WoToDe, el jugador se encontrará en la página principal, dónde debe escoger el nivel que desea jugar. A partir de allí, se encontrará con las siguientes fases:
 >
->> *Fase de selección de nivel*: debe presionar la tecla del nivel que quiere jugar.
+>> **Fase de selección de nivel**: debe presionar la tecla del nivel que quiere jugar.
 >
->> *Fase de construcción*: puede colocar tantas torres según la cantidad de monedas que disponga (puede ver el costo de cada torre en el menú lateral).
+>> **Fase de construcción**: puede colocar tantas torres según la cantidad de monedas que disponga (puede ver el costo de cada torre en el menú lateral).
 >
->> *Fase de ejecución de ronda*: los enemigos avanzarán por el camino marcado con el objetivo de llegar al núcleo.
+>> **Fase de ejecución de ronda**: los enemigos avanzarán por el camino marcado con el objetivo de llegar al núcleo.
 >
->> *Fase fin de ronda*: cada vez que finalice una ronda, el jugador recibirá oro para poder seguir construyendo más torres.
+>> **Fase fin de ronda**: cada vez que finalice una ronda, el jugador recibirá oro para poder seguir construyendo más torres.
 
 ### Tipos de enemigos
 <img src="./assets/enemy_basic_alive_0.png" alt="Imágen del enemigo básico I" title="Imagen del enemigo común I" width="20"> Enemigo común I: puede recibir daño de cualquier torre.
