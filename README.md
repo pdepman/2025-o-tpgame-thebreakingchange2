@@ -61,15 +61,6 @@ WoToDe es un juego de tipo tower defense, él cual consiste en defender nuestro 
 
 <img src="./assets/tower_piercing_idle.png" alt="Imágen de la torre perforante" title="Imágen de la torre perforante" width="20"> Torre perforante: es la única que puede hacer daño a los enemigos con armadura.
 
-**¿Cómo construyo las torres?**
-Primero debe presionar la tecla "Q", luego seleccionar la torre que quiere colocar (Tecla #1, #2 o #3) y finalmente tocar la tecla de "Espacio" para confirmar la construcción.
-
-**¿Cómo ganar?**
-Pasar todas las rondas antes de que el nucleo se quede sin vida.
-
-**Puedo seguir construyendo torres mientras aparecen los enemigos**
-Si.
-
 ### Controles:
 
 | Tecla  | Acción |
@@ -83,6 +74,16 @@ Si.
 | S      | Vender torre  |
 | E      | Iniciar o avanzar una ronda |
 | R      | Reiniciar el juego  |
+
+### Ayuda
+> **¿Cómo construyo las torres?**
+>>Primero debe presionar la tecla "Q", luego seleccionar la torre que quiere colocar (Tecla #1, #2 o #3) y finalmente tocar la tecla de "Espacio" para confirmar la construcción.
+>
+> **¿Cómo ganar?**
+>> Pasar todas las rondas antes de que el nucleo se quede sin vida.
+>
+> **Puedo seguir construyendo torres mientras aparecen los enemigos**
+>> Si.
 
 ## Explicaciones teóricas y diagramas
 
