@@ -1,13 +1,14 @@
-## Aplicación teórica
+# <span style="color:HotPink">Aplicación teórica</span>.
 
 **Conceptos del paradigma**
+- Diagrama estático
 - Objetos vs Clases
 - Herencia
 - Polimorfismo
 - Encapsulamiento
 - Responsabilidades / Acoplamiento
 
-# Diagramas
+## Diagrama estático
 ![Diagrama de Gameflor](diagrama_gameflow.png)
 *(Imagen 1)*
 
@@ -41,7 +42,6 @@
 
 
 ## ¿Dónde se aplicó cada concepto?
-
 ### Objetos vs Clases
 Los componentes **player** y **tdGame** los creamos como objetos, ya que necesitabamos un tablero, que nos permitiera tener el control de todo lo que sucedía en él, y un jugador para poder incorporar las mecánicas de creación de torres. Así que tener solo una instancia de cada uno que mantuviera su comportamiento durante todo el ciclo del juego resolvía nuestra problematica. 
 Mientras que **Round**, **Stage**, **Tower**, **Enemy**, **BasicEnemy**, **ArmoredEnemy** y **ExplosiveEnemy** las hicimos como clases dado que necesitabamos distintas instancias (diferentes comportamientos) de esos componentes para poder darle sentido a nuestro juego. Para que se entienda mejor, en el caso de las torres, queríamos poder crear varios tipos de las mismas, dónde cada una pudiera comportarse de forma distinta (distinto rango y tipo de daño) a pesar de tener la misma estructura base(propiedades) y saber responder a los mismos mensajes. Para las demás clases, se aplicó el mismo razonamiento. 
