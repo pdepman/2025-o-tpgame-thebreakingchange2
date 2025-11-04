@@ -9,6 +9,7 @@
 - Responsabilidades / Acoplamiento
 
 ## Diagrama estático
+Este tipo de diagrama permite organizar y tener una mejor idea de lo que se quiere lograr. Siendo así una primera foto de nuestro programa. Y este motivo es que puede sufrir cambios a lo largo del tiempo o quedar desactualizado con el modelo de la realidad.
 ![Diagrama de Gameflor](diagrama_gameflow.png)
 *(Imagen 1)*
 
