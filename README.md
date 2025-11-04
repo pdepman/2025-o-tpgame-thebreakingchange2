@@ -71,7 +71,7 @@ WoToDe es un juego de tipo tower defense, él cual consiste en defender nuestro 
 | 2      |  Cambiar vista a torre ralentizante |
 | 3      |  Cambiar vista a torre perforante |
 | Espacio      | Costruir torre |
-| S      | Vender torre  |
+| X      | Vender torre  |
 | E      | Iniciar o avanzar una ronda |
 | R      | Reiniciar el juego  |
 
