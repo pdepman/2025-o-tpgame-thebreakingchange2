@@ -201,3 +201,35 @@ describe "Pruebas de stage" {
     assert.notThat(testIncompleteStage.isComplete())
   }
 }
+
+describe "Tests de ataque de las torres" {
+  const basicEnemy = new BasicEnemy(
+    movementTick = game.tick(1000, {}, true),
+    position = game.origin(),
+    hp = 100,
+    power = 10,
+    speed = 1
+  )
+  test "Luego de atacar, una torre deja su ataque en enfriamiento" {
+    basicTower.attackEnemy(basicEnemy)
+    assert.that(basicTower.attackInCooldown())
+  }
+
+  test "Una torre con el ataque en enfriamiento no puede atacar" {
+    const torreEnEnfriamiento = new Tower(
+      position = game.at(99,99),
+      power = 1,
+      attackSpeed = 1000,
+      range = 4,
+      attack = basicAttack,
+      cost = 50,
+      image = "tower_basic",
+      attackInCooldown = true
+    )
+  assert.notThat(torreEnEnfriamiento.canAttack())
+  }
+
+    test "Una torre con el ataque que no esta en enfriamiento puede atacar" {
+    assert.that(basicTower.canAttack())
+  }
+}
