@@ -111,7 +111,7 @@ describe "Tests de deteccion de las torres" {
   const enemyInRangeFirst = new BasicEnemy(
     movementTick = game.tick(1000, {}, true),
     position = game.at(0, 1),
-    pathPosition = 100,
+    pathIndex = 100,
     hp = 100,
     power = 10,
     speed = 1

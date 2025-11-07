@@ -75,7 +75,7 @@ class Tower {
   
   method enemyToAttack(enemies) {
     if (enemies.isEmpty()) return null
-    return enemies.max({enemy => enemy.pathPosition()})
+    return enemies.max({enemy => enemy.pathIndex()})
   }
   
   method enemiesInRange(enemies) = enemies.filter(

@@ -1,7 +1,7 @@
 import models_game.*
 
 class Enemy {
-    var pathPosition = 0
+    var pathIndex = 0
     var property position = game.at(99, 99)
     var hp
     const power
@@ -15,7 +15,7 @@ class Enemy {
 
     method text() = text
 
-	method pathPosition() = pathPosition
+	method pathIndex() = pathIndex
 
     method hp() = hp
 
@@ -35,13 +35,13 @@ class Enemy {
 	}
 
     method goForward(path) {
-        position = path.get(pathPosition).position()
+        position = path.get(pathIndex).position()
 
         if (self.isAtTheEndOfThePath(path)) {
             self.doDamage(tdGame.currentStage())
         }
         
-        pathPosition = path.size().min(pathPosition + 1)
+        pathIndex = path.size().min(pathIndex + 1)
     }
 
     method isAtTheEndOfThePath(path) = path.last().position() == position
