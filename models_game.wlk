@@ -20,6 +20,10 @@ object tdGame {
 		game.cellSize(60)
 		game.start()
 		player.refreshPrevisualizer()
+		self.displayBackground()
+	}
+
+	method displayBackground() {
 		if (optimized_mode) game.boardGround("optimized_background.png")
 		else game.ground("tile_default.png")
 	}
@@ -36,7 +40,6 @@ object tdGame {
 		self.setupGame()
 		self.setupControls()
 		currentStage.load()
-		if (optimized_mode) game.addVisual(pathDisplayer)
 		hud.beDisplayed()
 		game.addVisual(player)
 	}
@@ -382,12 +385,16 @@ class Stage {
 	}
 	
 	method displayPath() {
-		if (optimized_mode) pathDisplayer.pathImage(optimized_path_image)
+		if (optimized_mode) {
+			pathDisplayer.pathImage(optimized_path_image)
+			game.addVisual(pathDisplayer)
+		}
 		else path.forEach({ road => road.beDisplayed()})
 	}
 
 	method removePath() {
-		path.forEach({ road => game.removeVisual(road)})
+		if (optimized_mode)	game.removeVisual(pathDisplayer)
+		else path.forEach({ road => game.removeVisual(road)})
 	}
 
 	method discountEnemy(enemy) {
