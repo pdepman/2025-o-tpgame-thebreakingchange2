@@ -2,7 +2,7 @@ import models_game.*
 import stage_0.stage_0
 import stage_1.stage_1
 
-const stage_selector = new HomeStage(
+const stage_home = new HomeStage(
 	path = path,
 	resources = 0,
 	rounds = new Queue(list = [placeHolderRound]),

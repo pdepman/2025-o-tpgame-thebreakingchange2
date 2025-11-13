@@ -1,17 +1,18 @@
 import models_hud.*
-import stage_selector.stage_selector
+import stage_home.stage_home
 import stage_0.stage_0
 import stage_1.stage_1
 import models_towers.*
 
 const optimized_mode = true
 
+const stageList = [stage_0, stage_1]
+
 object tdGame {
-	const stageList = [stage_selector, stage_0, stage_1]
-	var stageIndex = 0
-	var currentStage = stage_selector.clone()
+	var selectedStage = stage_home
+	var currentStage = selectedStage.clone()
+
 	method currentStage() = currentStage
-	method currentStage(stage) { currentStage = stage.clone() }
 	
 	method setupGame() {
 		game.title("Tower Defense")
@@ -30,12 +31,12 @@ object tdGame {
 
 	method setupControls() {
 		keyboard.e().onPressDo({ self.startCurrentRound() })
-		keyboard.r().onPressDo({ self.swapStages(0) })
-		keyboard.t().onPressDo({ self.swapStages(1) })
-		keyboard.y().onPressDo({ self.swapStages(2) })
+		keyboard.r().onPressDo({ self.swapStages(stage_home) })
+		keyboard.t().onPressDo({ self.swapStages(stage_0) })
+		keyboard.y().onPressDo({ self.swapStages(stage_1) })
 		player.controlSetup()
 	}
-	
+
 	method start() {
 		self.setupGame()
 		self.setupControls()
@@ -44,12 +45,13 @@ object tdGame {
 		game.addVisual(player)
 	}
 	
-	method swapStages(newStageIndex) {
-		self.clearOldStage()
-		self.selectNewStage(newStageIndex)
+	method swapStages(stage) {
+		self.clearCurrentStage()
+		self.selectNewStage(stage)
+		self.loadCurrentStage()
 	}
 
-	method clearOldStage(){
+	method clearCurrentStage(){
 		currentStage.clear()
 		victoryScreen.beRemoved()
 		gameOverScreen.beRemoved()
@@ -57,9 +59,12 @@ object tdGame {
 		player.position(game.at(9,4))
 	}
 
-	method selectNewStage(newStageIndex){
-		stageIndex = newStageIndex
-		self.currentStage(stageList.get(newStageIndex))
+	method selectNewStage(stage){
+		selectedStage = stage
+		currentStage = selectedStage.clone()
+	}
+
+	method loadCurrentStage(){
 		currentStage.load()
 		player.refreshVisualZIndex()
 		player.refreshPrevisualizer()
@@ -81,7 +86,7 @@ object tdGame {
 		currentStage.completeRound()
 	}
 
-	method markStageAsCompleted() = stageList.get(stageIndex).markAsCompleted()
+	method markStageAsCompleted() = selectedStage.markAsCompleted()
 
 	method hp() = currentStage.hp()
 
@@ -98,6 +103,8 @@ object tdGame {
 	method sellTower(tower) { currentStage.sellTower(tower)}
 
 	method checkTowersCollide() = currentStage.checkTowersCollide()
+
+	method isWin() = stageList.all({stage => stage.isComplete()})
 }
 
 class RangePrevisualizer{
@@ -424,6 +431,8 @@ class Stage {
 	method markAsCompleted(){
 		status = "completed"
 	}
+
+	method isCompleted() = status == "completed"
 }
 
 class Road {
@@ -521,7 +530,7 @@ class Queue {
 	method isEmpty() = list.isEmpty()
 }
 
-class HomeStage inherits Stage {
+class HomeStage inherits Stage(status = "completed") {
 	const stageSelectors
 	method displayStageSelectors(){
 		stageSelectors.forEach({selector => selector.beDisplayed()})
