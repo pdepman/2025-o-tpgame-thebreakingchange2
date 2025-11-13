@@ -28,7 +28,9 @@ class Tower {
   method range() = range
 
   method attackSpeed() = attackSpeed
-  
+
+  method attackInCooldown() = attackInCooldown
+
   method spawn() {
     game.addVisual(self)
     game.sound("sfx_tower_spawn.mp3").play()
@@ -41,19 +43,26 @@ class Tower {
   }
 
   method attackInRange() {
-    if (!attackInCooldown){
+    if (self.canAttack()){
       self.attackEnemy(self.enemyToAttack(self.enemiesInRange(tdGame.enemiesInPlay())))
     }
   }
 
+  method canAttack() = !attackInCooldown
+
   method attackEnemy(enemy) {
     if (enemy != null) {
-      attackInCooldown = true
-      game.schedule(attackSpeed-100, {attackInCooldown = false})
+      self.putAttackInCooldown()
       self.triggerAttackAnimation()
       attack.doAttack(power, enemy)
     }
   }
+
+  method putAttackInCooldown() {
+    attackInCooldown = true
+    game.schedule(attackSpeed-100, {attackInCooldown = false})
+  }
+  
   
   method status(newStatus) {
     status = newStatus
@@ -66,7 +75,7 @@ class Tower {
   
   method enemyToAttack(enemies) {
     if (enemies.isEmpty()) return null
-    return enemies.max({enemy => enemy.pathPosition()})
+    return enemies.max({enemy => enemy.pathIndex()})
   }
   
   method enemiesInRange(enemies) = enemies.filter(

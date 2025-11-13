@@ -59,7 +59,7 @@ object hud {
   
   method beDisplayed() {
     self.setupHudTiles()
-    if (!optimized_mode) hudTiles.forEach({ tile => game.addVisual(tile) })
+    self.displayHudBackground()
     game.addVisual(gameTitle)
     game.addVisual(stageProgressVisualizer)
     game.addVisual(enemiesRemainingVisualizer)
@@ -71,6 +71,10 @@ object hud {
     game.addVisual(controlsTooltip)
   }
   
+  method displayHudBackground() {
+    if (!optimized_mode) hudTiles.forEach({ tile => game.addVisual(tile) })
+  }
+
   method limit() = hudTiles.get(0).position().x() - 1
 }
 
