@@ -530,7 +530,7 @@ class Queue {
 	method isEmpty() = list.isEmpty()
 }
 
-class HomeStage inherits Stage(status = "completed") {
+class HomeStage inherits Stage() {
 	const stageSelectors
 	method displayStageSelectors(){
 		stageSelectors.forEach({selector => selector.beDisplayed()})
