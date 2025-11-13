@@ -460,8 +460,10 @@ class Round {
 	}
 		
 	method start(path) {
-		enemySpawnTick = game.tick(enemySpawnFrequency, { self.spawnNextEnemy(path) }, true)
-		enemySpawnTick.start()
+		if (!enemySpawnTick.isRunning()){
+			enemySpawnTick = game.tick(enemySpawnFrequency, { self.spawnNextEnemy(path) }, true)
+			enemySpawnTick.start()
+		}
 	}
 	
 	method spawnNextEnemy(path) {
