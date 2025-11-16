@@ -83,10 +83,13 @@ object tdGame {
 	method enemiesInPlay() = currentStage.enemiesInPlay()
 
 	method completeRound() {
-		currentStage.completeRound()
+		currentStage.completeRound()	
 	}
 
-	method markStageAsCompleted() = selectedStage.markAsCompleted()
+	method markStageAsWin() {
+		selectedStage.markAsWin()
+		self.winCheck()
+	}
 
 	method hp() = currentStage.hp()
 
@@ -104,7 +107,15 @@ object tdGame {
 
 	method checkTowersCollide() = currentStage.checkTowersCollide()
 
-	method isWin() = stageList.all({stage => stage.isComplete()})
+	method isWin() = stageList.all({stage => stage.isWin()})
+
+	method winCheck() {
+		if (self.isWin()) self.win()
+	}
+
+	method win(){
+		stage_home.setWinMode()
+	}
 }
 
 class RangePrevisualizer{
@@ -314,7 +325,7 @@ class Stage {
 	var currentRound = new Round(enemiesQueue = [], resourcesReward = 0)
 	var resources
 	var hp = 100
-	const optimized_path_image = null
+	var optimized_path_image = null
 	var status = "pending"
 	
 	method path() = path
@@ -361,7 +372,7 @@ class Stage {
 	
 	method win() {
 		victoryScreen.beDisplayed()
-		tdGame.markStageAsCompleted()
+		tdGame.markStageAsWin()
 	}
 	
 	method lose() {
@@ -428,11 +439,11 @@ class Stage {
 		towers.forEach({tower => tower.checkCollide()})
 	}
 
-	method markAsCompleted(){
-		status = "completed"
+	method markAsWin(){
+		status = "win"
 	}
 
-	method isCompleted() = status == "completed"
+	method isWin() = status == "win"
 }
 
 class Road {
@@ -548,6 +559,10 @@ class HomeStage inherits Stage() {
 	override method clear(){
 		super()
 		self.removeStageSelectors()
+	}
+	
+	method setWinMode(){
+		optimized_path_image = "true_ending.png"
 	}
 
 	override method clone() = new HomeStage(path = path, rounds = rounds.clone(), resources = resources, optimized_path_image = optimized_path_image, stageSelectors = stageSelectors) 
