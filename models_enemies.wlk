@@ -95,7 +95,7 @@ class Enemy {
 
 }
 
-class BasicEnemy inherits Enemy(hp = 1, power = 10, speed = 2, name = "basic"){
+class BasicEnemy inherits Enemy(hp = 3, power = 10, speed = 2, name = "basic"){
 
     override method image() {
     	return "enemy_" + name + "_" + status + "_" + hp + ".png"

@@ -121,8 +121,8 @@ object slowingAttack {
 const basicTower = new Tower(
   position = game.at(99,99),
   power = 1,
-  attackSpeed = 1000,
-  range = 4,
+  attackSpeed = 1500,
+  range = 3,
   attack = basicAttack,
   cost = 50,
   image = "tower_basic"
@@ -132,9 +132,9 @@ const piercingTower = new Tower(
   position = game.at(99,99),
   attack = piercingAttack,
   power = 1,
-  cost = 150,
+  cost = 100,
   range = 2,
-  attackSpeed = 1500,
+  attackSpeed = 2000,
   image = "tower_piercing"
 )
 
@@ -142,8 +142,8 @@ const slowingTower = new Tower(
   position = game.at(99,99),
   attack = slowingAttack,
   power = 0,
-  cost = 100,
-  range = 3,
-  attackSpeed = 2000,
+  cost = 150,
+  range = 2,
+  attackSpeed = 2500,
   image = "tower_slowing"
 )

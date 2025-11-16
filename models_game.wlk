@@ -1,12 +1,12 @@
 import models_hud.*
 import stage_home.stage_home
-import stage_0.stage_0
-import stage_1.stage_1
+import stage_2.stage_2
+import stage_3.stage_3
 import models_towers.*
 
 const optimized_mode = true
 
-const stageList = [stage_0, stage_1]
+const stageList = [stage_2, stage_3]
 
 object tdGame {
 	var selectedStage = stage_home
@@ -32,8 +32,8 @@ object tdGame {
 	method setupControls() {
 		keyboard.e().onPressDo({ self.startCurrentRound() })
 		keyboard.r().onPressDo({ self.swapStages(stage_home) })
-		keyboard.t().onPressDo({ self.swapStages(stage_0) })
-		keyboard.y().onPressDo({ self.swapStages(stage_1) })
+		keyboard.t().onPressDo({ self.swapStages(stage_2) })
+		keyboard.y().onPressDo({ self.swapStages(stage_3) })
 		player.controlSetup()
 	}
 
@@ -371,8 +371,10 @@ class Stage {
 	}
 	
 	method win() {
-		victoryScreen.beDisplayed()
-		tdGame.markStageAsWin()
+		if(!self.shouldLose()){
+			tdGame.markStageAsWin()
+			victoryScreen.beDisplayed()
+		}
 	}
 	
 	method lose() {
@@ -468,8 +470,8 @@ class Round {
 	const enemiesQueue
 	const enemiesInPlay = []
 	const resourcesReward
-	const enemySpawnFrequency = 1000
-	var enemySpawnTick = game.tick(1000, { }, false)
+	const enemySpawnFrequency = 1500
+	var enemySpawnTick = game.tick(1500, { }, false)
 	
 	method enemiesQueue() = enemiesQueue
 	method enemiesRemaining() = enemiesQueue.size() + enemiesInPlay.size()
