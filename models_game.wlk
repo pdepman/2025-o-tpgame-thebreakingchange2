@@ -111,6 +111,8 @@ object tdGame {
 
 	method checkTowersCollide() = currentStage.checkTowersCollide()
 
+	method checkBombsCollide() = currentStage.checkBombsCollide()
+
 	method isWin() = stageList.all({stage => stage.isWin()})
 
 	method winCheck() {
@@ -302,6 +304,7 @@ object player {
 	method movementActions(){
 		rangePrevisualizer.refreshPosition(position)
 		tdGame.checkTowersCollide()
+		tdGame.checkBombsCollide()
 	}
 
 	method moveUp() {
@@ -453,6 +456,10 @@ class Stage {
 		towers.forEach({tower => tower.checkCollide()})
 	}
 
+	method checkBombsCollide() {
+		currentRound.checkBombsCollide()
+	}
+
 	method markAsWin(){
 		status = "win"
 	}
@@ -460,34 +467,28 @@ class Stage {
 	method isWin() = status == "win"
 
 	method spawnBomb(){
-		console.println("spawnBomb")
+
 		currentRound.spawnBomb(self.availableBombZone())
 	}
 
-	method availableBombZone() {
-		console.println("availableBombZone")
-		return self.availableBombZones().anyOne()
-	}
+	method availableBombZone() = self.availableBombZones().anyOne()
 
-	method availableBombZones() { console.println("availableBombZones") 
-	return self.playZone().difference(self.notBombZone())}
+	method availableBombZones() = [
+		game.at(1,1),
+		game.at(7,7),
+		game.at(10,9),
+		game.at(4,4),
+		game.at(6,6),
+		game.at(3,1),
+		game.at(1,3),
+		game.at(12,12)
 
-	method notBombZone() {
-		console.println("notBombZone")
-		return self.towerZones().union(self.pathZones()).union(self.roundBombsZones())}
+	].asSet().difference(self.notBombZone())
 
-	method towerZones() {
-		console.println("notBombZone")
-		return towers.map({t => t.position()}).asSet()
-	} 
+	method notBombZone() = self.roundBombsZones()
 
-	method pathZones() {
-		console.println("pathZones")
-		return path.map({p => p.position()}).asSet()
-	}
 
 	method roundBombsZones() {
-		console.println("roundBombsZones")
 		return currentRound.bombZones()
 	}
 
@@ -587,14 +588,20 @@ class Round {
 	method removeBomb(bomb) {
 		bombList.remove(bomb)
 	}
+
+	method checkBombsCollide() {
+		bombList.forEach({bomb => bomb.checkCollide()})
+	}
 }
 
-class Bomb{
+class Bomb {
 	var property position
 	var timer = 3
 	const countdownTick = game.tick(2000, {self.countdown()}, false)
 
-	method image() = "resource_bomba.png"
+	method image() = "bomba.png"
+	method text() = timer.toString()
+	method textColor() = "FFFFFFFF"
 
 	method spawn(){
 		game.addVisual(self)
@@ -622,6 +629,10 @@ class Bomb{
 	}
 
 	method shouldBlowUp() = timer <= 0
+
+	method checkCollide() {
+		if (position == player.position()) self.despawn()
+  }
 
 }
 
