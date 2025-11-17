@@ -7,7 +7,6 @@ import models_towers.*
 const optimized_mode = true
 
 const stageList = [stage_2, stage_3]
-
 object tdGame {
 	var selectedStage = stage_home
 	var currentStage = selectedStage.clone()
@@ -22,6 +21,11 @@ object tdGame {
 		game.start()
 		player.refreshPrevisualizer()
 		self.displayBackground()
+		self.setupPlayZone()
+	}
+
+	method setupPlayZone(){
+
 	}
 
 	method displayBackground() {
@@ -115,6 +119,14 @@ object tdGame {
 
 	method win(){
 		stage_home.setWinMode()
+	}
+
+	method spawnBomb(){
+		currentStage.spawnBomb()
+	}
+
+	method removeBomb(bomb){
+		currentStage.removeBomb(bomb)
 	}
 }
 
@@ -446,6 +458,49 @@ class Stage {
 	}
 
 	method isWin() = status == "win"
+
+	method spawnBomb(){
+		console.println("spawnBomb")
+		currentRound.spawnBomb(self.availableBombZone())
+	}
+
+	method availableBombZone() {
+		console.println("availableBombZone")
+		return self.availableBombZones().anyOne()
+	}
+
+	method availableBombZones() { console.println("availableBombZones") 
+	return self.playZone().difference(self.notBombZone())}
+
+	method notBombZone() {
+		console.println("notBombZone")
+		return self.towerZones().union(self.pathZones()).union(self.roundBombsZones())}
+
+	method towerZones() {
+		console.println("notBombZone")
+		return towers.map({t => t.position()}).asSet()
+	} 
+
+	method pathZones() {
+		console.println("pathZones")
+		return path.map({p => p.position()}).asSet()
+	}
+
+	method roundBombsZones() {
+		console.println("roundBombsZones")
+		return currentRound.bombZones()
+	}
+
+	method playZone() {
+		const list = []
+		(0..17).forEach({ x => (0..13).forEach({y => list.add(new Position(x = x, y=y))})})
+		return list.asSet()
+	}
+
+	method removeBomb(bomb){
+		currentRound.removeBomb(bomb)
+	}
+
 }
 
 class Road {
@@ -472,6 +527,7 @@ class Round {
 	const resourcesReward
 	const enemySpawnFrequency = 1500
 	var enemySpawnTick = game.tick(1500, { }, false)
+	const bombList = []
 	
 	method enemiesQueue() = enemiesQueue
 	method enemiesRemaining() = enemiesQueue.size() + enemiesInPlay.size()
@@ -486,6 +542,7 @@ class Round {
 	method clear() {
 		enemySpawnTick.stop()
 		enemiesInPlay.forEach({ enemy => enemy.despawn()})
+		bombList.forEach({bomb => bomb.despawn()})
 	}
 		
 	method start(path) {
@@ -515,7 +572,60 @@ class Round {
 
 	method isComplete() = self.enemiesRemaining() == 0
 
+	method spawnBomb(position){
+		const bomb = new Bomb(position = position)
+		bomb.spawn()
+		self.addBomb(bomb)
+	}
+
+	method addBomb(bomb){
+		bombList.add(bomb)
+	}
+
+	method bombZones() = bombList.map({b => b.position()}).asSet()
+
+	method removeBomb(bomb) {
+		bombList.remove(bomb)
+	}
 }
+
+class Bomb{
+	var property position
+	var timer = 3
+	const countdownTick = game.tick(2000, {self.countdown()}, false)
+
+	method image() = "resource_bomba.png"
+
+	method spawn(){
+		game.addVisual(self)
+		countdownTick.start()
+	}
+	method despawn(){
+		countdownTick.stop()
+		tdGame.removeBomb(self)
+		game.removeVisual(self)
+	}
+	method blowUp(){
+		self.doDamage(tdGame.currentStage())
+		self.despawn()
+	}
+
+	method doDamage(damageable){
+		damageable.receiveDamage(5)
+	}
+
+	method countdown(){
+		timer -= 1
+		if (self.shouldBlowUp()){
+			self.blowUp()
+		}
+	}
+
+	method shouldBlowUp() = timer <= 0
+
+}
+
+
 
 class Queue {
 	const list = []

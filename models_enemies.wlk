@@ -89,6 +89,7 @@ class Enemy {
         movementTick.stop()
         status = "dying"
         game.schedule(1000, {self.despawn()})
+        tdGame.spawnBomb()
     }
 
 	method isDead() = hp <= 0

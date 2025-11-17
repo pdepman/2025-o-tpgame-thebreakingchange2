@@ -51,17 +51,6 @@ const path = [
   new Road(position = game.at(14,2))
 ]
 
-const round_00 = new Round(
-  enemiesQueue = new Queue(
-    list = [
-      new ExplosiveEnemy(),
-      new ExplosiveEnemy() 
-    ]
-  ),
-  resourcesReward = 50
-)
-
-
 const round_0 = new Round(
   enemiesQueue = new Queue(
     list = [
