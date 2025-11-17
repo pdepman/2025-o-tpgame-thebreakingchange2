@@ -1,6 +1,6 @@
 import models_game.*
-import stage_0.stage_0
-import stage_1.stage_1
+import stage_2.stage_2
+import stage_3.stage_3
 
 const stage_home = new HomeStage(
 	path = path,
@@ -13,8 +13,8 @@ const stage_home = new HomeStage(
 const placeHolderRound = new Round(enemiesQueue = new Queue(list = []) , resourcesReward = 100)
 
 const stageSelectors = [
-	new StageSelectorTile(position = game.at(8, 2), name = "T", stage = stage_0),
-	new StageSelectorTile(position = game.at(10, 2), name = "Y", stage = stage_1)
+	new StageSelectorTile(position = game.at(8, 2), name = "T", stage = stage_2),
+	new StageSelectorTile(position = game.at(10, 2), name = "Y", stage = stage_3)
 ]
 
 const path = [
