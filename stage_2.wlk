@@ -4,10 +4,10 @@ import models_enemies.*
 const stage_2 = new Stage(
   path = path,
   resources = 50,
-  rounds = new Queue(list = [round_00]),
+  rounds = new Queue(list = [round_0, round_1, round_2, round_3]),
   optimized_path_image = "optimized_stage_2.png"
 )
-//round_0, round_1, round_2, round_3
+
 // Path Configuration
 const path = [
   new Road(position = game.at(0,7)),
